@@ -25,6 +25,7 @@ import operator
 
 union_feature_names = set()
 file_parsed_data = {}
+resemblance_scores={}
 
 for filename in os.listdir("."):
     if not os.path.isfile(filename) or not ".jpg" in filename:
@@ -37,14 +38,14 @@ for filename in os.listdir("."):
 
 total_num_features = len(union_feature_names)
 
-# now compute the specific similarity score
-scores={}
+# now compute the specific resemblance and containment scores
 for filename in file_parsed_data.keys():
     overlap = {}
     overlap = set(file_parsed_data[filename].keys()) & set(union_feature_names) 
-    scores[filename] = float(len(overlap))/total_num_features
+    resemblance_scores[filename] = float(len(overlap))/total_num_features
 
-sorted_scores = sorted(scores.items(), key=operator.itemgetter(1), reverse=True)
-for tuple in sorted_scores:
+sorted_resemblance_scores = sorted(resemblance_scores.items(), key=operator.itemgetter(1), reverse=True)
+
+print "Resemblance:\n"
+for tuple in sorted_resemblance_scores:
     print tuple[0]+","+str(tuple[1])
-
