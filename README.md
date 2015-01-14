@@ -6,7 +6,7 @@ package (Python port of Apache Tika) to compute Image similarity based on Metada
 The script currently iterates over all jpg images in the current directory and derives their
 metadata feature names, and computes the union of all feature names. The union of all feature
 names becomes the "golden feature set" that all image document features are compared to via
-interset. The length of that intersect per image divided by the length of the unioned set 
+intersect. The length of that intersect per image divided by the length of the unioned set 
 becomes the similarity score. Scores are sorted in reverse (descending) order and then output
 in the sorted_scores array.
 
