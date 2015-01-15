@@ -19,9 +19,25 @@ This project is licensed under the [Apache License, version 2.0](http://www.apac
 Use
 ===
 
+Pre-requisite
+===
 0. Install [Tika-Python](http://github.com/chrismattmann/tika-python)
-1. git clone https://github.com/chrismattmann/tika-img-similiarity.git
-2. move your jpg images into tika-img-similarity's folder
-3. ./img_feature_similarity_tika.py
-4. ./cluster-scores.py
 
+Using existing data
+===
+1. git clone https://github.com/chrismattmann/tika-img-similarity.git into
+a folder that a web browser can see
+2. pop open index.html in a browser
+
+Using your own image data from crawl
+===
+0. mkdir -p $HOME/deploy && cd $HOME/deploy
+1. git clone https://github.com/chrismattmann/tika-img-similarity.git into
+a folder that a web browser can see
+2. export PATH=$HOME/deploy/tika-img-similarity:${PATH}
+3. cd /path/to/your/images
+4. img_feature_similarity_tika.py > similarity-scores.txt
+5. cluster_cores.py > clusters.json
+6. mv clusters.json $HOME/deploy/tika-img-similarity/testdata
+7. pop open index.html in a browser
+8. #win
