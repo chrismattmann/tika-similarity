@@ -22,9 +22,10 @@ import json
 threshold = 0.01
 with open("similarity-scores.txt") as f:
     prior = None
-    clusters = {}
-    cluster = []
+    clusters = []
     clusterCount = 0
+    cluster = {"name":"cluster"+str(clusterCount)}
+    clusterData = []
     for line in f:
         featureDataList = line.split(",") # file name,score
         if len(featureDataList) != 2:
@@ -40,13 +41,15 @@ with open("similarity-scores.txt") as f:
         featureData = {"name":featureDataList[0], "score":float(featureDataList[1])}
 
         if diff > threshold:
-            clusters["cluster"+str(clusterCount)] = cluster
-            clusterCount = clusterCount+1
-            cluster = []
-            cluster.append(featureData)
+            cluster["children"] = clusterData
+            clusters.append(cluster)
+            clusterCount = clusterCount + 1
+            cluster = {"name":"cluster"+str(clusterCount)}
+            clusterData = []
+            clusterData.append(featureData)
             prior = float(featureDataList[1])
         else:
-            cluster.append(featureData)
+            clusterData.append(featureData)
             prior = float(featureDataList[1])
 
 print json.dumps(clusters, sort_keys=True, indent=4, separators=(',', ': '))
