@@ -17,34 +17,38 @@
 # 
 #
 
+import json
+
 threshold = 0.01
-with open("img-clusters.txt") as f:
+with open("similarity-scores.txt") as f:
     prior = None
-    clusters = []
+    clusters = {}
     cluster = []
+    clusterCount = 0
     for line in f:
-        featureData = line.split(",") # file name,score
-        if len(featureData) != 2:
+        featureDataList = line.split(",") # file name,score
+        if len(featureDataList) != 2:
             continue
 
         if prior != None:
-            diff = prior-float(featureData[1])
+            diff = prior-float(featureDataList[1])
         else:
             diff = -1.0
 
         # cleanse the \n
-        featureData[1] = featureData[1].strip()
+        featureDataList[1] = featureDataList[1].strip()
+        featureData = {"name":featureDataList[0], "score":float(featureDataList[1])}
 
         if diff > threshold:
-            clusters.append(cluster)
+            clusters["cluster"+str(clusterCount)] = cluster
+            clusterCount = clusterCount+1
             cluster = []
             cluster.append(featureData)
-            prior = float(featureData[1])
+            prior = float(featureDataList[1])
         else:
             cluster.append(featureData)
-            prior = float(featureData[1])
+            prior = float(featureDataList[1])
 
-print clusters
-
+print json.dumps(clusters, sort_keys=True, indent=4, separators=(',', ': '))
             
         
