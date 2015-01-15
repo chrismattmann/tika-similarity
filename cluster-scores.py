@@ -52,6 +52,7 @@ with open("similarity-scores.txt") as f:
             clusterData.append(featureData)
             prior = float(featureDataList[1])
 
-print json.dumps(clusters, sort_keys=True, indent=4, separators=(',', ': '))
+clusterStruct = {"name":"clusters", "children":clusters}
+print json.dumps(clusterStruct, sort_keys=True, indent=4, separators=(',', ': '))
             
         
