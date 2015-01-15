@@ -23,4 +23,5 @@ Use
 1. git clone https://github.com/chrismattmann/tika-img-similiarity.git
 2. move your jpg images into tika-img-similarity's folder
 3. ./img_feature_similarity_tika.py
+4. ./cluster-scores.py
 
