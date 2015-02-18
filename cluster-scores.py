@@ -59,7 +59,7 @@ with open("similarity-scores.txt") as f:
     cluster = {"name":"cluster"+str(clusterCount)}
 
 clusterStruct = {"name":"clusters", "children":clusters}
-with open("clusters.json", "w") as f:
-    f.write(json.dumps(clusterStruct, sort_keys=True, indent=4, separators=(',', ': ')))
-#print json.dumps(clusterStruct, sort_keys=True, indent=4, separators=(',', ': '))
+#with open("clusters.json", "w") as f:
+    #f.write(json.dumps(clusterStruct, sort_keys=True, indent=4, separators=(',', ': ')))
+print json.dumps(clusterStruct, sort_keys=True, indent=4, separators=(',', ': '))
         
