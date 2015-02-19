@@ -79,7 +79,6 @@ def main(argv = None):
 		union_feature_names = set()
 		file_parsed_data = {}
 		resemblance_scores = {}
-		file_parsed = []
 
 		#count similarity for two given files
 		if first_compare_file and second_compare_file:
@@ -97,16 +96,18 @@ def main(argv = None):
 
 				for filename in two_file_names:
 
-
+					file_parsed = []
 					# first compute the union of all features
 					parsedData = parser.from_file(filename)
-					#file_parsed_data[filename] = parsedData["metadata"]
 
+					#get key : value of metadata
 					for key in parsedData["metadata"].keys() :
 						file_parsed.append(str(key + ": " + parsedData["metadata"].get(key)))
-						file_parsed_data[filename] = set(file_parsed)
 
+
+					file_parsed_data[filename] = set(file_parsed)
 					union_feature_names = union_feature_names | set(file_parsed_data[filename])
+
 				total_num_features = len(union_feature_names)
 
 		#count all files similarity in directory
@@ -117,13 +118,16 @@ def main(argv = None):
 				if not os.path.isfile(filename) or not ".jpg" in filename:
 					continue
 
+				file_parsed = []
 				# first compute the union of all features
 				parsedData = parser.from_file(filename)
 
-
+				#get key : value of metadata
 				for key in parsedData["metadata"].keys() :
 					file_parsed.append(str(key + ": " + parsedData["metadata"].get(key)))
-					file_parsed_data[filename] = set(file_parsed)
+
+
+				file_parsed_data[filename] = set(file_parsed)
 				union_feature_names = union_feature_names | set(file_parsed_data[filename])
 
 			total_num_features = len(union_feature_names)
