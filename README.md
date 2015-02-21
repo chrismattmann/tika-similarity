@@ -37,7 +37,7 @@ a folder that a web browser can see
 2. export PATH=$HOME/deploy/tika-img-similarity:${PATH}
 3. cd /path/to/your/images
 4. img_feature_similarity_tika.py > similarity-scores.txt
-5. cluster_cores.py > clusters.json
+5. cluster_scores.py > clusters.json
 6. mv clusters.json $HOME/deploy/tika-img-similarity/testdata
 7. pop open index.html in a browser
 8. #win
