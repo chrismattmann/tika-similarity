@@ -100,9 +100,9 @@ def main(argv = None):
 					# first compute the union of all features
 					parsedData = parser.from_file(filename)
 
-					#get " key : value " of metadata
+					#get key : value of metadata
 					for key in parsedData["metadata"].keys() :
-						file_parsed.append(str(key + ": " + parsedData["metadata"].get(key)))
+						file_parsed.append(str(key.strip(' ') + ": " + parsedData["metadata"].get(key).strip(' ')))
 
 
 					file_parsed_data[filename] = set(file_parsed)
@@ -122,9 +122,9 @@ def main(argv = None):
 				# first compute the union of all features
 				parsedData = parser.from_file(filename)
 
-				#get " key : value " of metadata
+				#get key : value of metadata
 				for key in parsedData["metadata"].keys() :
-					file_parsed.append(str(key + ": " + parsedData["metadata"].get(key)))
+					file_parsed.append(str(key.strip(' ') + ": " + parsedData["metadata"].get(key).strip(' ')))
 
 
 				file_parsed_data[filename] = set(file_parsed)
@@ -144,15 +144,24 @@ def main(argv = None):
 		
 		print "Resemblance:\n"
 		for tuple in sorted_resemblance_scores:
-			print os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1])+"\t"
-		#with open("similarity-scores.txt", "w") as f:
-			#f.write("Resemblance : \n")
-			#for tuple in sorted_resemblance_scores:
-				#f.write(os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1])+"\n")
+			print os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) +","+ convertUnicode(file_parsed_data[tuple[0]])+'\n'
+		'''with open("similarity-scores.txt", "w") as f:
+			f.write("Resemblance : \n")
+			for tuple in sorted_resemblance_scores:
+				f.write(os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) +","+convertUnicode(file_parsed_data[tuple[0]])+'\n')'''
 
 	except _Usage, err:
 		print >>sys.stderr, sys.argv[0].split('/')[-1] + ': ' + str(err.msg)
 		return 2
+
+def convertUnicode( fileDict ) :
+	fileUTFDict = []
+	for record in fileDict:
+		if isinstance(record, unicode) :
+			record = str(record).strip(" ")
+		fileUTFDict.append(record)
+		
+	return str(fileUTFDict)
 
 if __name__ == "__main__":
 	sys.exit(main())
