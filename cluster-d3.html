@@ -8,7 +8,9 @@
   stroke: steelblue;
   stroke-width: 1.5px;
 }
+.node circle img{
 
+}
 .node {
   font: 10px sans-serif;
 }
@@ -19,12 +21,30 @@
   stroke-width: 1.5px;
 }
 
+div.tooltip {
+  position: absolute; 
+  text-align: center; 
+  width: 600px;  
+  height: 500px;   
+  padding: 2px; 
+  font: 12px sans-serif;  
+  background: lightsteelblue; 
+  border: 0px;          
+  border-radius: 8px;
+
+ /*  pointer-events: none;  This line needs to be removed */ 
+}
+
+
+
 </style>
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>
 
-var radius = 960 / 2;
+var radius = 980 / 2;
 
 var cluster = d3.layout.cluster()
     .size([360, radius - 120]);
@@ -36,10 +56,17 @@ var translateY = radius +200;
 var diagonal = d3.svg.diagonal.radial()
     .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
+
+var div = d3.select("body")
+          .append("div")  
+          .attr("class", "tooltip")         
+          .style("opacity", 0); 
+
+
 var svg = d3.select("body").append("svg")
     .attr("width", radius * 2+400)
     .attr("height", radius * 2+400)
-  .append("g")
+    .append("g")
     .attr("transform", "translate(" + translateX + "," + translateY + ")");
 
 d3.json("clusters.json", function(error, root) {
@@ -47,18 +74,29 @@ d3.json("clusters.json", function(error, root) {
 
   var link = svg.selectAll("path.link")
       .data(cluster.links(nodes))
-    .enter().append("path")
+      .enter().append("path")
       .attr("class", "link")
       .attr("d", diagonal);
 
   var node = svg.selectAll("g.node")
       .data(nodes)
-    .enter().append("g")
+      .enter().append("g")
       .attr("class", "node")
       .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
 
   node.append("circle")
-      .attr("r", 4.5);
+      .attr("id", function(d){ return d.name;}) 
+      .attr("r", 4.5)
+      .on('mouseover',function(d){
+          div.transition().duration(200)  
+              .style("opacity", .9);
+          div .html( d.name != null && d.children == null ? '<h2>' + d.name +'</h2> <img src = "image/'+d.name+'"></img><p>'+d.metadata+'</p>' : '<h2>this is a cluster node </h2>')   
+              .style("left", (d3.event.pageX +20) + "px" )      
+              .style("top", (d3.event.pageY - 38) + "px"); 
+      })
+      .on('mouseout', function(d){
+          div.transition().style('opacity', 0);
+      });
 
   node.append("text")
       .attr("dy", ".31em")
@@ -69,4 +107,8 @@ d3.json("clusters.json", function(error, root) {
 
 d3.select(self.frameElement).style("height", radius * 2 + "px");
 
+
 </script>
+
+</body>
+
