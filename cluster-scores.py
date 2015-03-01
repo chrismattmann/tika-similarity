@@ -27,8 +27,8 @@ with open("similarity-scores.txt") as f:
     cluster = {"name":"cluster"+str(clusterCount)}
     clusterData = []
     for line in f:
-        featureDataList = line.split(",",2) # file name,score, metadata
-        if len(featureDataList) != 3:
+        featureDataList = line.rsplit(",", 1) # file name,score, metadata
+        if not (len(featureDataList) == 2 or len(featureDataList) == 3):
             continue
 
         if prior != None:
@@ -38,7 +38,10 @@ with open("similarity-scores.txt") as f:
 
         # cleanse the \n
         featureDataList[1] = featureDataList[1].strip()
-        featureData = {"name":featureDataList[0], "score":float(featureDataList[1]), "metadata" : featureDataList[2]}
+        if(len(featureDataList) == 3):
+            featureData = {"name":featureDataList[0], "score":float(featureDataList[1]), "metadata" : featureDataList[2]}
+        elif (len(featureDataList) == 2):
+            featureData = {"name":featureDataList[0], "score":float(featureDataList[1])}
 
         if diff > threshold:
             cluster["children"] = clusterData
@@ -51,7 +54,8 @@ with open("similarity-scores.txt") as f:
         else:
             clusterData.append(featureData)
             prior = float(featureDataList[1])
-            print featureDataList[2]
+            if (len(featureDataList) == 3):
+                print featureDataList[2]
 
     #add the last cluster into clusters
     cluster["children"] = clusterData
