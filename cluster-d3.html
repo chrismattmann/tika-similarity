@@ -35,7 +35,30 @@ div.tooltip {
  /*  pointer-events: none;  This line needs to be removed */ 
 }
 
+div.tooltip:before{
+    content:'';
+    display:block;
+    width:0;
+    height:0;
+    position:absolute;
+    
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent; 
+    border-right:20px solid lightsteelblue;
+    left:-7px;
+    
+    top:7px;
+}
 
+img {
+  max-height: 100%;
+  max-width:  100%;
+}
+
+p {
+  max-height: 100%;
+  max-width:  100%;
+}
 
 </style>
 <body>
@@ -43,11 +66,34 @@ div.tooltip {
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>
+clusterJson = d3.json("clusters.json", function(error, root){
+var i = 0;
+function visit(parent, visitFn, childrenFn) {
+  if (!parent) return;
 
-var radius = 960 / 2;
+  visitFn(parent);
+
+  var children = childrenFn(parent);
+  if (children) {
+      var count = children.length;
+      for (var i = 0; i < count; i++) {
+          visit(children[i], visitFn, childrenFn);
+      }
+  }
+}
+
+visit(root, function(d) {
+  if(d.children == null)
+    i++;
+
+}, function(d) {
+  return d.children && d.children.length > 0 ? d.children : null;
+});
+
+var radius =  340+1.4*i;
 
 var cluster = d3.layout.cluster()
-    .size([360, radius - 120]);
+    .size([radius-120, radius - 120]);
 
 
 var translateX= radius+200;
@@ -69,7 +115,6 @@ var svg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(" + translateX + "," + translateY + ")");
 
-d3.json("clusters.json", function(error, root) {
   var nodes = cluster.nodes(root);
 
   var link = svg.selectAll("path.link")
@@ -103,12 +148,10 @@ d3.json("clusters.json", function(error, root) {
       .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
       .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
       .text(function(d) { return d.name; });
-});
 
 d3.select(self.frameElement).style("height", radius * 2 + "px");
 
-
+});
 </script>
-
 </body>
 
