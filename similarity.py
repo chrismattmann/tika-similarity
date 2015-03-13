@@ -89,9 +89,9 @@ def main(argv = None):
 
 
 			# if file is not in directory or not a .jpg
-			if not os.path.isfile(first_compare_file_path) :
+			if not os.path.isfile(first_compare_file_path) or not ".jpg" in first_compare_file :
 				raise _Usage(_helpMessage)
-			elif not os.path.isfile(second_compare_file_path) :
+			elif not os.path.isfile(second_compare_file_path) or not ".jpg" in second_compare_file :
 				raise _Usage(_helpMessage)
 			else:
 
@@ -106,7 +106,7 @@ def main(argv = None):
 				total_num_features = len(union_feature_names)
 
 		#count all files similarity in directory
-		else:
+		else :
 
 			for filename in os.listdir(dirFile):
 				filename = os.path.join(dirFile, filename)
