@@ -89,9 +89,9 @@ def main(argv = None):
 
 
 			# if file is not in directory or not a .jpg
-			if not os.path.isfile(first_compare_file_path) or not ".jpg" in first_compare_file:
+			if not os.path.isfile(first_compare_file_path) or not ".jpg" in first_compare_file :
 				raise _Usage(_helpMessage)
-			elif not os.path.isfile(second_compare_file_path) or not ".jpg" in second_compare_file:
+			elif not os.path.isfile(second_compare_file_path) or not ".jpg" in second_compare_file :
 				raise _Usage(_helpMessage)
 			else:
 
@@ -106,11 +106,11 @@ def main(argv = None):
 				total_num_features = len(union_feature_names)
 
 		#count all files similarity in directory
-		else:
+		else :
 
 			for filename in os.listdir(dirFile):
 				filename = os.path.join(dirFile, filename)
-				if not os.path.isfile(filename) or not ".jpg" in filename:
+				if not os.path.isfile(filename) or not ".jpg"  in filename:
 					continue
 
 				# first compute the union of all features
@@ -131,14 +131,13 @@ def main(argv = None):
 
 		sorted_resemblance_scores = sorted(resemblance_scores.items(), key=operator.itemgetter(1), reverse=True)
 		
-		print "Resemblance:\n"
+		'''print "Resemblance:\n"
 		for tuple in sorted_resemblance_scores:
-			print os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) + "," + convertUnicode(file_parsed_data[tuple[0]])+'\n'
-
-		'''with open("similarity-scores.txt", "w") as f:
+			print os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) + "," + convertUnicode(file_parsed_data[tuple[0]])+'\n'''
+		with open("similarity-scores.txt", "w") as f:
 			f.write("Resemblance : \n")
 			for tuple in sorted_resemblance_scores:
-				f.write(os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) + "," + convertUnicode(file_parsed_data[tuple[0]])+'\n')'''
+				f.write(os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) + "," + convertUnicode(file_parsed_data[tuple[0]])+'\n')
 
 	except _Usage, err:
 		print >>sys.stderr, sys.argv[0].split('/')[-1] + ': ' + str(err.msg)
@@ -149,10 +148,10 @@ def convertUnicode( fileDict ) :
 	fileUTFDict = {}
 	for key in fileDict.keys():
 		if isinstance(key, unicode) :
-			key = str(key).strip(" ")
+			key = key.encode('utf-8').strip()
 		value = fileDict.get(key)
 		if isinstance(value, unicode) :
-			value = str(value).strip(" ")
+			value = value.encode('utf-8').strip()
 		fileUTFDict[key] = value
 		
 	return str(fileUTFDict)

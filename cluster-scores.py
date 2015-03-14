@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python2.7
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
@@ -27,9 +28,16 @@ with open("similarity-scores.txt") as f:
     cluster = {"name":"cluster"+str(clusterCount)}
     clusterData = []
     for line in f:
-        featureDataList = line.rsplit(",", 1) # file name,score, metadata
+
+        
+        if line.find("{") != -1:
+            featureDataList = line.split(",",2) # file name,score, metadata
+        else :
+            featureDataList = line.split(",", 1)
+
         if not (len(featureDataList) == 2 or len(featureDataList) == 3):
             continue
+
 
         if prior != None:
             diff = prior-float(featureDataList[1])
@@ -54,8 +62,7 @@ with open("similarity-scores.txt") as f:
         else:
             clusterData.append(featureData)
             prior = float(featureDataList[1])
-            if (len(featureDataList) == 3):
-                print featureDataList[2]
+            #print featureDataList[2]
 
     #add the last cluster into clusters
     cluster["children"] = clusterData
@@ -66,5 +73,5 @@ with open("similarity-scores.txt") as f:
 clusterStruct = {"name":"clusters", "children":clusters}
 with open("clusters.json", "w") as f:
     f.write(json.dumps(clusterStruct, sort_keys=True, indent=4, separators=(',', ': ')))
-print json.dumps(clusterStruct, sort_keys=True, indent=4, separators=(',', ': '))
+#print json.dumps(clusterStruct, sort_keys=True, indent=4, separators=(',', ': '))
         
