@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Flare Dendrogram</title>
+<style>
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+.node circle img{
+
+}
+.node {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+div.tooltip {
+  position: absolute; 
+  text-align: center; 
+  width: 400px;  
+  height: 400px;   
+  padding: 2px; 
+  font: 12px sans-serif;  
+  background: lightsteelblue; 
+  border: 0px;          
+  border-radius: 8px;
+  overflow: scroll;
+ /*  pointer-events: none;  This line needs to be removed */ 
+}
+
+div.tooltip:before{
+    content:'';
+    display:block;
+    width:0;
+    height:0;
+    position:absolute;
+    
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent; 
+    border-right:30px solid lightsteelblue;
+    left:-7px;
+    
+    top:7px;
+}
+
+img {
+  max-height: 60%;
+  max-width:  60%;
+}
+
+p {
+
+  height: 40%;
+  width:  100%;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+clusterJson = d3.json("clusters.json", function(error, root){
+var i = 0;
+function visit(parent, visitFn, childrenFn) {
+  if (!parent) return;
+
+  visitFn(parent);
+
+  var children = childrenFn(parent);
+  if (children) {
+      var count = children.length;
+      for (var i = 0; i < count; i++) {
+          visit(children[i], visitFn, childrenFn);
+      }
+  }
+}
+
+visit(root, function(d) {
+  if(d.children == null)
+    i++;
+
+}, function(d) {
+  return d.children && d.children.length > 0 ? d.children : null;
+});
+
+var radius =  340+1.4*i;
+
+var cluster = d3.layout.cluster()
+    .size([radius-120, radius - 120]);
+
+
+var translateX= radius+200;
+var translateY = radius +200;
+
+var diagonal = d3.svg.diagonal.radial()
+    .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
+
+
+var div = d3.select("body")
+          .append("div")  
+          .attr("class", "tooltip")         
+          .style("opacity", 0); 
+
+
+var svg = d3.select("body").append("svg")
+    .attr("width", radius * 2+400)
+    .attr("height", radius * 2+400)
+    .append("g")
+    .attr("transform", "translate(" + translateX + "," + translateY + ")");
+
+  var nodes = cluster.nodes(root);
+
+  var link = svg.selectAll("path.link")
+      .data(cluster.links(nodes))
+      .enter().append("path")
+      .attr("class", "link")
+      .attr("d", diagonal);
+
+  var node = svg.selectAll("g.node")
+      .data(nodes)
+      .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+
+  node.append("circle")
+      .attr("id", function(d){ return d.name;}) 
+      .attr("r", 4.5)
+      .on('mouseover',function(d){
+          div.transition().duration(200)  
+              .style("opacity", .9);
+          div .html( d.name != null && d.children == null ? '<h2>' + d.name +'</h2> <img src = "image/'+d.name+'"></img><p>'+d.metadata+'</p>' : '<h2>this is a cluster node </h2>')   
+              .style("left", (d3.event.pageX +20) + "px" )      
+              .style("top", (d3.event.pageY - 38) + "px"); 
+      /*})
+      .on('mouseout', function(d){
+          div.transition().style('opacity', 0);*/
+      });
+
+  node.append("text")
+      .attr("dy", ".31em")
+      .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+      .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
+      .text(function(d) { return d.name; });
+
+d3.select(self.frameElement).style("height", radius * 2 + "px");
+
+});
+</script>
+</body>
+
