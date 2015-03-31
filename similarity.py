@@ -133,11 +133,11 @@ def main(argv = None):
 		
 		'''print "Resemblance:\n"
 		for tuple in sorted_resemblance_scores:
-			print os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) + "," + convertUnicode(file_parsed_data[tuple[0]])+'\n'''
+			print tuple[0]+","+str(tuple[1]) + "," + convertUnicode(file_parsed_data[tuple[0]])+'\n'''
 		with open("similarity-scores.txt", "w") as f:
 			f.write("Resemblance : \n")
 			for tuple in sorted_resemblance_scores:
-				f.write(os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) + "," + convertUnicode(file_parsed_data[tuple[0]])+'\n')
+				f.write(os.path.basename(tuple[0].rstrip(os.sep)) + ","+str(tuple[1]) + "," + tuple[0] + "," + convertUnicode(file_parsed_data[tuple[0]]) + '\n')
 
 	except _Usage, err:
 		print >>sys.stderr, sys.argv[0].split('/')[-1] + ': ' + str(err.msg)
