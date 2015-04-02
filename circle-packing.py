@@ -32,10 +32,10 @@ def main(argv = None):
         cluster = {"name":"cluster"+str(clusterCount)}
         clusterData = []
         for line in f:
-            featureDataList = line.split(",",2) # file name,score, metadata
-            if len(featureDataList) != 3:
+            featureDataList = line.split(",",3) # file name,score, metadata
+            
+            if len(featureDataList) != 4:
                 continue
-
             if prior != None:
                 diff = prior-float(featureDataList[1])
             else:
@@ -51,10 +51,10 @@ def main(argv = None):
                 clusterCount = clusterCount + 1
                 cluster = {"name":"cluster"+str(clusterCount)}
                 clusterData = []
-                clusterData.append(featureDataList[2])
+                clusterData.append(featureDataList[3])
                 prior = float(featureDataList[1])
             else:
-                clusterData.append(featureDataList[2])
+                clusterData.append(featureDataList[3])
                 prior = float(featureDataList[1])
 
         #add the last cluster into clusters

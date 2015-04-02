@@ -31,11 +31,11 @@ with open("similarity-scores.txt") as f:
 
         
         if line.find("{") != -1:
-            featureDataList = line.split(",",2) # file name,score, metadata
+            featureDataList = line.split(",",3) # file name,score, metadata
         else :
-            featureDataList = line.split(",", 1)
+            featureDataList = line.split(",", 2)
 
-        if not (len(featureDataList) == 2 or len(featureDataList) == 3):
+        if not (len(featureDataList) == 3 or len(featureDataList) == 4):
             continue
 
 
@@ -46,10 +46,10 @@ with open("similarity-scores.txt") as f:
 
         # cleanse the \n
         featureDataList[1] = featureDataList[1].strip()
-        if(len(featureDataList) == 3):
-            featureData = {"name":featureDataList[0], "score":float(featureDataList[1]), "metadata" : featureDataList[2]}
-        elif (len(featureDataList) == 2):
-            featureData = {"name":featureDataList[0], "score":float(featureDataList[1])}
+        if(len(featureDataList) == 4):
+            featureData = {"name":featureDataList[0], "score":float(featureDataList[1]), "path" :featureDataList[2],  "metadata" : featureDataList[3]}
+        elif (len(featureDataList) == 3):
+            featureData = {"name":featureDataList[0], "score":float(featureDataList[1]), "path" :featureDataList[2]}
 
         if diff > threshold:
             cluster["children"] = clusterData
