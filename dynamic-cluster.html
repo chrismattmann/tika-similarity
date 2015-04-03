@@ -136,12 +136,19 @@ clusterJson = d3.json("clusters.json", function(error, data){
           .on('mouseover',function(d){
                 div.transition().duration(200)  
                     .style("opacity", .9);
-                div .html( d.name.match(/^cluster(\d||\w)+$/)==null ? '<h2>' + d.name +'</h2> <img src = "image/'+d.name+'"></img><p>'+d.metadata+'</p>' : '<h2>this is a cluster node </h2>')   
+                div.on('mouseover', function(d){
+                  div.transition().duration(200)  
+                    .style("opacity", .9);
+                });
+                div.on('mouseout', function(d){
+                  div.transition().style('opacity', 0);
+                });
+                div .html( d.name.match(/^cluster(\d||\w)+$/)==null ? '<h2>' + d.name +'</h2> <img src = "'+d.path+'"></img><p>'+d.metadata+'</p>' : '<h2>this is a cluster node </h2>')   
                     .style("left", (d3.event.pageX +20) + "px" )      
                     .style("top", (d3.event.pageY - 38) + "px"); 
-            /*})
+            })
             .on('mouseout', function(d){
-                div.transition().style('opacity', 0);*/
+                div.transition().style('opacity', 0);
             });
 
       nodeEnter.append("text")
