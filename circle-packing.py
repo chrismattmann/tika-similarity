@@ -32,7 +32,14 @@ def main(argv = None):
         cluster = {"name":"cluster"+str(clusterCount)}
         clusterData = []
         for line in f:
-            featureDataList = line.split(",",2) # file name,score, metadata
+            if "Resemblance" in line:
+                continue
+            featureDataList = line.split("{", 1)
+            metadata = '{' + featureDataList[1];
+            featureDataList = featureDataList[0].rsplit(",", 2)
+            featureDataList[2] = metadata
+
+            #featureDataList = line.split(",",2) # file name,score, metadata
             if len(featureDataList) != 3:
                 continue
 
