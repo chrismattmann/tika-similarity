@@ -32,9 +32,14 @@ def main(argv = None):
         cluster = {"name":"cluster"+str(clusterCount)}
         clusterData = []
         for line in f:
-            featureDataList = line.split(",",3) # file name,score, metadata
-            
-            if len(featureDataList) != 4:
+            if "Resemblance" in line:
+                continue
+            featureDataList = line.split("{", 1)
+            metadata = '{' + featureDataList[1];
+            featureDataList = featureDataList[0].rsplit(",", 2)
+            featureDataList[2] = metadata
+
+            if len(featureDataList) != 3:
                 continue
             if prior != None:
                 diff = prior-float(featureDataList[1])
@@ -66,7 +71,7 @@ def main(argv = None):
     clusterStruct = {"name":"clusters", "children":clusters}
     with open("circle.json", "w") as f:
         f.write(json.dumps(clusterStruct, sort_keys=True, indent=4, separators=(',', ': ')))
-    #print json.dumps(clusterStruct, sort_keys=True, indent=4, separators=(',', ': '))
+
 
 def circle( metadataLists) : 
     metadataList = []
