@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Force based label placement</title>
+	<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.6.0"></script>
+	<script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.js?2.6.0"></script>
+	<script type="text/javascript" src="http://mbostock.github.com/d3/d3.geom.js?2.6.0"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+</head>
+<body>
+	<style type="text/css">
+
+	</style>
+	<script type="text/javascript" charset="utf-8">
+
+		function readTextFile(file)
+		{
+			var rawFile = new XMLHttpRequest();
+			rawFile.open("GET", file, true);
+			rawFile.onreadystatechange = function ()
+			{	
+				if(rawFile.readyState === 4)
+				{
+					if(rawFile.status === 200 || rawFile.status == 0)
+					{
+						allText = rawFile.responseText;
+						processData();
+					}
+				}
+
+			}
+			rawFile.send(null);
+		}
+
+		readTextFile('file:graph.txt');
+		// readTextFile('http://cs572hw2-link-viz.elasticbeanstalk.com/graph.txt');
+		function processData() {
+			var w = 1800, h = 1500;
+
+			var labelDistance = 0;
+
+			var vis = d3.select("body").append("svg:svg").attr("width", w).attr("height", h);
+			var nodes = [];
+			var labelAnchors = [];
+			var labelAnchorLinks = [];
+			var splitted = allText.split(/\r?\n/);
+			var numNodes = splitted[0];
+			var links = [];
+			for(var i=1; i<parseInt(numNodes)+1; i++) { 
+				var nodeTextArray = splitted[i].split(' ');
+				var node = {
+					label : "node" + (i-1),
+					score : nodeTextArray[1].substring(0,4),
+					file : nodeTextArray[2]
+				};
+				nodes.push(node);
+				labelAnchors.push({
+					node : node
+				});
+				labelAnchors.push({
+					node : node
+				});
+				labelAnchorLinks.push({
+					source : (i-1) * 2,
+					target : (i-1) * 2 + 1,
+					weight : 1
+				});
+			}
+			for(var i=parseInt(numNodes)+1; i<splitted.length-1; i++) {
+				var edges = splitted[i].split(' ');
+				var source = edges[0];
+				var target = edges[1];
+
+				source = parseInt(source.substring(4,source.length));
+				target = parseInt(target.substring(4,target.length));
+
+				var weight = nodes[source].score + nodes[target].score;
+				links.push({
+					source : source,
+					target : target,
+					weight : Math.random()
+				});
+			}
+			
+			var force = d3.layout.force().size([w, h]).nodes(nodes).links(links).gravity(1).linkDistance(50).charge(-3000).linkStrength(function(x) {
+				return x.weight * 10
+			});
+
+
+			force.start();
+
+			var id = i.toString();
+
+			var force2 = d3.layout.force().nodes(labelAnchors).links(labelAnchorLinks).gravity(0).linkDistance(0).linkStrength(8).charge(-100).size([w, h]);
+			force2.start();
+
+			var link = vis.selectAll("line.link").data(links).enter().append("svg:line").attr("class", "link").style("stroke", "#CCC");
+
+			var node = vis.selectAll("g.node").data(force.nodes()).enter().append("svg:g").attr("class", "node");
+			node.append("svg:circle").attr("r", 5).style("fill", "#555").style("stroke", "#FFF").style("stroke-width", 3).attr("class", "circle");
+			node.call(force.drag);
+			
+			var anchorLink = vis.selectAll("line.anchorLink").data(labelAnchorLinks);//.enter().append("svg:line").attr("class", "anchorLink").style("stroke", "#999");
+
+			var anchorNode = vis.selectAll("g.anchorNode").data(force2.nodes()).enter().append("svg:g").attr("class", "anchorNode");
+			anchorNode.append("svg:circle").attr("r", 0).style("fill", "#FFF");
+			anchorNode.append("svg:text").text(function(d, i) {
+				return i % 2 == 0 ? "" : (d.node.label + '(' + d.node.score + ')')
+			}).style("fill", "#555").style("font-family", "Arial").style("font-size", 12).attr("class", "label");
+			// anchorNode.append("svg:text").text("link").style("fill", "#555").style("font-family", "Arial").style("font-size", 12).style("visibility", "hidden").attr("class", "link");
+			anchorNode.append("svg:text").text(function(d, i) {
+				return i % 2 == 0 ? "" : (d.node.file)
+			}).style("fill", "#555").style("font-family", "Arial").style("font-size", 12).attr("class", "link").style("visibility","hidden");
+
+			var updateLink = function() {
+				this.attr("x1", function(d) {
+					return d.source.x;
+				}).attr("y1", function(d) {
+					return d.source.y;
+				}).attr("x2", function(d) {
+					return d.target.x;
+				}).attr("y2", function(d) {
+					return d.target.y;
+				});
+
+			}
+
+			var updateNode = function() {
+				this.attr("transform", function(d) {
+					return "translate(" + d.x + "," + d.y + ")";
+				});
+
+			}
+
+
+			force.on("tick", function() {
+
+				force2.start();
+
+				node.call(updateNode);
+
+				anchorNode.each(function(d, i) {
+					if(i % 2 == 0) {
+						d.x = d.node.x;
+						d.y = d.node.y;
+					} else {
+						var b = this.childNodes[1].getBBox();
+
+						var diffX = d.x - d.node.x;
+						var diffY = d.y - d.node.y;
+
+						var dist = Math.sqrt(diffX * diffX + diffY * diffY);
+
+						var shiftX = b.width * (diffX - dist) / (dist * 2);
+						shiftX = Math.max(-b.width, Math.min(0, shiftX));
+						var shiftY = 5;
+						this.childNodes[1].setAttribute("transform", "translate(" + shiftX + "," + shiftY + ")");
+					}
+				});
+
+
+				anchorNode.call(updateNode);
+
+				link.call(updateLink);
+				anchorLink.call(updateLink);
+
+			});
+
+			$(".circle").hover(
+				function(){
+					var circles = document.getElementsByClassName('circle');
+					var anchorNode = document.getElementsByClassName('anchorNode')
+					var i=0;
+					for(i=0; i<circles.length; i++) {
+						if(this.__data__ == circles[i].__data__)
+							break; 
+					}
+					var j=(2*i)+1;
+					// $(anchorNode[j]).attr("visibility", "hidden");
+					var children = $(anchorNode[j]).children("text");
+
+					var temp = children[0].innerHTML;
+					children[0].innerHTML = children[1].innerHTML;
+					children[1].innerHTML = temp;
+
+					// $(anchorNode[j]).attr("visibility", "hidden");
+				},
+				function() {
+					var circles = document.getElementsByClassName('circle');
+					var anchorNode = document.getElementsByClassName('anchorNode')
+					var i=0;
+					for(i=0; i<circles.length; i++) {
+						if(this.__data__ == circles[i].__data__)
+							break; 
+					}
+					// $(circles[i].)
+					var j=(2*i)+1;
+					// $(anchorNode[j]).attr("visibility", "visible");
+					var children = $(anchorNode[j]).children("text");
+					var temp = children[0].innerHTML;
+					children[0].innerHTML = children[1].innerHTML;
+					children[1].innerHTML = temp;
+				}
+			);
+
+		}
+		
+		
+
+	</script>
+</body>
+</html>

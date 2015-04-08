@@ -1,0 +1,100 @@
+50
+node0 1.589206685668446 ucar.ncar.eol.dataset.102_143.html
+node1 0.8590306409018627 ucar.ncar.eol.dataset.102_145.html
+node2 0.6028285199311316 ucar.ncar.eol.dataset.102_159.html
+node3 0.507478125 ucar.ncar.eol.dataset.62_054.html
+node4 0.3847841616581692 ucar.ncar.eol.dataset.102_237.html
+node5 0.3847841616581692 ucar.ncar.eol.dataset.102_236.html
+node6 0.32887535184458905 ucar.ncar.eol.dataset.102_232.html
+node7 0.28806600161569845 ucar.ncar.eol.dataset.102_240.html
+node8 0.2775 ucar.ncar.eol.dataset.62_077.html
+node9 0.2775 ucar.ncar.eol.dataset.62_294.html
+node10 0.2743125 ucar.ncar.eol.dataset.62_057.html
+node11 0.25687414156813876 ucar.ncar.eol.dataset.102_233.html
+node12 0.23220261384690508 ucar.ncar.eol.dataset.102_230.html
+node13 0.21216482483473562 ucar.ncar.eol.dataset.102_235.html
+node14 0.19554361735920334 ucar.ncar.eol.dataset.102_158.html
+node15 0.19250000000000003 ucar.ncar.eol.dataset.62_056.html
+node16 0.1815172819368132 ucar.ncar.eol.dataset.102_144.html
+node17 0.16951030219780222 ucar.ncar.eol.dataset.102_231.html
+node18 0.1591071428571429 ucar.ncar.eol.dataset.102_234.html
+node19 0.15000000000000002 ucar.ncar.eol.dataset.102_146.html
+node20 0.15000000000000002 ucar.ncar.eol.dataset.62_053.html
+node21 0.15000000000000002 ucar.ncar.eol.dataset.102_127.html
+node22 0.15000000000000002 ucar.ncar.eol.dataset.62_092.html
+node23 0.15000000000000002 ucar.ncar.eol.dataset.62_032.html
+node24 0.15000000000000002 ucar.ncar.eol.dataset.62_033.html
+node25 0.15000000000000002 ucar.ncar.eol.dataset.102_097.html
+node26 0.15000000000000002 ucar.ncar.eol.dataset.102_096.html
+node27 0.15000000000000002 ucar.ncar.eol.dataset.62_144.html
+node28 0.15000000000000002 ucar.ncar.eol.dataset.62_143.html
+node29 0.15000000000000002 ucar.ncar.eol.dataset.62_137.html
+node30 0.15000000000000002 ucar.ncar.eol.dataset.102_181.html
+node31 0.15000000000000002 ucar.ncar.eol.dataset.62_078.html
+node32 0.15000000000000002 ucar.ncar.eol.dataset.62_147.html
+node33 0.15000000000000002 ucar.ncar.eol.dataset.62_140.html
+node34 0.15000000000000002 ucar.ncar.eol.dataset.62_031.html
+node35 0.15000000000000002 ucar.ncar.eol.dataset.102_194.html
+node36 0.15000000000000002 ucar.ncar.eol.dataset.62_293.html
+node37 0.15000000000000002 ucar.ncar.eol.dataset.102_025.html
+node38 0.15000000000000002 ucar.ncar.eol.dataset.62_145.html
+node39 0.15000000000000002 ucar.ncar.eol.dataset.62_148.html
+node40 0.15000000000000002 ucar.ncar.eol.dataset.62_142.html
+node41 0.15000000000000002 ucar.ncar.eol.dataset.62_292.html
+node42 0.15000000000000002 ucar.ncar.eol.dataset.102_180.html
+node43 0.15000000000000002 ucar.ncar.eol.dataset.62_146.html
+node44 0.15000000000000002 ucar.ncar.eol.dataset.62_139.html
+node45 0.15000000000000002 ucar.ncar.eol.dataset.62_141.html
+node46 0.15000000000000002 ucar.ncar.eol.dataset.62_138.html
+node47 0.15000000000000002 ucar.ncar.eol.dataset.102_095.html
+node48 0.15000000000000002 ucar.ncar.eol.dataset.102_162.html
+node49 0.15000000000000002 ucar.ncar.eol.dataset.102_126.html
+node9 node35
+node1 node39
+node2 node38
+node4 node29
+node4 node38
+node4 node39
+node5 node20
+node6 node20
+node6 node21
+node7 node19
+node7 node20
+node10 node32
+node11 node13
+node11 node39
+node12 node39
+node13 node11
+node13 node12
+node14 node10
+node14 node11
+node15 node30
+node16 node4
+node16 node10
+node17 node21
+node17 node29
+node17 node3
+node17 node4
+node18 node2
+node19 node1
+node19 node13
+node19 node19
+node19 node20
+node20 node22
+node20 node32
+node31 node40
+node36 node47
+node16 node39
+node17 node3
+node2 node33
+node9 node35
+node32 node8
+node27 node18
+node43 node19
+node0 node19
+node48 node37
+node28 node25
+node34 node15
+node49 node13
+node9 node46
+node40 node45
