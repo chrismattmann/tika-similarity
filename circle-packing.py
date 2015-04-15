@@ -36,7 +36,8 @@ def main(argv = None):
                 continue
             featureDataList = line.split("{", 1)
             metadata = '{' + featureDataList[1];
-            featureDataList = featureDataList[0].rsplit(",", 2)
+            featureDataList = featureDataList[0].rsplit(",", 3)
+            featureDataList.remove('')
             featureDataList[2] = metadata
 
             if len(featureDataList) != 3:
@@ -56,10 +57,10 @@ def main(argv = None):
                 clusterCount = clusterCount + 1
                 cluster = {"name":"cluster"+str(clusterCount)}
                 clusterData = []
-                clusterData.append(featureDataList[3])
+                clusterData.append(featureDataList[2])
                 prior = float(featureDataList[1])
             else:
-                clusterData.append(featureDataList[3])
+                clusterData.append(featureDataList[2])
                 prior = float(featureDataList[1])
 
         #add the last cluster into clusters
