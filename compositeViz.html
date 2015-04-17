@@ -98,7 +98,7 @@ var margin = 20,
 
 var color = d3.scale.linear()
     .domain([-1, 10])
-    .range(["hsl(100,70%,60%)", "hsl(256,30%,40%)"])
+    .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
     .interpolate(d3.interpolateHcl);
 
 var pack = d3.layout.pack()
@@ -143,6 +143,9 @@ d3.json("circle.json", function(error, root) {
       })
       .style("pointer-events", function(d){return d.children? "all" : "none";})
       .on("click", function(d) { if (focus !== d) zoom(d), d3.event.stopPropagation(); })
+      .on("mouseover", function(d){
+          return box(d.name.match(/(\d+)/g));
+      })
      ;
   
   function colorChange(d)
@@ -169,15 +172,7 @@ d3.json("circle.json", function(error, root) {
       .text(function(d) { return d.name + (d.children ? "" : ": " + format(d.size)); });
   
 
-  var targetNode = node.append("g").filter(function(d){ return d.children != null;})
-      .append("svg:circle").attr("r", 5)
-      .style("fill", "red")
-      .style("stroke", "red")
-      .style("stroke-width", 3)
-      .attr("class", "cluster")
-      .on("mouseover", function(d){
-          return box(d.name.match(/(\d+)/g));
-      });
+
 
   node = svg.selectAll("circle,text,title");
 
@@ -274,7 +269,7 @@ d3.json("circle.json", function(error, root) {
         .size([radius-120, radius - 120]);
 
     var translateX= radius+450;
-    var translateY = radius -200;
+    var translateY = radius -400;
 
     var diagonal = d3.svg.diagonal.radial()
         .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
@@ -287,7 +282,7 @@ d3.json("circle.json", function(error, root) {
               .style("opacity", 0); 
 
     var translateSVGX = diameter/2-200;
-    var translateSVGY = diameter/2-200;
+    var translateSVGY = diameter/2-400;
     var svg = d3.select("#cluster"+j)
         .attr("width", radius*2)
         .attr("height", radius*2)
@@ -310,7 +305,7 @@ d3.json("circle.json", function(error, root) {
 
     node.append("circle")
         .attr("id", function(d){ return d.name;}) 
-        .attr("r", 4.5)
+        .attr("r", 8)
         .on('mouseover',function(d){
             div.transition().duration(200)
                 .style("opacity", .9);
@@ -332,9 +327,9 @@ d3.json("circle.json", function(error, root) {
         });
 
     node.append("text")
-        .attr("dy", ".31em")
+        .attr("dy", ".15em")
         .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-        .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
+        .attr("transform", function(d) { return d.x < 180 ? "translate(20)" : "rotate(180)translate(-20)"; })
         .text(function(d) { return d.name; });
 
     d3.select(self.frameElement).style("height", radius * 2 + "px");
