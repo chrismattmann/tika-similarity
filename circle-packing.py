@@ -1,4 +1,5 @@
 
+
 #!/usr/bin/env python2.7
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
@@ -35,7 +36,7 @@ def main(argv = None):
             if "Resemblance" in line:
                 continue
             featureDataList = line.split("{", 1)
-            metadata = '{' + featureDataList[1];
+            metadata = '{' + featureDataList[1]
             featureDataList = featureDataList[0].rsplit(",", 3)
             featureDataList.remove('')
             featureDataList[2] = metadata

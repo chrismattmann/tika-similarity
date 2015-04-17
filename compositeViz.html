@@ -147,6 +147,7 @@ d3.json("circle.json", function(error, root) {
           return box(d.name.match(/(\d+)/g));
       })
      ;
+
   
   function colorChange(d)
   {
@@ -171,7 +172,14 @@ d3.json("circle.json", function(error, root) {
       .attr("class", "title")
       .text(function(d) { return d.name + (d.children ? "" : ": " + format(d.size)); });
   
-
+var targetNode = node.append("g").attr("class", "cluster").filter(function(d){ return d.children != null;})
+      .append("svg:circle").attr("r", 5)
+      .style("fill", "red")
+      .style("stroke", "red")
+      .style("stroke-width", 3)
+      .on("mouseover", function(d){
+       return box(d.name.match(/(\d+)/g));
+      });
 
 
   node = svg.selectAll("circle,text,title");
@@ -185,8 +193,8 @@ d3.json("circle.json", function(error, root) {
 
   function clear()
   {
-    d3.select("#tooltip") ? d3.select("#tooltip").remove() : "";
-    d3.select("g.clusterNode") ? d3.select("g.clusterNode").remove() : "";
+    d3.select("#tooltip") ? d3.select("#tooltip").remove() : null ;
+    d3.select("g.clusterNode") ? d3.select("g.clusterNode").remove() : null;
   }
 
 
@@ -209,7 +217,6 @@ d3.json("circle.json", function(error, root) {
   }
 
   function zoomTo(v) {
-
     var k = diameter / v[2]; view = v;
     node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
     circle.attr("r", function(d) { return d.r * k; });
@@ -327,7 +334,7 @@ d3.json("circle.json", function(error, root) {
         });
 
     node.append("text")
-        .attr("dy", ".15em")
+        .attr("dy", ".60em")
         .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
         .attr("transform", function(d) { return d.x < 180 ? "translate(20)" : "rotate(180)translate(-20)"; })
         .text(function(d) { return d.name; });
