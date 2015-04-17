@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python2.7
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
@@ -27,9 +26,7 @@ with open("similarity-scores.txt") as f:
     clusterCount = 0
     cluster = {"name":"cluster"+str(clusterCount)}
     clusterData = []
-    for line in f:
-
-        
+    for line in f:        
         if line.find("{") != -1:
             featureDataList = line.split(",",3) # file name,score, metadata
         else :
