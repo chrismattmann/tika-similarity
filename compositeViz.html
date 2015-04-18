@@ -109,7 +109,7 @@ var pack = d3.layout.pack()
 var svg = d3.select("body").append("svg")
     .attr("width", 3*diameter)
     .attr("height", 2*diameter)
-  .append("g")
+    .append("g")
     .attr("transform", "translate(" + translateX + "," + translateY + ")");
 
 d3.json("circle.json", function(error, root) {
@@ -121,9 +121,9 @@ d3.json("circle.json", function(error, root) {
 
   var node = svg.datum(root).selectAll(".node")
       .data(pack.nodes)
-    .enter().append("g")
-    .attr("id", function(d){ if(d.children!= null) return  d.name; else return null;});
-
+      .enter().append("g")
+      .attr("id", function(d){ if(d.children!= null && d.parent !=null) return  d.name; else return null;})
+      .attr("class", function(d){ if(d.children!= null && d.parent !=null) return  "rootNode"; else if(d.parent == null ) return "root"; else return "leafNode"});
   var max = 0;
   for(var i =0;i<root.children.length; i++)
   {
@@ -159,24 +159,28 @@ d3.json("circle.json", function(error, root) {
 
   
   var text = node.append("text")
-        .attr("class", "label")
+      .attr("class", "label")
       .style("fill-opacity", function(d) { return d.parent  === root ? 1  : 0; })
       .style("display", function(d) { return d.parent === root ? null : "none"; })
-      .text(function(d) {return d.name; });
+      .text(function(d) {return d.name; })
+      .style("font-size", "15px");
 
 
   var title = node.append("title")
       .attr("class", "title")
       .text(function(d) { return d.name + (d.children ? "" : ": " + format(d.size)); });
-  
 
-var targetNode = node.append("g").attr("class", "cluster").filter(function(d){ return d.children != null;})
-      .append("svg:circle").attr("r", 5)
+  var targetNode = node.filter(function(d){ return d.children != null && d.parent!=null;})
+      .append("svg:circle").attr("r", 15)
       .style("fill", "red")
-      .style("stroke", "red")
-      .style("stroke-width", 3)
+      .attr("class", "cluster")
       .on("mouseover", function(d){
+        svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToFront();});
        return box(d.name.match(/(\d+)/g));
+      })
+       .on("mouseout", function(d){
+        svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToBack();});
+        d3.select("g.root").moveToBack();
       });
 
   node = svg.selectAll("circle,text,title");
@@ -231,7 +235,7 @@ var targetNode = node.append("g").attr("class", "cluster").filter(function(d){ r
   //move element to the top of its parent's children
   d3.selection.prototype.moveToFront = function() {
       return this.each(function(){
-        this.parentNode.appendChild(this);
+          this.parentNode.appendChild(this);
       });   //move component to the up of svg
   };
 
