@@ -8,8 +8,8 @@
 }
 
 .node:hover {
-  stroke: #000;
-  stroke-width: 1.5px;
+  stroke: #fff;
+  stroke-width: 5px;
 }
 
 /*.node--leaf {
@@ -83,12 +83,52 @@ p {
   width:  100%;
 }
 
-
-
+h1
+{
+  font-size: 40px;
+}
+h1
+{
+  padding-left: 20px;
+}
 </style>
 <body>
+  <h1>categorical colors range [1: 20]</h1>
+  <div id="text"></div>
+  <div id="c20"></div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
+function generateColorRange()
+{
+
+  var width = 900;
+  var height = 100;
+  var c20 = d3.scale.category20();
+  var svg2 = d3.select("#c20")
+             .append("svg")
+             .attr("width", width)
+             .attr("height", height)
+             .append("g");
+
+  svg2.selectAll("circle")
+    .data( d3.range(20) )
+    .enter()
+    .append("circle")
+    .attr("r", 20 )
+    .attr("cx", d3.scale.linear().domain([-1, 20]).range([0, 900]) )
+    .attr("cy", 20)
+    .attr("fill", c20);
+
+  var widthScale = d3.scale.linear()
+    .domain([1, 20])
+    .range([0,width-80]);
+  var axis = d3.svg.axis()
+    .ticks(20)
+    .scale(widthScale);
+  svg2.append("g").attr("transform", "translate(40,50)").call(axis);
+}
+
+generateColorRange();
 
 var margin = 20,  
     diameter = 960,
@@ -96,10 +136,7 @@ var margin = 20,
     translateX = diameter/2,
     translateY = diameter/2;
 
-var color = d3.scale.linear()
-    .domain([-1, 10])
-    .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
-    .interpolate(d3.interpolateHcl);
+var color = d3.scale.category20();
 
 var pack = d3.layout.pack()
     .padding(2)
@@ -108,7 +145,7 @@ var pack = d3.layout.pack()
 
 var svg = d3.select("body").append("svg")
     .attr("width", 3*diameter)
-    .attr("height", 2*diameter)
+    .attr("height", diameter)
     .append("g")
     .attr("transform", "translate(" + translateX + "," + translateY + ")");
 
@@ -137,15 +174,29 @@ d3.json("circle.json", function(error, root) {
   var circle = node.append("circle")
       .attr("class", function(d) { return d.parent ? d.children ? "node" : "node--leaf" : "node--root"; })
       .attr("id", function(d) { return d.name;})
+      .attr("opacity", function(d){ return d.children ? 1: 0;})
       .style("fill", function(d)
       { 
         return colorChange(d);
       })
       .style("pointer-events", function(d){return d.children? "all" : "none";})
-      .on("click", function(d) { if (focus !== d) zoom(d), d3.event.stopPropagation(); })
+      .on("click", function(d) { if (focus !== d) 
+        zoom(d), d3.event.stopPropagation(); 
+      })
      ;
 
-  
+  var circles = svg.selectAll("circle.node--leaf");
+  circles.transition()
+      .transition()
+      .duration(function (d, i) {
+        return 30;
+      })
+      .delay(function (d, i) {
+        return i * 30;
+      })
+      .attr("opacity", 1);
+
+
   function colorChange(d)
   {
     if(d.children!=null) 
@@ -172,15 +223,18 @@ d3.json("circle.json", function(error, root) {
 
   var targetNode = node.filter(function(d){ return d.children != null && d.parent!=null;})
       .append("svg:circle").attr("r", 15)
-      .style("fill", "red")
+      .style("fill", "#000")
+      .attr("opacity", 0)
       .attr("class", "cluster")
       .on("mouseover", function(d){
-        svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToFront();});
+        svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToFront(); 
+
+        });
        return box(d.name.match(/(\d+)/g));
       })
-       .on("mouseout", function(d){
-        svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToBack();});
-        d3.select("g.root").moveToBack();
+     .on("mouseout", function(d){
+      svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToBack();});
+      d3.select("g.root").moveToBack();
       });
 
   node = svg.selectAll("circle,text,title");
@@ -215,6 +269,7 @@ d3.json("circle.json", function(error, root) {
         .text(function(d) {return d.name;})
         .each("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
         .each("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+
   }
 
   function zoomTo(v) {
@@ -243,7 +298,6 @@ d3.json("circle.json", function(error, root) {
   var box = function(j){
         d3.json("clusters.json", function(error, root){
     var i = 0;
-
     root = root.children[j];
     var clusterName = "cluster"+j;
 
@@ -304,6 +358,15 @@ d3.json("circle.json", function(error, root) {
         .enter().append("path")
         .attr("class", "link")
         .attr("d", diagonal);
+    link.attr("opacity", 0)
+      .transition()
+      .duration(function (d, i) {
+        return 700;
+      })
+      .delay(function (d, i) {
+        return i * 30;
+      })
+      .attr("opacity", 1);
 
     var node = svg.selectAll("g.node")
         .data(nodes)
@@ -313,6 +376,7 @@ d3.json("circle.json", function(error, root) {
 
     node.append("circle")
         .attr("id", function(d){ return d.name;}) 
+        .attr("class", "node--cluster")
         .attr("r", 8)
         .on('mouseover',function(d){
             div.transition().duration(200)
@@ -334,11 +398,35 @@ d3.json("circle.json", function(error, root) {
 
         });
 
+    var circle = svg.selectAll(".node--cluster");
+    circle.attr("opacity", 0)
+        .transition()
+        .duration(function (d, i) {
+          return 700;
+        })
+        .delay(function (d, i) {
+          return i * 30;
+        })
+        .attr("opacity", 1);
+
+
     node.append("text")
         .attr("dy", ".60em")
+        .attr("class", "node--cluster--text")
         .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
         .attr("transform", function(d) { return d.x < 180 ? "translate(20)" : "rotate(180)translate(-20)"; })
         .text(function(d) { return d.name; });
+
+    var text = svg.selectAll(".node--cluster--text");
+    text.attr("opacity", 0)
+        .transition()
+        .duration(function (d, i) {
+          return 700;
+        })
+        .delay(function (d, i) {
+          return i * 30;
+        })
+        .attr("opacity", 1);
 
     d3.select(self.frameElement).style("height", radius * 2 + "px");
 
