@@ -79,13 +79,13 @@ def main(argv = None):
 		union_feature_names = set()
 		file_parsed_data = {}
 		resemblance_scores = {}
+		file_metadata={}
 
 		#count similarity for two given files
 		if first_compare_file and second_compare_file:
 			first_compare_file_path = os.path.join(dirFile, first_compare_file)
 			second_compare_file_path = os.path.join(dirFile, second_compare_file)
 			two_file_names = first_compare_file_path, second_compare_file_path
-
 
 			# if file is not in directory or not a .jpg
 			if not os.path.isfile(first_compare_file_path) or not ".jpg" in first_compare_file:
@@ -99,10 +99,11 @@ def main(argv = None):
 					file_parsed = []
 					# first compute the union of all features
 					parsedData = parser.from_file(filename)
+					file_metadata[filename] = parsedData["metadata"]
 
 					#get key : value of metadata
 					for key in parsedData["metadata"].keys() :
-						file_parsed.append(str(key.strip(' ') + ": " + parsedData["metadata"].get(key).strip(' ')))
+						file_parsed.append(str(key.strip(' ').encode('utf-8') + ": " + parsedData["metadata"].get(key).encode('utf-8').strip(' ')))
 
 
 					file_parsed_data[filename] = set(file_parsed)
@@ -121,10 +122,11 @@ def main(argv = None):
 				file_parsed = []
 				# first compute the union of all features
 				parsedData = parser.from_file(filename)
+				file_metadata[filename] = parsedData["metadata"]
 
 				#get key : value of metadata
 				for key in parsedData["metadata"].keys() :
-					file_parsed.append(str(key.strip(' ') + ": " + parsedData["metadata"].get(key).strip(' ')))
+					file_parsed.append(str(key.strip(' ').encode('utf-8') + ": " + parsedData["metadata"].get(key).encode('utf-8').strip(' ')))
 
 
 				file_parsed_data[filename] = set(file_parsed)
@@ -142,24 +144,27 @@ def main(argv = None):
 
 		sorted_resemblance_scores = sorted(resemblance_scores.items(), key=operator.itemgetter(1), reverse=True)
 		
-		print "Resemblance:\n"
+		'''print "Resemblance:\n"
 		for tuple in sorted_resemblance_scores:
-			print os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) +","+ convertUnicode(file_parsed_data[tuple[0]])+'\n'
-		'''with open("similarity-scores.txt", "w") as f:
+			print os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) +"," + tuple[0] + ","+ convertUnicode(file_metadata[tuple[0]])+'\n'''
+		with open("similarity-scores.txt", "w") as f:
 			f.write("Resemblance : \n")
 			for tuple in sorted_resemblance_scores:
-				f.write(os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) +","+convertUnicode(file_parsed_data[tuple[0]])+'\n')'''
+				f.write(os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) +"," + tuple[0] + ","+ convertUnicode(file_metadata[tuple[0]])+'\n')
 
 	except _Usage, err:
 		print >>sys.stderr, sys.argv[0].split('/')[-1] + ': ' + str(err.msg)
 		return 2
 
 def convertUnicode( fileDict ) :
-	fileUTFDict = []
-	for record in fileDict:
-		if isinstance(record, unicode) :
-			record = str(record).strip(" ")
-		fileUTFDict.append(record)
+	fileUTFDict = {}
+	for key in fileDict.keys():
+		if isinstance(key, unicode) :
+			key = key.encode('utf-8').strip()
+		value = fileDict.get(key)
+		if isinstance(value, unicode) :
+			value = value.encode('utf-8').strip()
+		fileUTFDict[key] = value
 		
 	return str(fileUTFDict)
 
