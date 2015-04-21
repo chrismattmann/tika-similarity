@@ -1,0 +1,1214 @@
+{
+    "children": [
+        {
+            "children": [
+                {
+                    "name": "tiff:YResolution",
+                    "size": 1
+                },
+                {
+                    "name": "Interoperability Version",
+                    "size": 1
+                },
+                {
+                    "name": "Viewing Conditions Description",
+                    "size": 1
+                },
+                {
+                    "name": "Number of Components",
+                    "size": 1
+                },
+                {
+                    "name": "Copyright",
+                    "size": 1
+                },
+                {
+                    "name": "Viewing Conditions",
+                    "size": 1
+                },
+                {
+                    "name": "Image Width",
+                    "size": 1
+                },
+                {
+                    "name": "Make",
+                    "size": 1
+                },
+                {
+                    "name": "Component 1",
+                    "size": 1
+                },
+                {
+                    "name": "dcterms:modified",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:ResolutionUnit",
+                    "size": 1
+                },
+                {
+                    "name": "meta:save-date",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:ImageLength",
+                    "size": 1
+                },
+                {
+                    "name": "Last-Modified",
+                    "size": 1
+                },
+                {
+                    "name": "Resolution Units",
+                    "size": 1
+                },
+                {
+                    "name": "Exif Image Width",
+                    "size": 1
+                },
+                {
+                    "name": "Exif Image Height",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:BitsPerSample",
+                    "size": 1
+                },
+                {
+                    "name": "Tag Count",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:Make",
+                    "size": 1
+                },
+                {
+                    "name": "Date/Time Original",
+                    "size": 1
+                },
+                {
+                    "name": "Red TRC",
+                    "size": 1
+                },
+                {
+                    "name": "Blue TRC",
+                    "size": 1
+                },
+                {
+                    "name": "dcterms:created",
+                    "size": 1
+                },
+                {
+                    "name": "Date/Time",
+                    "size": 1
+                },
+                {
+                    "name": "Profile Description",
+                    "size": 1
+                },
+                {
+                    "name": "Creation-Date",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:Model",
+                    "size": 1
+                },
+                {
+                    "name": "Blue Colorant",
+                    "size": 1
+                },
+                {
+                    "name": "Primary Platform",
+                    "size": 1
+                },
+                {
+                    "name": "Class",
+                    "size": 1
+                },
+                {
+                    "name": "Green TRC",
+                    "size": 1
+                },
+                {
+                    "name": "Media White Point",
+                    "size": 1
+                },
+                {
+                    "name": "modified",
+                    "size": 1
+                },
+                {
+                    "name": "Device Mfg Description",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:Orientation",
+                    "size": 1
+                },
+                {
+                    "name": "Interoperability Index",
+                    "size": 1
+                },
+                {
+                    "name": "XYZ values",
+                    "size": 1
+                },
+                {
+                    "name": "FlashPix Version",
+                    "size": 1
+                },
+                {
+                    "name": "Measurement",
+                    "size": 1
+                },
+                {
+                    "name": "Color space",
+                    "size": 1
+                },
+                {
+                    "name": "Media Black Point",
+                    "size": 1
+                },
+                {
+                    "name": "Green Colorant",
+                    "size": 1
+                },
+                {
+                    "name": "Data Precision",
+                    "size": 1
+                },
+                {
+                    "name": "CMM Type",
+                    "size": 1
+                },
+                {
+                    "name": "Component 2",
+                    "size": 1
+                },
+                {
+                    "name": "Component 3",
+                    "size": 1
+                },
+                {
+                    "name": "Exif Version",
+                    "size": 1
+                },
+                {
+                    "name": "Signature",
+                    "size": 1
+                },
+                {
+                    "name": "date",
+                    "size": 1
+                },
+                {
+                    "name": "exif:DateTimeOriginal",
+                    "size": 1
+                },
+                {
+                    "name": "Model",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:Software",
+                    "size": 1
+                },
+                {
+                    "name": "Profile Size",
+                    "size": 1
+                },
+                {
+                    "name": "Resolution Unit",
+                    "size": 1
+                },
+                {
+                    "name": "X Resolution",
+                    "size": 1
+                },
+                {
+                    "name": "Luminance",
+                    "size": 1
+                },
+                {
+                    "name": "Image Height",
+                    "size": 1
+                },
+                {
+                    "name": "Orientation",
+                    "size": 1
+                },
+                {
+                    "name": "Software",
+                    "size": 1
+                },
+                {
+                    "name": "Technology",
+                    "size": 1
+                },
+                {
+                    "name": "Red Colorant",
+                    "size": 1
+                },
+                {
+                    "name": "Color Space",
+                    "size": 1
+                },
+                {
+                    "name": "Y Resolution",
+                    "size": 1
+                },
+                {
+                    "name": "Profile Date/Time",
+                    "size": 1
+                },
+                {
+                    "name": "meta:creation-date",
+                    "size": 1
+                },
+                {
+                    "name": "Device manufacturer",
+                    "size": 1
+                },
+                {
+                    "name": "Profile Connection Space",
+                    "size": 1
+                },
+                {
+                    "name": "Device model",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:ImageWidth",
+                    "size": 1
+                },
+                {
+                    "name": "Compression Type",
+                    "size": 1
+                },
+                {
+                    "name": "YCbCr Positioning",
+                    "size": 1
+                },
+                {
+                    "name": "Content-Type",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:XResolution",
+                    "size": 1
+                },
+                {
+                    "name": "Last-Save-Date",
+                    "size": 1
+                },
+                {
+                    "name": "Device Model Description",
+                    "size": 1
+                }
+            ],
+            "name": "cluster0"
+        },
+        {
+            "children": [
+                {
+                    "name": "comment",
+                    "size": 1
+                },
+                {
+                    "name": "Copyright",
+                    "size": 1
+                },
+                {
+                    "name": "Grid and guides information",
+                    "size": 1
+                },
+                {
+                    "name": "Image Width",
+                    "size": 1
+                },
+                {
+                    "name": "Media Black Point",
+                    "size": 1
+                },
+                {
+                    "name": "Component 1",
+                    "size": 1
+                },
+                {
+                    "name": "Color transfer functions",
+                    "size": 1
+                },
+                {
+                    "name": "Comments",
+                    "size": 1
+                },
+                {
+                    "name": "Copyright flag",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:ImageLength",
+                    "size": 1
+                },
+                {
+                    "name": "Resolution Units",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:BitsPerSample",
+                    "size": 1
+                },
+                {
+                    "name": "Color halftoning information",
+                    "size": 1
+                },
+                {
+                    "name": "Tag Count",
+                    "size": 1
+                },
+                {
+                    "name": "w:comments",
+                    "size": 1
+                },
+                {
+                    "name": "Viewing Conditions",
+                    "size": 1
+                },
+                {
+                    "name": "Blue TRC",
+                    "size": 1
+                },
+                {
+                    "name": "Signature",
+                    "size": 1
+                },
+                {
+                    "name": "Profile Description",
+                    "size": 1
+                },
+                {
+                    "name": "Green TRC",
+                    "size": 1
+                },
+                {
+                    "name": "Blue Colorant",
+                    "size": 1
+                },
+                {
+                    "name": "Primary Platform",
+                    "size": 1
+                },
+                {
+                    "name": "Print flags",
+                    "size": 1
+                },
+                {
+                    "name": "Class",
+                    "size": 1
+                },
+                {
+                    "name": "Viewing Conditions Description",
+                    "size": 1
+                },
+                {
+                    "name": "Media White Point",
+                    "size": 1
+                },
+                {
+                    "name": "JPEG quality",
+                    "size": 1
+                },
+                {
+                    "name": "Device Mfg Description",
+                    "size": 1
+                },
+                {
+                    "name": "Color Transform",
+                    "size": 1
+                },
+                {
+                    "name": "XYZ values",
+                    "size": 1
+                },
+                {
+                    "name": "Measurement",
+                    "size": 1
+                },
+                {
+                    "name": "Color space",
+                    "size": 1
+                },
+                {
+                    "name": "Resolution Info",
+                    "size": 1
+                },
+                {
+                    "name": "Flags 0",
+                    "size": 1
+                },
+                {
+                    "name": "Flags 1",
+                    "size": 1
+                },
+                {
+                    "name": "Green Colorant",
+                    "size": 1
+                },
+                {
+                    "name": "Data Precision",
+                    "size": 1
+                },
+                {
+                    "name": "Luminance",
+                    "size": 1
+                },
+                {
+                    "name": "Global Angle",
+                    "size": 1
+                },
+                {
+                    "name": "Component 3",
+                    "size": 1
+                },
+                {
+                    "name": "Number of Components",
+                    "size": 1
+                },
+                {
+                    "name": "Red Colorant",
+                    "size": 1
+                },
+                {
+                    "name": "DCT Encode Version",
+                    "size": 1
+                },
+                {
+                    "name": "Thumbnail Data",
+                    "size": 1
+                },
+                {
+                    "name": "Profile Size",
+                    "size": 1
+                },
+                {
+                    "name": "X Resolution",
+                    "size": 1
+                },
+                {
+                    "name": "CMM Type",
+                    "size": 1
+                },
+                {
+                    "name": "Image Height",
+                    "size": 1
+                },
+                {
+                    "name": "Jpeg Comment",
+                    "size": 1
+                },
+                {
+                    "name": "Technology",
+                    "size": 1
+                },
+                {
+                    "name": "Seed number",
+                    "size": 1
+                },
+                {
+                    "name": "Red TRC",
+                    "size": 1
+                },
+                {
+                    "name": "Y Resolution",
+                    "size": 1
+                },
+                {
+                    "name": "Profile Date/Time",
+                    "size": 1
+                },
+                {
+                    "name": "Print flags information",
+                    "size": 1
+                },
+                {
+                    "name": "Device manufacturer",
+                    "size": 1
+                },
+                {
+                    "name": "Profile Connection Space",
+                    "size": 1
+                },
+                {
+                    "name": "Device model",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:ImageWidth",
+                    "size": 1
+                },
+                {
+                    "name": "Component 2",
+                    "size": 1
+                },
+                {
+                    "name": "Compression Type",
+                    "size": 1
+                },
+                {
+                    "name": "Content-Type",
+                    "size": 1
+                },
+                {
+                    "name": "Device Model Description",
+                    "size": 1
+                }
+            ],
+            "name": "cluster1"
+        },
+        {
+            "children": [
+                {
+                    "name": "Copyright",
+                    "size": 3
+                },
+                {
+                    "name": "Red TRC",
+                    "size": 3
+                },
+                {
+                    "name": "Image Width",
+                    "size": 3
+                },
+                {
+                    "name": "Component 1",
+                    "size": 3
+                },
+                {
+                    "name": "tiff:ImageLength",
+                    "size": 3
+                },
+                {
+                    "name": "Resolution Units",
+                    "size": 3
+                },
+                {
+                    "name": "tiff:BitsPerSample",
+                    "size": 3
+                },
+                {
+                    "name": "Tag Count",
+                    "size": 3
+                },
+                {
+                    "name": "Profile Connection Space",
+                    "size": 3
+                },
+                {
+                    "name": "Viewing Conditions",
+                    "size": 3
+                },
+                {
+                    "name": "Blue TRC",
+                    "size": 3
+                },
+                {
+                    "name": "Profile Description",
+                    "size": 3
+                },
+                {
+                    "name": "Green TRC",
+                    "size": 3
+                },
+                {
+                    "name": "Blue Colorant",
+                    "size": 3
+                },
+                {
+                    "name": "Rendering Intent",
+                    "size": 1
+                },
+                {
+                    "name": "Primary Platform",
+                    "size": 3
+                },
+                {
+                    "name": "Class",
+                    "size": 3
+                },
+                {
+                    "name": "Viewing Conditions Description",
+                    "size": 3
+                },
+                {
+                    "name": "Media White Point",
+                    "size": 3
+                },
+                {
+                    "name": "Device Mfg Description",
+                    "size": 3
+                },
+                {
+                    "name": "Color Transform",
+                    "size": 3
+                },
+                {
+                    "name": "XYZ values",
+                    "size": 3
+                },
+                {
+                    "name": "Measurement",
+                    "size": 3
+                },
+                {
+                    "name": "Color space",
+                    "size": 3
+                },
+                {
+                    "name": "Media Black Point",
+                    "size": 3
+                },
+                {
+                    "name": "Flags 0",
+                    "size": 3
+                },
+                {
+                    "name": "Flags 1",
+                    "size": 3
+                },
+                {
+                    "name": "Green Colorant",
+                    "size": 3
+                },
+                {
+                    "name": "Data Precision",
+                    "size": 3
+                },
+                {
+                    "name": "CMM Type",
+                    "size": 3
+                },
+                {
+                    "name": "Component 2",
+                    "size": 3
+                },
+                {
+                    "name": "Component 3",
+                    "size": 3
+                },
+                {
+                    "name": "Number of Components",
+                    "size": 3
+                },
+                {
+                    "name": "Signature",
+                    "size": 3
+                },
+                {
+                    "name": "DCT Encode Version",
+                    "size": 3
+                },
+                {
+                    "name": "Profile Size",
+                    "size": 3
+                },
+                {
+                    "name": "X Resolution",
+                    "size": 3
+                },
+                {
+                    "name": "Luminance",
+                    "size": 3
+                },
+                {
+                    "name": "Image Height",
+                    "size": 3
+                },
+                {
+                    "name": "Technology",
+                    "size": 3
+                },
+                {
+                    "name": "Red Colorant",
+                    "size": 3
+                },
+                {
+                    "name": "Y Resolution",
+                    "size": 3
+                },
+                {
+                    "name": "Profile Date/Time",
+                    "size": 3
+                },
+                {
+                    "name": "Device manufacturer",
+                    "size": 3
+                },
+                {
+                    "name": "Device model",
+                    "size": 3
+                },
+                {
+                    "name": "tiff:ImageWidth",
+                    "size": 3
+                },
+                {
+                    "name": "Compression Type",
+                    "size": 3
+                },
+                {
+                    "name": "Content-Type",
+                    "size": 3
+                },
+                {
+                    "name": "Device Model Description",
+                    "size": 3
+                }
+            ],
+            "name": "cluster2"
+        },
+        {
+            "children": [
+                {
+                    "name": "Copyright",
+                    "size": 1
+                },
+                {
+                    "name": "Red TRC",
+                    "size": 1
+                },
+                {
+                    "name": "Image Width",
+                    "size": 1
+                },
+                {
+                    "name": "Component 1",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:ImageLength",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:BitsPerSample",
+                    "size": 1
+                },
+                {
+                    "name": "Tag Count",
+                    "size": 1
+                },
+                {
+                    "name": "Profile Connection Space",
+                    "size": 1
+                },
+                {
+                    "name": "Blue TRC",
+                    "size": 1
+                },
+                {
+                    "name": "Profile Description",
+                    "size": 1
+                },
+                {
+                    "name": "Green TRC",
+                    "size": 1
+                },
+                {
+                    "name": "Blue Colorant",
+                    "size": 1
+                },
+                {
+                    "name": "Primary Platform",
+                    "size": 1
+                },
+                {
+                    "name": "Class",
+                    "size": 1
+                },
+                {
+                    "name": "Media White Point",
+                    "size": 1
+                },
+                {
+                    "name": "XYZ values",
+                    "size": 1
+                },
+                {
+                    "name": "Color space",
+                    "size": 1
+                },
+                {
+                    "name": "Green Colorant",
+                    "size": 1
+                },
+                {
+                    "name": "Data Precision",
+                    "size": 1
+                },
+                {
+                    "name": "Component 2",
+                    "size": 1
+                },
+                {
+                    "name": "Component 3",
+                    "size": 1
+                },
+                {
+                    "name": "Number of Components",
+                    "size": 1
+                },
+                {
+                    "name": "Signature",
+                    "size": 1
+                },
+                {
+                    "name": "Profile Size",
+                    "size": 1
+                },
+                {
+                    "name": "Media Black Point",
+                    "size": 1
+                },
+                {
+                    "name": "CMM Type",
+                    "size": 1
+                },
+                {
+                    "name": "Image Height",
+                    "size": 1
+                },
+                {
+                    "name": "Red Colorant",
+                    "size": 1
+                },
+                {
+                    "name": "Profile Date/Time",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:ImageWidth",
+                    "size": 1
+                },
+                {
+                    "name": "Compression Type",
+                    "size": 1
+                },
+                {
+                    "name": "Content-Type",
+                    "size": 1
+                }
+            ],
+            "name": "cluster3"
+        },
+        {
+            "children": [
+                {
+                    "name": "X Resolution",
+                    "size": 36
+                },
+                {
+                    "name": "Image Height",
+                    "size": 36
+                },
+                {
+                    "name": "Exif Version",
+                    "size": 24
+                },
+                {
+                    "name": "Image Width",
+                    "size": 36
+                },
+                {
+                    "name": "Component 1",
+                    "size": 36
+                },
+                {
+                    "name": "Exif Image Height",
+                    "size": 24
+                },
+                {
+                    "name": "Y Resolution",
+                    "size": 36
+                },
+                {
+                    "name": "tiff:Software",
+                    "size": 24
+                },
+                {
+                    "name": "tiff:ImageLength",
+                    "size": 36
+                },
+                {
+                    "name": "Data Precision",
+                    "size": 36
+                },
+                {
+                    "name": "Resolution Units",
+                    "size": 36
+                },
+                {
+                    "name": "Component 2",
+                    "size": 36
+                },
+                {
+                    "name": "Exif Image Width",
+                    "size": 24
+                },
+                {
+                    "name": "Number of Components",
+                    "size": 36
+                },
+                {
+                    "name": "tiff:ImageWidth",
+                    "size": 36
+                },
+                {
+                    "name": "Component 3",
+                    "size": 36
+                },
+                {
+                    "name": "Compression Type",
+                    "size": 36
+                },
+                {
+                    "name": "Content-Type",
+                    "size": 36
+                },
+                {
+                    "name": "tiff:BitsPerSample",
+                    "size": 36
+                },
+                {
+                    "name": "Software",
+                    "size": 24
+                },
+                {
+                    "name": "Caption digest",
+                    "size": 3
+                },
+                {
+                    "name": "Copyright",
+                    "size": 1
+                },
+                {
+                    "name": "Coded Character Set",
+                    "size": 3
+                },
+                {
+                    "name": "IPTC-NAA record",
+                    "size": 3
+                },
+                {
+                    "name": "Application Record Version",
+                    "size": 3
+                },
+                {
+                    "name": "Color Transform",
+                    "size": 8
+                },
+                {
+                    "name": "Flags 0",
+                    "size": 8
+                },
+                {
+                    "name": "Flags 1",
+                    "size": 8
+                },
+                {
+                    "name": "DCT Encode Version",
+                    "size": 8
+                },
+                {
+                    "name": "comment",
+                    "size": 1
+                },
+                {
+                    "name": "Comments",
+                    "size": 1
+                },
+                {
+                    "name": "Jpeg Comment",
+                    "size": 1
+                },
+                {
+                    "name": "w:comments",
+                    "size": 1
+                }
+            ],
+            "name": "cluster4"
+        },
+        {
+            "children": [
+                {
+                    "name": "X Resolution",
+                    "size": 1161
+                },
+                {
+                    "name": "Image Height",
+                    "size": 1167
+                },
+                {
+                    "name": "Image Width",
+                    "size": 1167
+                },
+                {
+                    "name": "tiff:ImageWidth",
+                    "size": 1167
+                },
+                {
+                    "name": "Y Resolution",
+                    "size": 1161
+                },
+                {
+                    "name": "tiff:Software",
+                    "size": 24
+                },
+                {
+                    "name": "tiff:ImageLength",
+                    "size": 1167
+                },
+                {
+                    "name": "Data Precision",
+                    "size": 1167
+                },
+                {
+                    "name": "Resolution Units",
+                    "size": 1161
+                },
+                {
+                    "name": "Component 2",
+                    "size": 1167
+                },
+                {
+                    "name": "Component 3",
+                    "size": 1167
+                },
+                {
+                    "name": "Number of Components",
+                    "size": 1167
+                },
+                {
+                    "name": "Component 1",
+                    "size": 1167
+                },
+                {
+                    "name": "tiff:BitsPerSample",
+                    "size": 1167
+                },
+                {
+                    "name": "Content-Type",
+                    "size": 1167
+                },
+                {
+                    "name": "Compression Type",
+                    "size": 1167
+                },
+                {
+                    "name": "Software",
+                    "size": 24
+                },
+                {
+                    "name": "Color Transform",
+                    "size": 6
+                },
+                {
+                    "name": "Flags 0",
+                    "size": 6
+                },
+                {
+                    "name": "Flags 1",
+                    "size": 6
+                },
+                {
+                    "name": "DCT Encode Version",
+                    "size": 6
+                }
+            ],
+            "name": "cluster5"
+        },
+        {
+            "children": [
+                {
+                    "name": "Image Height",
+                    "size": 1
+                },
+                {
+                    "name": "Image Width",
+                    "size": 1
+                },
+                {
+                    "name": "Component 1",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:ImageLength",
+                    "size": 1
+                },
+                {
+                    "name": "Data Precision",
+                    "size": 1
+                },
+                {
+                    "name": "Component 2",
+                    "size": 1
+                },
+                {
+                    "name": "Component 3",
+                    "size": 1
+                },
+                {
+                    "name": "Number of Components",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:ImageWidth",
+                    "size": 1
+                },
+                {
+                    "name": "tiff:BitsPerSample",
+                    "size": 1
+                },
+                {
+                    "name": "Content-Type",
+                    "size": 1
+                },
+                {
+                    "name": "Compression Type",
+                    "size": 1
+                }
+            ],
+            "name": "cluster6"
+        },
+        {
+            "children": [
+                {
+                    "name": "dc:title",
+                    "size": 1
+                },
+                {
+                    "name": "Content-Type",
+                    "size": 1
+                },
+                {
+                    "name": "Content-Encoding",
+                    "size": 1
+                },
+                {
+                    "name": "title",
+                    "size": 1
+                }
+            ],
+            "name": "cluster7"
+        },
+        {
+            "children": [
+                {
+                    "name": "Content-Type",
+                    "size": 1
+                }
+            ],
+            "name": "cluster8"
+        }
+    ],
+    "name": "clusters"
+}
