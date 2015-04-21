@@ -15,12 +15,6 @@
 /*.node--leaf {
   fill: white;
 }*/
-
-text
-{
-  z-index: 100;
-}
-
 .label {
   font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-anchor: middle;
@@ -34,7 +28,7 @@ text
 }
 
 .nodeCluster {
-  font: 10px sans-serif;
+  font: 8px sans-serif;
 }
 
 .link {
@@ -85,12 +79,10 @@ p {
 
 h1
 {
-  font-size: 40px;
+  font-size: 20px;
+  padding-left: 10px;
 }
-h1
-{
-  padding-left: 20px;
-}
+
 </style>
 <body>
   <h1>categorical colors range [1: 20]</h1>
@@ -101,7 +93,7 @@ h1
 function generateColorRange()
 {
 
-  var width = 900;
+  var width = 400;
   var height = 100;
   var c20 = d3.scale.category20();
   var svg2 = d3.select("#c20")
@@ -114,24 +106,24 @@ function generateColorRange()
     .data( d3.range(20) )
     .enter()
     .append("circle")
-    .attr("r", 20 )
-    .attr("cx", d3.scale.linear().domain([-1, 20]).range([0, 900]) )
+    .attr("r", 10)
+    .attr("cx", d3.scale.linear().domain([-1, 20]).range([0, 400]) )
     .attr("cy", 20)
     .attr("fill", c20);
 
   var widthScale = d3.scale.linear()
     .domain([1, 20])
-    .range([0,width-80]);
+    .range([0,width-40]);
   var axis = d3.svg.axis()
     .ticks(20)
     .scale(widthScale);
-  svg2.append("g").attr("transform", "translate(40,50)").call(axis);
+  svg2.append("g").attr("transform", "translate(20,50)").call(axis);
 }
 
 generateColorRange();
 
 var margin = 20,  
-    diameter = 960,
+    diameter = 960/2,
     format = d3.format(",d"),
     translateX = diameter/2,
     translateY = diameter/2;
@@ -141,15 +133,16 @@ var color = d3.scale.category20();
 var pack = d3.layout.pack()
     .padding(2)
     .size([diameter - margin, diameter - margin])
-    .value(function(d) { return d.size; })
+    .value(function(d) { return d.size; });
 
 var svg = d3.select("body").append("svg")
-    .attr("width", 3*diameter)
+    .attr("id", "chart")
+    .attr("width", diameter)
     .attr("height", diameter)
     .append("g")
     .attr("transform", "translate(" + translateX + "," + translateY + ")");
 
-d3.json("circle.json", function(error, root) {
+d3.json("testdata/circle5.json", function(error, root) {
   if (error) return console.error(error);
 
   var focus = root,
@@ -173,7 +166,7 @@ d3.json("circle.json", function(error, root) {
 
   var circle = node.append("circle")
       .attr("class", function(d) { return d.parent ? d.children ? "node" : "node--leaf" : "node--root"; })
-      .attr("id", function(d) { return d.name;})
+      .attr("id", function(d) { return "circle"+d.name;})
       .attr("opacity", function(d){ return d.children ? 1: 0;})
       .style("fill", function(d)
       { 
@@ -203,18 +196,18 @@ d3.json("circle.json", function(error, root) {
       return color(d.depth); 
     else
     {
-      var scale = d.size/(max/100)+2;
+      var scale = d.size/(max/100)+1;
       return color(scale);
     }
   }
-
+  var num =0;
   
   var text = node.append("text")
       .attr("class", "label")
       .style("fill-opacity", function(d) { return d.parent  === root ? 1  : 0; })
       .style("display", function(d) { return d.parent === root ? null : "none"; })
       .text(function(d) {return d.name; })
-      .style("font-size", "15px");
+      .style("font-size", "8px");
 
 
   var title = node.append("title")
@@ -227,14 +220,16 @@ d3.json("circle.json", function(error, root) {
       .attr("opacity", 0)
       .attr("class", "cluster")
       .on("mouseover", function(d){
+        var index = d.name.match(/(\d+)/g);
         svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToFront(); 
-
         });
-       return box(d.name.match(/(\d+)/g));
+        d3.select("#chart").attr("width", Math.max((340+max*1.4)+2*diameter), diameter)
+        .attr("height", Math.max((340+max*1.4)+2*diameter), diameter);
+       return clusterViz(index);
       })
      .on("mouseout", function(d){
-      svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToBack();});
-      d3.select("g.root").moveToBack();
+        svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToBack();});
+        d3.select("g.root").moveToBack();
       });
 
   node = svg.selectAll("circle,text,title");
@@ -264,7 +259,7 @@ d3.json("circle.json", function(error, root) {
           return function(t) { zoomTo(i(t)); };
         });
     transition.selectAll("text")
-      .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
+        .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
         .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
         .text(function(d) {return d.name;})
         .each("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
@@ -294,9 +289,8 @@ d3.json("circle.json", function(error, root) {
       });   //move component to the up of svg
   };
 
-
-  var box = function(j){
-        d3.json("clusters.json", function(error, root){
+  var clusterViz = function(j){
+        d3.json("testdata/clusters5.json", function(error, root){
     var i = 0;
     root = root.children[j];
     var clusterName = "cluster"+j;
@@ -304,10 +298,10 @@ d3.json("circle.json", function(error, root) {
     function visit(parent, visitFn, childrenFn) {
       if (!parent) return;
 
-      visitFn(parent);
+       visitFn(parent);
 
-      var children = childrenFn(parent);
-      if (children) {
+       var children = childrenFn(parent);
+       if (children) {
           var count = children.length;
           for (var i = 0; i < count; i++) {
               visit(children[i], visitFn, childrenFn);
@@ -317,21 +311,19 @@ d3.json("circle.json", function(error, root) {
 
     visit(root, function(d) {
       if(d.children == null)
-        i++;
+          i++;
 
     }, function(d) {
-      return d.children && d.children.length > 0 ? d.children : null;
+        return d.children && d.children.length > 0 ? d.children : null;
     });
-
-
     clear();
-    var radius =  340+1.4*i;
+    var radius =  (340+1.4*i)/2;
 
     var cluster = d3.layout.cluster()
-        .size([radius-120, radius - 120]);
+        .size([360, radius-60]);
 
-    var translateX= radius+450;
-    var translateY = radius -400;
+    var translateX= radius + 100 + diameter/2;
+    var translateY = radius +20;//diameter/2 -translateCircleY;
 
     var diagonal = d3.svg.diagonal.radial()
         .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
@@ -343,11 +335,9 @@ d3.json("circle.json", function(error, root) {
               .attr("id", "tooltip")        
               .style("opacity", 0); 
 
-    var translateSVGX = diameter/2-200;
-    var translateSVGY = diameter/2-200;
     var svg = d3.select("#cluster"+j)
-        .attr("width", radius*2)
-        .attr("height", radius*2)
+        .attr("width", radius*2+100)
+        .attr("height", radius*2+100)
         .append("g").attr("transform", "translate(" + translateX + "," + translateY + ")")
         .attr("class", "clusterNode");
 
@@ -359,14 +349,14 @@ d3.json("circle.json", function(error, root) {
         .attr("class", "link")
         .attr("d", diagonal);
     link.attr("opacity", 0)
-      .transition()
-      .duration(function (d, i) {
-        return 700;
-      })
-      .delay(function (d, i) {
-        return i * 30;
-      })
-      .attr("opacity", 1);
+        .transition()
+        .duration(function (d, i) {
+          return 700;
+        })
+        .delay(function (d, i) {
+          return i * 30;
+        })
+        .attr("opacity", 1);
 
     var node = svg.selectAll("g.node")
         .data(nodes)
@@ -377,7 +367,7 @@ d3.json("circle.json", function(error, root) {
     node.append("circle")
         .attr("id", function(d){ return d.name;}) 
         .attr("class", "node--cluster")
-        .attr("r", 8)
+        .attr("r", 4)
         .on('mouseover',function(d){
             div.transition().duration(200)
                 .style("opacity", .9);
@@ -411,10 +401,10 @@ d3.json("circle.json", function(error, root) {
 
 
     node.append("text")
-        .attr("dy", ".60em")
+        .attr("dy", ".15em")
         .attr("class", "node--cluster--text")
         .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-        .attr("transform", function(d) { return d.x < 180 ? "translate(20)" : "rotate(180)translate(-20)"; })
+        .attr("transform", function(d) { return d.x < 180 ? "translate(10)" : "rotate(180)translate(-10)"; })
         .text(function(d) { return d.name; });
 
     var text = svg.selectAll(".node--cluster--text");
