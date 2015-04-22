@@ -67,9 +67,8 @@ p {
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>
-clusterJson = d3.json("testdata/clusters5.json", function(error, root){
+clusterJson = d3.json("clusters.json", function(error, root){
 var i = 0;
-root = root.children[5];
 function visit(parent, visitFn, childrenFn) {
   if (!parent) return;
 
@@ -133,26 +132,32 @@ var svg = d3.select("body").append("svg")
 
   node.append("circle")
       .attr("id", function(d){ return d.name;}) 
-      .attr("r", 4.5)
+      .attr("class", "node--cluster")
+      .attr("r", 6)
       .on('mouseover',function(d){
+          div.style("visibility", "visible");
           div.transition().duration(200)
               .style("opacity", .9);
           div.on('mouseover', function(d){
+            div.style("visibility", "visible");
             div.transition().duration(200)  
               .style("opacity", .9);
           });
           div.on('mouseout', function(d){
+            div.style("visibility", "hidden");
             div.transition().style('opacity', 0);
           });
           div .html( d.name != null && d.children == null ? '<h2>' + d.name +'</h2> <img src = "'+d.path+ '"></img><p>'+d.metadata+'</p>' : '<h2>this is a cluster node </h2>')   
-              .style("left", (d3.event.pageX +20) + "px" )      
-              .style("top", (d3.event.pageY - 38) + "px"); 
+              .style("left", (d3.event.pageX ) + "px" )      
+              .style("top", (d3.event.pageY ) + "px"); 
       })
 
       .on('mouseout', function(d){
           div.transition().style('opacity', 0);
+          div.style("visibility", "hidden");
 
       });
+
 
   node.append("text")
       .attr("dy", ".31em")
