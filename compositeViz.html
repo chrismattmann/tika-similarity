@@ -322,7 +322,7 @@ d3.json("testdata/circle5.json", function(error, root) {
     var cluster = d3.layout.cluster()
         .size([360, radius-60]);
 
-    var translateX= radius + 100 + diameter/2;
+    var translateX= radius + 150 + diameter/2;
     var translateY = radius +20;//diameter/2 -translateCircleY;
 
     var diagonal = d3.svg.diagonal.radial()
@@ -367,24 +367,28 @@ d3.json("testdata/circle5.json", function(error, root) {
     node.append("circle")
         .attr("id", function(d){ return d.name;}) 
         .attr("class", "node--cluster")
-        .attr("r", 4)
+        .attr("r", 6)
         .on('mouseover',function(d){
+            div.style("visibility", "visible");
             div.transition().duration(200)
                 .style("opacity", .9);
             div.on('mouseover', function(d){
+              div.style("visibility", "visible");
               div.transition().duration(200)  
                 .style("opacity", .9);
             });
             div.on('mouseout', function(d){
+              div.style("visibility", "hidden");
               div.transition().style('opacity', 0);
             });
             div .html( d.name != null && d.children == null ? '<h2>' + d.name +'</h2> <img src = "'+d.path+ '"></img><p>'+d.metadata+'</p>' : '<h2>this is a cluster node </h2>')   
-                .style("left", (d3.event.pageX +20) + "px" )      
-                .style("top", (d3.event.pageY - 38) + "px"); 
+                .style("left", (d3.event.pageX ) + "px" )      
+                .style("top", (d3.event.pageY ) + "px"); 
         })
 
         .on('mouseout', function(d){
             div.transition().style('opacity', 0);
+            div.style("visibility", "hidden");
 
         });
 
