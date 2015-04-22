@@ -382,7 +382,7 @@ d3.json("circle.json", function(error, root) {
               div.transition().style('opacity', 0);
             });
             div .html( d.name != null && d.children == null ? '<h2>' + d.name +'</h2> <img src = "'+d.path+ '"></img><p>'+d.metadata+'</p>' : '<h2>this is a cluster node </h2>')   
-                .style("left", (d3.event.pageX +15 ) + "px" )      
+                .style("left", (d3.event.pageX + 15 ) + "px" )      
                 .style("top", (d3.event.pageY ) + "px"); 
         })
 
