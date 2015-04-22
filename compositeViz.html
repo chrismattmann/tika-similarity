@@ -142,7 +142,7 @@ var svg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(" + translateX + "," + translateY + ")");
 
-d3.json("testdata/circle5.json", function(error, root) {
+d3.json("circle.json", function(error, root) {
   if (error) return console.error(error);
 
   var focus = root,
@@ -290,7 +290,7 @@ d3.json("testdata/circle5.json", function(error, root) {
   };
 
   var clusterViz = function(j){
-        d3.json("testdata/clusters5.json", function(error, root){
+        d3.json("clusters.json", function(error, root){
     var i = 0;
     root = root.children[j];
     var clusterName = "cluster"+j;
