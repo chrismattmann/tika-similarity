@@ -139,23 +139,24 @@ var svg = d3.select("body").append("svg")
           div.transition().duration(200)
               .style("opacity", .9);
           div.on('mouseover', function(d){
-            div.style("visibility", "visible");
-            div.transition().duration(200)  
+          div.style("visibility", "visible");
+          div.transition().duration(200)  
               .style("opacity", .9);
-          });
+        });
           div.on('mouseout', function(d){
-            div.style("visibility", "hidden");
-            div.transition().style('opacity', 0);
-          });
-          div .html( d.name != null && d.children == null ? '<h2>' + d.name +'</h2> <img src = "'+d.path+ '"></img><p>'+d.metadata+'</p>' : '<h2>this is a cluster node </h2>')   
-              .style("left", (d3.event.pageX ) + "px" )      
-              .style("top", (d3.event.pageY ) + "px"); 
-      })
+          div.style("visibility", "hidden");
+          div.transition().style('opacity', 0);
+        });
 
+          div .html( d.name.match(/^cluster(\d||\w)+$/)==null && d.name.match(/^group(\d||\w)+$/)==null ? '<h2>' + d.name +'</h2> <img src = "'+d.path+'"></img><p>'+d.metadata+'</p>' : '<h2>this is a cluster node </h2>')
+              .style("left", (d3.event.pageX) + "px" )      
+              .style("top", (d3.event.pageY) + "px"); 
+
+               
+      })
       .on('mouseout', function(d){
           div.transition().style('opacity', 0);
           div.style("visibility", "hidden");
-
       });
 
 

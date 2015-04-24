@@ -143,7 +143,7 @@ var svg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(" + translateX + "," + translateY + ")");
 
-d3.json("circle.json", function(error, root) {
+d3.json("testdata/circle5.json", function(error, root) {
   if (error) return console.error(error);
 
   var focus = root,
@@ -227,7 +227,6 @@ d3.json("circle.json", function(error, root) {
       .attr("class", "title")
       .text(function(d) { return d.name + (d.children ? "" : ": " + format(d.size)); });
 
-
   node = svg.selectAll("circle,text,title");
 
   d3.select("body")
@@ -245,11 +244,11 @@ d3.json("circle.json", function(error, root) {
 
 
   function zoom(d) {
-    clear();
+
     var focus0 = focus; focus = d;
     
     var transition = d3.transition()
-        .duration(d3.event.altKey ? 2500 : 200)
+        .duration(d3.event.altKey ? 2500 : 100)
         .tween("zoom", function(d) {
           var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
           return function(t) { zoomTo(i(t)); };
@@ -286,140 +285,177 @@ d3.json("circle.json", function(error, root) {
   };
 
   var clusterViz = function(j){
-        d3.json("clusters.json", function(error, root){
-    var i = 0;
-    root = root.children[j];
-    var clusterName = "cluster"+j;
-
-    function visit(parent, visitFn, childrenFn) {
-      if (!parent) return;
-
-       visitFn(parent);
-
-       var children = childrenFn(parent);
-       if (children) {
-          var count = children.length;
-          for (var i = 0; i < count; i++) {
-              visit(children[i], visitFn, childrenFn);
-          }
-      }
-    }
-
-    visit(root, function(d) {
-      if(d.children == null)
-          i++;
-
-    }, function(d) {
-        return d.children && d.children.length > 0 ? d.children : null;
-    });
+        d3.json("levelCluster.json", function(error, data){
+    var root = data.children[j];
     clear();
-    var radius =  (340+1.4*i)/2;
+    var radius = 960/2;
+        
+    var i = 0,
+        duration = 750;
 
-    var cluster = d3.layout.cluster()
-        .size([360, radius-60]);
 
-    var translateX= radius + 150 + diameter/2;
-    var translateY = radius +20;//diameter/2 -translateCircleY;
+    var tree = d3.layout.cluster()
+        .size([360, radius - 120]);
+
+    var translateX = radius + diameter/2 + 250 ;
+    var translateY = radius - 100;
+
+
+    var div = d3.select("body")
+                .append("div")  
+                .attr("class", "tooltip")
+                .attr("id", "tooltip")         
+                .style("opacity", 0); 
+
 
     var diagonal = d3.svg.diagonal.radial()
         .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
-
-    var div = d3.select("body")
-              .append("div")  
-              .attr("class", "tooltip") 
-              .attr("id", "tooltip")        
-              .style("opacity", 0); 
-
     var svg = d3.select("#cluster"+j)
-        .attr("width", radius*2+100)
-        .attr("height", radius*2+100)
-        .append("g").attr("transform", "translate(" + translateX + "," + translateY + ")")
+        .attr("width", radius*2)
+        .attr("height", radius *2)
+        .append("g")
+        .attr("transform", "translate(" + translateX + "," + translateY + ")")
         .attr("class", "clusterNode");
 
-    var nodes = cluster.nodes(root);
 
-    var link = svg.selectAll("path.link")
-        .data(cluster.links(nodes))
-        .enter().append("path")
-        .attr("class", "link")
-        .attr("d", diagonal);
-    link.attr("opacity", 0)
-        .transition()
-        .duration(function (d, i) {
-          return 700;
-        })
-        .delay(function (d, i) {
-          return i * 30;
-        })
-        .attr("opacity", 1);
 
-    var node = svg.selectAll("g.node")
-        .data(nodes)
-        .enter().append("g")
-        .attr("class", "nodeCluster")
-        .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; });
+    function collapse(d) {
+      if (d.children) {
+        d._children = d.children;
+        d._children.forEach(collapse);
+        d.children = null;
+      }
+    }
 
-    node.append("circle")
-        .attr("id", function(d){ return d.name;}) 
-        .attr("class", "node--cluster")
-        .attr("r", 6)
-        .on('mouseover',function(d){
-            div.style("visibility", "visible");
-            div.transition().duration(200)
-                .style("opacity", .9);
-            div.on('mouseover', function(d){
+    root.children.forEach(collapse);
+    update(root);
+
+    d3.select(self.frameElement).style("height", radius * 2+200 + "px");
+
+    function update(source) {
+
+    // Compute the new tree layout.
+      var nodes = tree.nodes(root),
+          links = tree.links(nodes);
+      // Normalize for fixed-depth.
+      //nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+      // Update the nodes…
+      var node = svg.selectAll("g.nodeCluster")
+          .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+      // Enter any new nodes at the parent's previous position.
+      var nodeEnter = node.enter().append("g")
+          .attr("class", "nodeCluster")
+          .attr("transform", function(d) { return "rotate(" + (source.x - 90) + ")translate(" + source.y + ")"; })
+          .on("click", click);
+
+      nodeEnter.append("circle")
+          .attr("r", 5)
+          .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
+          .on('mouseover',function(d){
+              div.style("visibility", "visible");
+              div.transition().duration(200)
+                  .style("opacity", .9);
+              div.on('mouseover', function(d){
               div.style("visibility", "visible");
               div.transition().duration(200)  
-                .style("opacity", .9);
+                  .style("opacity", .9);
             });
-            div.on('mouseout', function(d){
+              div.on('mouseout', function(d){
               div.style("visibility", "hidden");
               div.transition().style('opacity', 0);
             });
-            div .html( d.name != null && d.children == null ? '<h2>' + d.name +'</h2> <img src = "'+d.path+ '"></img><p>'+d.metadata+'</p>' : '<h2>this is a cluster node </h2>')   
-                .style("left", (d3.event.pageX ) + "px" )      
-                .style("top", (d3.event.pageY ) + "px"); 
-        })
+    
+              div .html( d.name.match(/^cluster(\d||\w)+$/)==null && d.name.match(/^group(\d||\w)+$/)==null ? '<h2>' + d.name +'</h2> <img src = "'+d.path+'"></img><p>'+d.metadata+'</p>' : '<h2>this is a cluster node </h2>')
+                  .style("left", (d3.event.pageX) + "px" )      
+                  .style("top", (d3.event.pageY) + "px"); 
 
-        .on('mouseout', function(d){
-            div.transition().style('opacity', 0);
-            div.style("visibility", "hidden");
+                   
+          })
+          .on('mouseout', function(d){
+              div.transition().style('opacity', 0);
+              div.style("visibility", "hidden");
+          });
 
+        nodeEnter.append("text")
+            .attr("dx", ".90em")
+            .attr("dy", ".35em")
+            .attr("text-anchor", function(d) { return d.x< 180 ? "start" : "end"; })
+            .attr("transform", function(d) { return d.x < 180 ? "translate(10)" : "rotate(180)translate(-20)" })
+            .text(function(d) { return d.name; })
+            .style("fill-opacity", 1);
+
+
+        // Transition nodes to their new position.
+        var nodeUpdate = node.transition()
+            .duration(duration)
+            .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";});
+
+        nodeUpdate.select("circle")
+            .attr("r", 6)
+            .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+        nodeUpdate.select("text")
+            .style("fill-opacity", 1);
+
+        // Transition exiting nodes to the parent's new position.
+        var nodeExit = node.exit().transition()
+            .duration(200)
+            .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")" })
+            .remove();
+
+        nodeExit.select("circle")
+            .attr("r", 6);
+
+        nodeExit.select("text")
+            .style("fill-opacity", 1);
+
+        // Update the links…
+        var link = svg.selectAll("path.link")
+            .data(links, function(d) { return d.target.id; });
+
+        // Enter any new links at the parent's previous position.
+        link.enter().insert("path", "g")
+            .attr("class", "link")
+            .attr("d", function(d) {
+              var o = {x: source.x0, y: source.y0};
+              return diagonal({source: o, target: o});
+            });
+
+        // Transition links to their new position.
+        link.transition()
+            .duration(duration)
+            .attr("d", diagonal);
+
+        // Transition exiting nodes to the parent's new position.
+        link.exit().transition()
+            .duration(duration)
+            .attr("d", function(d) {
+              var o = {x: source.x, y: source.y};
+              return diagonal({source: o, target: o});
+            })
+            .remove();
+
+        // Stash the old positions for transition.
+        nodes.forEach(function(d) {
+          d.x0 = d.x;
+          d.y0 = d.y;
         });
+      }
 
-    var circle = svg.selectAll(".node--cluster");
-    circle.attr("opacity", 0)
-        .transition()
-        .duration(function (d, i) {
-          return 700;
-        })
-        .delay(function (d, i) {
-          return i * 30;
-        })
-        .attr("opacity", 1);
-
-
-    node.append("text")
-        .attr("dy", ".15em")
-        .attr("class", "node--cluster--text")
-        .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-        .attr("transform", function(d) { return d.x < 180 ? "translate(10)" : "rotate(180)translate(-10)"; })
-        .text(function(d) { return d.name; });
-
-    var text = svg.selectAll(".node--cluster--text");
-    text.attr("opacity", 0)
-        .transition()
-        .duration(function (d, i) {
-          return 700;
-        })
-        .delay(function (d, i) {
-          return i * 30;
-        })
-        .attr("opacity", 1);
-
-    d3.select(self.frameElement).style("height", radius * 2 + "px");
-
+  // Toggle children on click.
+      function click(d) {
+        if (d.children) {
+          d._children = d.children;
+          d.children = null;
+        } else {
+          d.children = d._children;
+          d._children = null;
+        }
+        update(d);
+      }
     })
   }
 
