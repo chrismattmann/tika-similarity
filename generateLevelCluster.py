@@ -23,7 +23,7 @@ import sys
 __threshold = 10
 
 def main(argv = None) : 
-	with open('testdata/clusters5.json') as data_file:
+	with open('clusters.json') as data_file:
 		data = json.load(data_file)
 		numOfCluster = len(data["children"])
 

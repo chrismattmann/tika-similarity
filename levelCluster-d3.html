@@ -143,7 +143,7 @@ var svg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(" + translateX + "," + translateY + ")");
 
-d3.json("testdata/circle5.json", function(error, root) {
+d3.json("circle.json", function(error, root) {
   if (error) return console.error(error);
 
   var focus = root,
@@ -214,7 +214,7 @@ d3.json("testdata/circle5.json", function(error, root) {
         svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToFront(); 
         });
         d3.select("#chart").attr("width", Math.max((340+max*1.4)+3*diameter), diameter)
-        .attr("height", Math.max((340+max*1.4)+diameter + 50), diameter);
+        .attr("height", Math.max((340+max*1.4)+2*diameter ), diameter);
        return clusterViz(index);
       })
      .on("mouseout", function(d){
