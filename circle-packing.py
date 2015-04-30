@@ -1,5 +1,3 @@
-
-
 #!/usr/bin/env python2.7
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
