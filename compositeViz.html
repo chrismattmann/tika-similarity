@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
@@ -208,25 +206,30 @@ d3.json("circle.json", function(error, root) {
       .style("fill-opacity", function(d) { return d.parent  === root ? 1  : 0; })
       .style("display", function(d) { return d.parent === root ? null : "none"; })
       .text(function(d) {return d.name; })
-      .style("font-size", "8px")
-      .on("mouseover", function(d){
-        var index = d.name.match(/(\d+)/g);
-        svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToFront(); 
-        });
-        d3.select("#chart").attr("width", Math.max((340+max*1.4)+3*diameter), diameter)
-        .attr("height", Math.max((340+max*1.4)+diameter + 50), diameter);
-       return clusterViz(index);
-      })
-     .on("mouseout", function(d){
-        svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToBack();});
-        d3.select("g.root").moveToBack();
-      });
+      .style("font-size", "8px");
 
 
   var title = node.append("title")
       .attr("class", "title")
       .text(function(d) { return d.name + (d.children ? "" : ": " + format(d.size)); });
 
+  var targetNode = node.filter(function(d){ return d.children != null && d.parent!=null;})
+      .append("svg:circle").attr("r", 5)
+      .style("fill", "#000")
+      .attr("opacity", 0)
+      .attr("class", "cluster")
+      .on("mouseover", function(d){
+        var index = d.name.match(/(\d+)/g);
+        svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToFront(); 
+        });
+        d3.select("#chart").attr("width", Math.max((340+max*1.4)+3*diameter), diameter)
+        .attr("height", Math.max((340+max*1.4)+2*diameter ), diameter);
+       return clusterViz(index);
+      })
+     .on("mouseout", function(d){
+        svg.selectAll("g.rootNode").each(function(e){ d3.select(this).moveToBack();});
+        d3.select("g.root").moveToBack();
+      });
 
   node = svg.selectAll("circle,text,title");
 
