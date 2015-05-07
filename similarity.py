@@ -23,7 +23,6 @@ import os
 import sys
 import getopt
 import json
-tika.initVM()
 import operator
 
 
@@ -79,7 +78,6 @@ def main(argv = None):
 				raise _Usage(_helpMessage)
 
 			elif option in ('-c', '--file'):
-				
 				#extract file names from command line
 				if '-c' in argv :
 					index_of_file_option = argv.index('-c')
@@ -108,9 +106,9 @@ def main(argv = None):
 
 
 			# if file is not in directory or not a .jpg
-			if not os.path.isfile(first_compare_file_path) or not ".jpg" in first_compare_file :
+			if not os.path.isfile(first_compare_file_path):
 				raise _Usage(_helpMessage)
-			elif not os.path.isfile(second_compare_file_path) or not ".jpg" in second_compare_file :
+			elif not os.path.isfile(second_compare_file_path):
 				raise _Usage(_helpMessage)
 			else:
 
@@ -128,8 +126,10 @@ def main(argv = None):
 		else :
 
 			for filename in os.listdir(dirFile):
+				if filename.startswith('.'):
+					continue
 				filename = os.path.join(dirFile, filename)
-				if not os.path.isfile(filename) or not ".jpg"  in filename:
+				if not os.path.isfile(filename):
 					continue
 
 				# first compute the union of all features
