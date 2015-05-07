@@ -65,9 +65,9 @@ div.tooltip:before{
     top:7px;
 }
 
-img {
-  max-height: 60%;
-  max-width:  60%;
+object {
+  max-height: 80%;
+  max-width:  80%;
 }
 
 p {
@@ -372,7 +372,7 @@ d3.json("circle.json", function(error, root) {
               div.transition().style('opacity', 0);
             });
     
-              div .html( d.name.match(/^cluster(\d||\w)+$/)==null && d.name.match(/^group(\d||\w)+$/)==null ? '<h2>' + d.name +'</h2> <img src = "'+d.path+'"></img><p>'+d.metadata+'</p>' : '<h2>this is a cluster node </h2>')
+              div .html( d.name.match(/^cluster(\d||\w)+$/)==null && d.name.match(/^group(\d||\w)+$/)==null ? '<h2>' + d.name +'</h2> <object src = "'+d.path+'"></object><p>'+d.metadata+'</p>' : '<h2>this is a cluster node </h2>')
                   .style("left", (d3.event.pageX) + "px" )      
                   .style("top", (d3.event.pageY) + "px"); 
 
