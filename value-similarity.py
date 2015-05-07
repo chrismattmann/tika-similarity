@@ -23,7 +23,6 @@ import os
 import sys
 import getopt
 import json
-tika.initVM()
 import operator
 
 
@@ -107,9 +106,9 @@ def main(argv = None):
 			two_file_names = first_compare_file_path, second_compare_file_path
 
 			# if file is not in directory or not a .jpg
-			if not os.path.isfile(first_compare_file_path) or not ".jpg" in first_compare_file:
+			if not os.path.isfile(first_compare_file_path):
 				raise _Usage(_helpMessage)
-			elif not os.path.isfile(second_compare_file_path) or not ".jpg" in second_compare_file:
+			elif not os.path.isfile(second_compare_file_path):
 				raise _Usage(_helpMessage)
 			else:
 
@@ -121,8 +120,13 @@ def main(argv = None):
 					file_metadata[filename] = parsedData["metadata"]
 
 					#get key : value of metadata
-					for key in parsedData["metadata"].keys() :
-						file_parsed.append(str(key.strip(' ').encode('utf-8') + ": " + parsedData["metadata"].get(key).encode('utf-8').strip(' ')))
+					for key in parsedData["metadata"].keys():
+						value = parsedData["metadata"].get(key)[0]
+						if isinstance(value, list):
+							value = ""
+							for meta_value in parsedData["metadata"].get(key)[0]:
+								value += meta_value
+						file_parsed.append(str(key.strip(' ').encode('utf-8') + ": " + value.encode('utf-8').strip(' ')))
 
 
 					file_parsed_data[filename] = set(file_parsed)
@@ -134,8 +138,10 @@ def main(argv = None):
 		else:
 
 			for filename in os.listdir(dirFile):
+				if filename.startswith('.'):
+					continue
 				filename = os.path.join(dirFile, filename)
-				if not os.path.isfile(filename) or not ".jpg" in filename:
+				if not os.path.isfile(filename):
 					continue
 
 				file_parsed = []
@@ -145,8 +151,13 @@ def main(argv = None):
 
 				#get key : value of metadata
 				for key in parsedData["metadata"].keys() :
-					file_parsed.append(str(key.strip(' ').encode('utf-8') + ": " + parsedData["metadata"].get(key).encode('utf-8').strip(' ')))
+					value = parsedData["metadata"].get(key)[0]
+					if isinstance(value, list):
+						value = ""
+						for meta_value in parsedData["metadata"].get(key)[0]:
+							value += meta_value
 
+					file_parsed.append(str(key.strip(' ').encode('utf-8') + ": " + value.strip(' ').encode('utf-8')))
 
 				file_parsed_data[filename] = set(file_parsed)
 				union_feature_names = union_feature_names | set(file_parsed_data[filename])
