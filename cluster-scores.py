@@ -28,7 +28,7 @@ with open("similarity-scores.txt") as f:
     clusterData = []
     for line in f:        
         if line.find("{") != -1:
-            featureDataList = line.split(",",3) # file name,score, metadata
+            featureDataList = line.split(",",3) # file name,score,metadata
         else :
             featureDataList = line.split(",", 2)
 
@@ -59,7 +59,6 @@ with open("similarity-scores.txt") as f:
         else:
             clusterData.append(featureData)
             prior = float(featureDataList[1])
-            #print featureDataList[2]
 
     #add the last cluster into clusters
     cluster["children"] = clusterData
@@ -70,5 +69,4 @@ with open("similarity-scores.txt") as f:
 clusterStruct = {"name":"clusters", "children":clusters}
 with open("clusters.json", "w") as f:
     f.write(json.dumps(clusterStruct, sort_keys=True, indent=4, separators=(',', ': ')))
-#print json.dumps(clusterStruct, sort_keys=True, indent=4, separators=(',', ': '))
         
