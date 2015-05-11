@@ -20,7 +20,7 @@
 import json
 import sys
 
-__threshold = 10
+_maxNumNode = 10
 
 def main(argv = None) : 
 	with open('clusters.json') as data_file:
@@ -29,7 +29,7 @@ def main(argv = None) :
 
 		for i in range(0, numOfCluster):
 			numOfPic = len(data["children"][i]["children"])
-			if numOfPic > __threshold :
+			if numOfPic > _maxNumNode:
 				level = levelNum(data["children"][i]["children"])
 				for j in range(1, level) : 
 					clusterChildren = generateLevel(data["children"][i]["children"])
@@ -42,8 +42,8 @@ def main(argv = None) :
 def levelNum(data, level = 1):
 	cluster = {}
 	numOfChildren = len(data)
-	while numOfChildren / __threshold >0:
-		numOfChildren = numOfChildren / __threshold
+	while numOfChildren / _maxNumNode>0:
+		numOfChildren = numOfChildren / _maxNumNode
 		level = level+1
 
 	return level
@@ -51,11 +51,11 @@ def levelNum(data, level = 1):
 def generateLevel(data):
 	clusters = []
 	numOfChildren = len(data)
-	numOfGroup = numOfChildren / __threshold
+	numOfGroup = numOfChildren / _maxNumNode
 	for i in range(0, numOfGroup+1) :
 		clusterData = []
 		clusterGroupData ={}
-		for j in range(__threshold*i, min(__threshold*(i+1), numOfChildren)):
+		for j in range(_maxNumNode*i, min(_maxNumNode*(i+1), numOfChildren)):
 			clusterData.append(data[j])
 		clusterGroupData = {"name" : "group"+str(i), "children": clusterData}
 		clusters.append(clusterGroupData)
