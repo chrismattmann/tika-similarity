@@ -9,14 +9,14 @@ Scores are sorted in reverse (descending) order which can be shown in three diff
 
 Pre-requisite
 ===
-0. `Install [Tika-Python](http://github.com/chrismattmann/tika-python)`
+0. Install [Tika-Python](http://github.com/chrismattmann/tika-python)
 
 Installation
 ===
 ```
 git clone https://github.com/chrismattmann/tika-img-similarity
 ```
-You can also check out [ETLlib](https://github.com/chrismattmann/etllib/etl/imagesimilarity.py)
+You can also check out [ETLlib](https://github.com/chrismattmann/etllib/tree/master/etl/imagesimilarity.py)
 
 How to use
 ===
