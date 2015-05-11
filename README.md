@@ -15,9 +15,8 @@ Installation
 ===
 ```
 git clone https://github.com/chrismattmann/tika-img-similarity
-
 ```
-You can also check out [ETLlib](https://github.com/chrismattmann/etllib)/etl/imagesimilarity.py
+You can also check out [ETLlib](https://github.com/chrismattmann/etllib/etl/imagesimilarity.py)
 
 How to use
 ===
@@ -29,7 +28,6 @@ This compares metadata feature names as a golden feature set
 #!/usr/bin/env python2.7
 python similarity.py -f [directory of images] or 
 python similarity.py -c [file1 file2 file3 ...]
-
 ```
 Value-based comparison
 ----------------------
@@ -38,7 +36,6 @@ This compares metadata feature names together with its value as a golden feature
 #!/usr/bin/env python2.7
 python value-similarity.py -f [directory of images] or 
 python value-similarity.py -c [file1 file2 file3 ...]
-
 ```
 
 D3 visualization
@@ -48,30 +45,35 @@ D3 visualization
 ```
 * python cluster-scores.py (for generating cluster viz)
 * open cluster-d3.html(or dynamic-cluster.html for interactive viz) in your browser
-
 ```
+You can set **threshold** (default threshold = 0.01) in cluster-scores.py
+![Image of cluster](https://github.com/dongnizh/tika-img-similarity/snapshots/cluster.png)
+![Image of interactive-cluster](https://github.com/dongnizh/tika-img-similarity/snapshots/interactive-cluster.png)
 
 ###circlepacking viz
 ```
 * python circle-packing.py (for generating circlepacking viz)
 * open circlepacking.html(or dynamic-circlepacking.html for interactive viz) in your browser
-
 ```
+![Image of circlepacking](https://github.com/dongnizh/tika-img-similarity/snapshots/circlepacking.png)
+![Image of interactive-circlepacking](https://github.com/dongnizh/tika-img-similarity/snapshots/interactive-circlepacking.png)
 
 ###composite viz
-This is a combination of cluster viz and circle packing viz
+This is a combination of cluster viz and circle packing viz.
+The deeper color, the more the same attributes in the cluster.
 ```
 * open compositeViz.html in your browser
-
 ```
+![Image of composite viz](https://github.com/dongnizh/tika-img-similarity/snapshots/composite.png)
 
-###Big data method
+###Big data way
 if you are dealing with big data, you can use it this way:
 ```
 * python generateLevelCluster.py (for generating level cluster viz)
 * open levelCluster-d3.html in your browser
-
 ```
+You can set max number for each node **_maxNumNode**(default _maxNumNode = 10) in generateLevelCluster.py
+![Image of level composite viz](https://github.com/dongnizh/tika-img-similarity/snapshots/level-composite.png)
 
 Questions, comments?
 ===================
