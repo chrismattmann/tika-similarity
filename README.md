@@ -47,7 +47,7 @@ D3 visualization
 * open cluster-d3.html(or dynamic-cluster.html for interactive viz) in your browser
 ```
 You can set **threshold** (default threshold = 0.01) in cluster-scores.py
-![Image of cluster](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/cluster.png)
+<img src="https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/cluster.png" width = "200px" height = "200px">
 ![Image of interactive-cluster](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/interactive-cluster.png)
 
 ###circlepacking viz
