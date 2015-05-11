@@ -47,16 +47,17 @@ D3 visualization
 * open cluster-d3.html(or dynamic-cluster.html for interactive viz) in your browser
 ```
 You can set **threshold** (default threshold = 0.01) in cluster-scores.py
-![Image of cluster](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/cluster.png)
-![Image of interactive-cluster](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/interactive-cluster.png)
+
+<img src="https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/cluster.png" width = "200px" height = "200px" style = "float:left">
+<img src="https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/interactive-cluster.png" width = "200px" height = "200px" style = "float:right">
 
 ###circlepacking viz
 ```
 * python circle-packing.py (for generating circlepacking viz)
 * open circlepacking.html(or dynamic-circlepacking.html for interactive viz) in your browser
 ```
-![Image of circlepacking](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/circlepacking.png)
-![Image of interactive-circlepacking](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/interactive-circlepacking.png)
+<img src="https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/circlepacking.png" width = "200px" height = "200px" style = "float:left">
+<img src="https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/interactive-circlepacking.png" width = "200px" height = "200px" style = "float:right">
 
 ###composite viz
 This is a combination of cluster viz and circle packing viz.
