@@ -80,6 +80,12 @@ Questions, comments?
 ===================
 Send them to [Chris A. Mattmann](mailto:chris.a.mattmann@jpl.nasa.gov).
 
+Contributors
+============
+* Chris A. Mattmann, JPL
+* Dongni Zhao, USC
+
+
 License
 ===
 
