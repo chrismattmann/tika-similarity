@@ -41,7 +41,7 @@ Options:
 	read .jpg file from this directory
 
 -c, --file [file1 file2]
-	compare similarity of this two files
+	compare similarity of given files
 
 -h --help
 	show help on the screen	
