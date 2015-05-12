@@ -71,8 +71,9 @@ def main(argv = None):
 			raise _Usage(_helpMessage)
 
 		dirFile = ""
-		first_compare_file = ""
-		second_compare_file = ""
+		filenames = []		
+		filename_list = []
+
 		for option, value in opts:
 			if option in ('-h', '--help'):
 				raise _Usage(_helpMessage)
@@ -83,61 +84,39 @@ def main(argv = None):
 					index_of_file_option = argv.index('-c')
 				else :
 					index_of_file_option = argv.index('--file')
-				compare_file_name = argv[index_of_file_option+1 : ]
-				first_compare_file = compare_file_name[0]
-				second_compare_file = compare_file_name[1]
-
+				filenames = argv[index_of_file_option+1 : ]
+				
 			elif option in ('-f', '--directory'):
 				dirFile = value
+				filenames=[filename for filename in os.listdir(dirFile) if not filename.startswith('.')]
 			elif option in ('-v', '--verbose'):
 				global _verbose
 				_verbose = True
+
+		#format filename
+		filenames = [x.strip() for x in filenames]		
+		filenames = [filenames[k].strip('\'\n') for k in range(len(filenames))]		
+		for filename in filenames :		
+			if not os.path.isfile(os.path.join(dirFile, filename)):		
+				continue		
+			filename = os.path.join(dirFile, filename) if dirFile else filename		
+			filename_list.append(filename)		
+
+		if len(filename_list) <2 :		
+			raise _Usage("you need to type in at least two valid files")
 
 		union_feature_names = set()
 		file_parsed_data = {}
 		resemblance_scores = {}
 
-
 		#count similarity for two given files
-		if first_compare_file and second_compare_file:
-			first_compare_file_path = os.path.join(dirFile, first_compare_file)
-			second_compare_file_path = os.path.join(dirFile, second_compare_file)
-			two_file_names = first_compare_file_path, second_compare_file_path
+		for filename in filename_list:
+			# first compute the union of all features
+			parsedData = parser.from_file(filename)
+			file_parsed_data[filename] = parsedData["metadata"]
+			union_feature_names = union_feature_names | set(parsedData["metadata"].keys())
 
-
-			# if file is not in directory or not a .jpg
-			if not os.path.isfile(first_compare_file_path):
-				raise _Usage(_helpMessage)
-			elif not os.path.isfile(second_compare_file_path):
-				raise _Usage(_helpMessage)
-			else:
-
-				for filename in two_file_names:
-
-
-					# first compute the union of all features
-					parsedData = parser.from_file(filename)
-					file_parsed_data[filename] = parsedData["metadata"]
-					union_feature_names = union_feature_names | set(parsedData["metadata"].keys())
-
-				total_num_features = len(union_feature_names)
-
-		#count all files similarity in directory
-		else :
-
-			for filename in os.listdir(dirFile):
-				if filename.startswith('.'):
-					continue
-				filename = os.path.join(dirFile, filename)
-				if not os.path.isfile(filename):
-					continue
-
-				# first compute the union of all features
-				parsedData = parser.from_file(filename)
-				file_parsed_data[filename] = parsedData["metadata"]
-				union_feature_names = union_feature_names | set(parsedData["metadata"].keys())
-
-			total_num_features = len(union_feature_names)
+		total_num_features = len(union_feature_names)
 
 
 
