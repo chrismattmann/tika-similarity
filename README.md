@@ -1,9 +1,9 @@
-[Apache Tika](http://tika.apache.org/) Jaccard Based Image Similarity
+[Apache Tika](http://tika.apache.org/) Jaccard Based File Similarity
 ===
 
-This project demonstrates using the [Tika-Python](http://github.com/chrismattmann/tika-python) package (Python port of Apache Tika) to compute Image similarity based on Metadata features.
+This project demonstrates using the [Tika-Python](http://github.com/chrismattmann/tika-python) package (Python port of Apache Tika) to compute file similarity based on Metadata features.
 
-The script can iterate over all images in the current directory or given images by command line and derives their metadata features, then computes the union of all features. The union of all features become the "golden feature set" that all image document features are compared to via intersect. The length of that intersect per image divided by the length of the unioned set becomes the similarity score.
+The script can iterate over all files in the current directory or given files by command line and derives their metadata features, then computes the union of all features. The union of all features become the "golden feature set" that all document features are compared to via intersect. The length of that intersect per file divided by the length of the unioned set becomes the similarity score.
 
 Scores are sorted in reverse (descending) order which can be shown in three different Data-Driven document visualizaions.
 
@@ -26,7 +26,7 @@ Key-based comparison
 This compares metadata feature names as a golden feature set
 ```
 #!/usr/bin/env python2.7
-python similarity.py -f [directory of images] or 
+python similarity.py -f [directory of files] or 
 python similarity.py -c [file1 file2 file3 ...]
 ```
 Value-based comparison
@@ -34,7 +34,7 @@ Value-based comparison
 This compares metadata feature names together with its value as a golden feature set
 ```
 #!/usr/bin/env python2.7
-python value-similarity.py -f [directory of images] or 
+python value-similarity.py -f [directory of files] or 
 python value-similarity.py -c [file1 file2 file3 ...]
 ```
 
