@@ -115,7 +115,8 @@ def main(argv = None):
 			file_parsed = []
 			# first compute the union of all features
 			parsedData = parser.from_file(filename)
-			file_metadata[filename] = parsedData["metadata"]
+			if parsedData:
+				file_metadata[filename] = parsedData["metadata"]
 
 			#get key : value of metadata
 			for key in parsedData["metadata"].keys() :
