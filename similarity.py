@@ -113,8 +113,9 @@ def main(argv = None):
 		for filename in filename_list:
 			# first compute the union of all features
 			parsedData = parser.from_file(filename)
-			file_parsed_data[filename] = parsedData["metadata"]
-			union_feature_names = union_feature_names | set(parsedData["metadata"].keys())
+			if parsedData:
+				file_parsed_data[filename] = parsedData["metadata"]
+				union_feature_names = union_feature_names | set(parsedData["metadata"].keys())
 
 		total_num_features = len(union_feature_names)
 
