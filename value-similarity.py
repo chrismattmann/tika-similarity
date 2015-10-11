@@ -118,18 +118,18 @@ def main(argv = None):
 			if parsedData:
 				file_metadata[filename] = parsedData["metadata"]
 
-			#get key : value of metadata
-			for key in parsedData["metadata"].keys() :
-				value = parsedData["metadata"].get(key)[0]
-				if isinstance(value, list):
-					value = ""
-					for meta_value in parsedData["metadata"].get(key)[0]:
-						value += meta_value
+				#get key : value of metadata
+				for key in parsedData["metadata"].keys() :
+					value = parsedData["metadata"].get(key)[0]
+					if isinstance(value, list):
+						value = ""
+						for meta_value in parsedData["metadata"].get(key)[0]:
+							value += meta_value
 
-				file_parsed.append(str(key.strip(' ').encode('utf-8') + ": " + value.strip(' ').encode('utf-8')))
+					file_parsed.append(str(key.strip(' ').encode('utf-8') + ": " + value.strip(' ').encode('utf-8')))
 
-			file_parsed_data[filename] = set(file_parsed)
-			union_feature_names = union_feature_names | set(file_parsed_data[filename])
+				file_parsed_data[filename] = set(file_parsed)
+				union_feature_names = union_feature_names | set(file_parsed_data[filename])
 
 		total_num_features = len(union_feature_names)
 
