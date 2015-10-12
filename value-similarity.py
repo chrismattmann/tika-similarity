@@ -120,8 +120,8 @@ def main(argv = None):
 				file_metadata[filename] = parsedData["metadata"]
 
 				#get key : value of metadata
-				for key in parsedData["metadata"].keys() :
-					value = parsedData["metadata"].get(key)	#[0]
+				for key in parsedData["metadata"]:		#dict.keys() in Python2 creates a new List of keys, slow operation 
+					value = parsedData["metadata"][key]	#[0]
 					if isinstance(value, list):
 						value = ""
 						for meta_value in parsedData["metadata"].get(key)[0]:
@@ -140,7 +140,7 @@ def main(argv = None):
 
 
 		# now compute the specific resemblance and containment scores
-		for filename in file_parsed_data.keys():
+		for filename in file_parsed_data:		#dict.keys() in Python2 creates a new List of keys, slow operation 
 			overlap = {}
 			overlap = file_parsed_data[filename] & set(union_feature_names) 
 			resemblance_scores[filename] = float(len(overlap))/total_num_features
@@ -161,7 +161,7 @@ def main(argv = None):
 
 def convertUnicode( fileDict ) :
 	fileUTFDict = {}
-	for key in fileDict.keys():
+	for key in fileDict:
 		if isinstance(key, unicode) :
 			key = key.encode('utf-8').strip()
 		value = fileDict.get(key)
