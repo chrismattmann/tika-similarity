@@ -17,7 +17,10 @@
 # 
 #
 
-import json
+try: 
+    import simplejson as json
+except ImportError: 
+    import json
 
 threshold = 0.01
 with open("similarity-scores.txt") as f:
