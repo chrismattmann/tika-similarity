@@ -115,12 +115,13 @@ def main(argv = None):
 			file_parsed = []
 			# first compute the union of all features
 			parsedData = parser.from_file(filename)
-			if parsedData:
+			
+			try:
 				file_metadata[filename] = parsedData["metadata"]
 
 				#get key : value of metadata
 				for key in parsedData["metadata"].keys() :
-					value = parsedData["metadata"].get(key)[0]
+					value = parsedData["metadata"].get(key)	#[0]
 					if isinstance(value, list):
 						value = ""
 						for meta_value in parsedData["metadata"].get(key)[0]:
@@ -130,6 +131,9 @@ def main(argv = None):
 
 				file_parsed_data[filename] = set(file_parsed)
 				union_feature_names = union_feature_names | set(file_parsed_data[filename])
+
+			except KeyError:
+				continue
 
 		total_num_features = len(union_feature_names)
 
