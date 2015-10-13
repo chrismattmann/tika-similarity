@@ -43,10 +43,10 @@ D3 visualization
 
 ### cluster viz 
 ```
-* python cluster-scores.py (for generating cluster viz)
+* python cluster-scores.py [-t threshold_value] (for generating cluster viz)
 * open cluster-d3.html(or dynamic-cluster.html for interactive viz) in your browser
 ```
-You can set **threshold** (default threshold = 0.01) in cluster-scores.py
+Default **threshold** value is 0.01.
 
 <img src="https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/cluster.png" width = "200px" height = "200px" style = "float:left">
 <img src="https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/interactive-cluster.png" width = "200px" height = "200px" style = "float:right">
