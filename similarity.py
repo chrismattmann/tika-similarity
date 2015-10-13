@@ -122,7 +122,7 @@ def main(argv = None):
 
 
 		# now compute the specific resemblance and containment scores
-		for filename in file_parsed_data.keys():
+		for filename in file_parsed_data:
 			overlap = {}
 			overlap = set(file_parsed_data[filename].keys()) & set(union_feature_names) 
 			resemblance_scores[filename] = float(len(overlap))/total_num_features
@@ -145,7 +145,7 @@ def main(argv = None):
 
 def convertUnicode( fileDict ) :
 	fileUTFDict = {}
-	for key in fileDict.keys():
+	for key in fileDict:
 		if isinstance(key, unicode) :
 			key = key.encode('utf-8').strip()
 		value = fileDict.get(key)

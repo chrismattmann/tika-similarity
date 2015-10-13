@@ -115,28 +115,32 @@ def main(argv = None):
 			file_parsed = []
 			# first compute the union of all features
 			parsedData = parser.from_file(filename)
-			if parsedData:
+			
+			try:
 				file_metadata[filename] = parsedData["metadata"]
 
-			#get key : value of metadata
-			for key in parsedData["metadata"].keys() :
-				value = parsedData["metadata"].get(key)[0]
-				if isinstance(value, list):
-					value = ""
-					for meta_value in parsedData["metadata"].get(key)[0]:
-						value += meta_value
+				#get key : value of metadata
+				for key in parsedData["metadata"]:		 
+					value = parsedData["metadata"][key]
+					if isinstance(value, list):
+						value = ""
+						for meta_value in parsedData["metadata"].get(key)[0]:
+							value += meta_value
 
-				file_parsed.append(str(key.strip(' ').encode('utf-8') + ": " + value.strip(' ').encode('utf-8')))
+					file_parsed.append(str(key.strip(' ').encode('utf-8') + ": " + value.strip(' ').encode('utf-8')))
 
-			file_parsed_data[filename] = set(file_parsed)
-			union_feature_names = union_feature_names | set(file_parsed_data[filename])
+				file_parsed_data[filename] = set(file_parsed)
+				union_feature_names = union_feature_names | set(file_parsed_data[filename])
+
+			except KeyError:
+				continue
 
 		total_num_features = len(union_feature_names)
 
 
 
 		# now compute the specific resemblance and containment scores
-		for filename in file_parsed_data.keys():
+		for filename in file_parsed_data:		
 			overlap = {}
 			overlap = file_parsed_data[filename] & set(union_feature_names) 
 			resemblance_scores[filename] = float(len(overlap))/total_num_features
@@ -157,7 +161,7 @@ def main(argv = None):
 
 def convertUnicode( fileDict ) :
 	fileUTFDict = {}
-	for key in fileDict.keys():
+	for key in fileDict:
 		if isinstance(key, unicode) :
 			key = key.encode('utf-8').strip()
 		value = fileDict.get(key)
