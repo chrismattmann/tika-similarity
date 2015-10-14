@@ -126,7 +126,7 @@ def main(argv = None):
 		for filename in file_parsed_data:
 			overlap = {}
 			overlap = set(file_parsed_data[filename].keys()) & set(union_feature_names)
-			resemblance_scores[filename_stripped] = float(len(overlap))/total_num_features
+			resemblance_scores[filename] = float(len(overlap))/total_num_features
 
 		sorted_resemblance_scores = sorted(resemblance_scores.items(), key=operator.itemgetter(1), reverse=True)
 
