@@ -19,6 +19,7 @@
 
 import tika
 from tika import parser
+from pprint import pprint
 import os
 import sys
 import getopt
@@ -115,7 +116,7 @@ def main(argv = None):
 			file_parsed = []
 			# first compute the union of all features
 			parsedData = parser.from_file(filename)
-		        filename_stripped = filename.replace(",", "")
+			filename_stripped = filename.replace(",", "")
 			try:
 				file_metadata[filename_stripped] = parsedData["metadata"]
 
@@ -123,9 +124,7 @@ def main(argv = None):
 				for key in parsedData["metadata"]:
 					value = parsedData["metadata"][key]
 					if isinstance(value, list):
-						value = ""
-						for meta_value in parsedData["metadata"].get(key)[0]:
-							value += meta_value
+						value = ", ".join(parsedData["metadata"][key])
 
 					file_parsed.append(str(key.strip(' ').encode('utf-8') + ": " + value.strip(' ').encode('utf-8')))
 
@@ -136,8 +135,8 @@ def main(argv = None):
 				continue
 
 		total_num_features = len(union_feature_names)
-
-
+		
+				
 
 		# now compute the specific resemblance and containment scores
 		for filename in file_parsed_data:
