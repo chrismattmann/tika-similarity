@@ -74,6 +74,7 @@ def main(argv = None):
 		dirFile = ""
 		filenames = []
 		filename_list = []
+		directory_flag = 0
 
 		for option, value in opts:
 			if option in ('-h', '--help'):
@@ -90,19 +91,26 @@ def main(argv = None):
 
 			elif option in ('-f', '--directory'):
 				dirFile = value
-				filenames=[filename for filename in os.listdir(dirFile) if not filename.startswith('.')]
+				directory_flag = 1
+				for root, dirnames, files in os.walk(dirFile):
+					dirnames[:] = [d for d in dirnames if not d.startswith('.')]
+					for filename in files:
+						if not filename.startswith('.'):							
+							filename_list.append(os.path.join(root, filename))				
+
 			elif option in ('-v', '--verbose'):
 				global _verbose
 				_verbose = True
 
 		#format filename
-		filenames = [x.strip() for x in filenames]
-		filenames = [filenames[k].strip('\'\n') for k in range(len(filenames))]
-		for filename in filenames :
-			if not os.path.isfile(os.path.join(dirFile, filename)):
-				continue
-			filename = os.path.join(dirFile, filename) if dirFile else filename
-			filename_list.append(filename)
+		if directory_flag == 0:			
+			filenames = [x.strip() for x in filenames]
+			filenames = [filenames[k].strip('\'\n') for k in range(len(filenames))]
+			for filename in filenames :
+				if not os.path.isfile(os.path.join(dirFile, filename)):
+					continue
+				filename = os.path.join(dirFile, filename) if dirFile else filename
+				filename_list.append(filename)
 
 		if len(filename_list) <2 :
 			raise _Usage("you need to type in at least two valid files")
