@@ -24,7 +24,7 @@ except ImportError:
 
 import sys
 
-default_threshold = 0.001
+default_threshold = 0.01
 
 usage = "Usage: python cluster-scores.py [-t threshold_value]"
 
