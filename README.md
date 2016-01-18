@@ -88,6 +88,8 @@ Contributors
 ============
 * Chris A. Mattmann, JPL
 * Dongni Zhao, USC
+* Harshavardhan Manjunatha, USC
+* Ayberk Yılmaz, USC
 
 
 License
