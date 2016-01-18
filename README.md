@@ -21,12 +21,15 @@ You can also check out [ETLlib](https://github.com/chrismattmann/etllib/tree/mas
 How to use
 ===
 
+Optional: Compute similarity only on specific IANA MIME Type(s) inside a directory using **--accept**
+
 Key-based comparison
 --------------------
 This compares metadata feature names as a golden feature set
 ```
 #!/usr/bin/env python2.7
-python similarity.py -f [directory of files] or 
+python similarity.py -f [directory of files] [--accept [jpeg pdf etc...]]
+or 
 python similarity.py -c [file1 file2 file3 ...]
 ```
 Value-based comparison
@@ -34,7 +37,8 @@ Value-based comparison
 This compares metadata feature names together with its value as a golden feature set
 ```
 #!/usr/bin/env python2.7
-python value-similarity.py -f [directory of files] or 
+python value-similarity.py -f [directory of files] [--accept [jpeg pdf etc...]]
+or 
 python value-similarity.py -c [file1 file2 file3 ...]
 ```
 

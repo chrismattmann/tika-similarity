@@ -39,10 +39,13 @@ Options:
 	Work verbosely rather than silently.
 
 -f, --directory [path to directory]
-	read .jpg file from this directory
+	read files from this directory recursively
 
 -c, --file [file1 file2]
 	compare similarity of given files
+
+--accept [jpeg pdf etc...]
+	Optional: compute similarity only on specified IANA MIME Type(s)
 
 -h --help
 	show help on the screen
@@ -64,7 +67,7 @@ def main(argv = None):
 
 	try:
 		try:
-			opts, args = getopt.getopt(argv[1:], 'hvf:c:', ['help', 'verbose', 'directory=', 'file=' ])
+			opts, args = getopt.getopt(argv[1:], 'hvf:c:a:', ['help', 'verbose', 'directory=', 'file=', 'accept=' ])
 		except getopt.error, msg:
 			raise _Usage(msg)
 
@@ -74,6 +77,7 @@ def main(argv = None):
 		dirFile = ""
 		filenames = []
 		filename_list = []
+		allowed_mime_types = []
 		directory_flag = 0
 
 		for option, value in opts:
@@ -81,7 +85,6 @@ def main(argv = None):
 				raise _Usage(_helpMessage)
 
 			elif option in ('-c', '--file'):
-
 				#extract file names from command line
 				if '-c' in argv :
 					index_of_file_option = argv.index('-c')
@@ -96,7 +99,12 @@ def main(argv = None):
 					dirnames[:] = [d for d in dirnames if not d.startswith('.')]
 					for filename in files:
 						if not filename.startswith('.'):							
-							filename_list.append(os.path.join(root, filename))				
+							filename_list.append(os.path.join(root, filename))
+
+			elif option in ('--accept'):
+				#extract accepted mime types from command line
+				index_of_mime_type_option = argv.index('--accept')
+				allowed_mime_types = argv[index_of_mime_type_option+1 : ]
 
 			elif option in ('-v', '--verbose'):
 				global _verbose
@@ -114,6 +122,12 @@ def main(argv = None):
 
 		if len(filename_list) <2 :
 			raise _Usage("you need to type in at least two valid files")
+
+		#allow only files with specifed mime types
+		if len(allowed_mime_types) != 0:
+			filename_list = [filename for filename in filename_list if parser.from_file(filename) and str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in allowed_mime_types]
+		else:
+			print "Accepting all MIME Types....."
 
 		union_feature_names = set()
 		file_parsed_data = {}
