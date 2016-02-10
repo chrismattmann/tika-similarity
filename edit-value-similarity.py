@@ -10,6 +10,7 @@ def stringify(attribute_value):
 
 def computeScores(inputDir, outCSV, acceptTypes, allKeys):
 
+    na_metadata = ["resourceName"]
     with open(outCSV, "wb") as outF:
         a = csv.writer(outF, delimiter=',')
         a.writerow(["x-coordinate","y-coordinate","Similarity_score"])
@@ -73,8 +74,7 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
 
 
 if __name__ == "__main__":
-
-    na_metadata = ["resourceName"]
+    
     argParser = argparse.ArgumentParser('Edit Distance Similarity based on Metadata values')
     argParser.add_argument('--inputDir', required=True, help='path to directory containing files')
     argParser.add_argument('--outCSV', required=True, help='path to directory for storing the output CSV File, containing pair-wise Similarity Scores based on edit distance')
