@@ -45,9 +45,10 @@ python value-similarity.py -c [file1 file2 file3 ...]
 
 Edit Distance comparison on Metadata Values
 -------------------------------------------
-This computes pairwise similarity scores based on Edit Distance Similarity.
-**Similarity Score of 1 implies an identical pair of documents**
-**Clustering & Visualization is Pending**
+- This computes pairwise similarity scores based on Edit Distance Similarity.
+- **Similarity Score of 1 implies an identical pair of documents.**
+- **Clustering & Visualization is Pending.**
+
 ```
 #!/usr/bin/env python2.7
 python edit-value-similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]] [--allKeys]
@@ -67,9 +68,10 @@ Eg: python edit-value-similarity.py --inputDir /path/to/files --outCSV /path/to/
 
 Cosine Distance comparison on Metadata Values
 ---------------------------------------------
-This computes pairwise similarity scores based on Cosine Distance Similarity.
-**Similarity Score of 1 implies an identical pair of documents**
-**Clustering & Visualization is Pending**
+- This computes pairwise similarity scores based on Cosine Distance Similarity.
+- **Similarity Score of 1 implies an identical pair of documents.**
+- **Clustering & Visualization is Pending.**
+
 ```
 #!/usr/bin/env python2.7
 python cosine_similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]]
