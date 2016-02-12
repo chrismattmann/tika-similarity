@@ -1,4 +1,4 @@
-[Apache Tika](http://tika.apache.org/) Jaccard Based File Similarity
+[Apache Tika](http://tika.apache.org/) File Similarity based on Jaccard distance, Edit distance & Cosine distance
 ===
 
 This project demonstrates using the [Tika-Python](http://github.com/chrismattmann/tika-python) package (Python port of Apache Tika) to compute file similarity based on Metadata features.
@@ -53,7 +53,7 @@ python edit-value-similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--acce
 
 --inputDir INPUTDIR  path to directory containing files
 
---outCSV OUTCSV      path to directory for storing the output CSV File, containing pair-wise Similarity Scores based on edit distance
+--outCSV OUTCSV      path to directory for storing the output CSV File, containing pair-wise Similarity Scores based on Edit distance
 
 --accept [ACCEPT]    Optional: compute similarity only on specified IANA MIME Type(s)
 
@@ -63,6 +63,22 @@ python edit-value-similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--acce
 
 ```
 Eg: python edit-value-similarity.py --inputDir /path/to/files --outCSV /path/to/output.csv --accept png pdf gif
+```
+
+Cosine Distance comparison on Metadata Values
+---------------------------------------------
+This computes pairwise similarity scores based on Cosine Distance Similarity.
+**Similarity Score of 1 implies an identical pair of documents**
+```
+#!/usr/bin/env python2.7
+python cosine_similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]]
+
+--inputDir INPUTDIR  path to directory containing files
+
+--outCSV OUTCSV      path to directory for storing the output CSV File, containing pair-wise Similarity Scores based on Cosine distance
+
+--accept [ACCEPT]    Optional: compute similarity only on specified IANA MIME Type(s)
+
 ```
 
 D3 visualization
@@ -112,6 +128,7 @@ Contributors
 * Chris A. Mattmann, JPL
 * Dongni Zhao, USC
 * Harshavardhan Manjunatha, USC
+* Thamme Gowda, USC
 * Ayberk Yılmaz, USC
 
 

@@ -23,7 +23,7 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
                 if not filename.startswith('.'):
                     filename_list.append(os.path.join(root, filename))
 
-        filename_list = [filename for filename in filename_list if parser.from_file(filename)]       #print "Debug, total files in directory", len(filename_list)
+        filename_list = [filename for filename in filename_list if parser.from_file(filename)]
         if acceptTypes:
             filename_list = [filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes]
         else:
@@ -32,9 +32,7 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
         files_tuple = itertools.combinations(filename_list, 2)
         for file1, file2 in files_tuple:
 
-            row_edit_distance = []
-            row_edit_distance.append(file1)
-            row_edit_distance.append(file2)
+            row_edit_distance = [file1, file2]            
 
             file1_parsedData = parser.from_file(file1)
             file2_parsedData = parser.from_file(file2)
@@ -48,10 +46,8 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
                 file1_feature_value = stringify(file1_parsedData["metadata"][feature])
                 file2_feature_value = stringify(file2_parsedData["metadata"][feature])
 
-                #print feature                print file1_feature_value                    print file2_feature_value
-                              
                 feature_distance = float(editdistance.eval(file1_feature_value, file2_feature_value))/(len(file1_feature_value) if len(file1_feature_value) > len(file2_feature_value) else len(file2_feature_value))
-                #print feature_distance, "\n\n"                    
+                    
                 file_edit_distance += feature_distance
 
             
