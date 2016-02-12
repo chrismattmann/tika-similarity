@@ -47,6 +47,7 @@ Edit Distance comparison on Metadata Values
 -------------------------------------------
 This computes pairwise similarity scores based on Edit Distance Similarity.
 **Similarity Score of 1 implies an identical pair of documents**
+**Clustering & Visualization is Pending**
 ```
 #!/usr/bin/env python2.7
 python edit-value-similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]] [--allKeys]
@@ -60,7 +61,6 @@ python edit-value-similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--acce
 --allKeys            Optional: compute edit distance across all metadata keys of 2 documents, else default to only intersection of metadata keys
 
 ```
-
 ```
 Eg: python edit-value-similarity.py --inputDir /path/to/files --outCSV /path/to/output.csv --accept png pdf gif
 ```
@@ -69,6 +69,7 @@ Cosine Distance comparison on Metadata Values
 ---------------------------------------------
 This computes pairwise similarity scores based on Cosine Distance Similarity.
 **Similarity Score of 1 implies an identical pair of documents**
+**Clustering & Visualization is Pending**
 ```
 #!/usr/bin/env python2.7
 python cosine_similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]]
@@ -80,6 +81,7 @@ python cosine_similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [
 --accept [ACCEPT]    Optional: compute similarity only on specified IANA MIME Type(s)
 
 ```
+
 
 D3 visualization
 ----------------
