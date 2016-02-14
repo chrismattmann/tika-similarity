@@ -1,3 +1,22 @@
+#!/usr/bin/env python2.7
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+
 from tika import parser
 import os, editdistance, itertools, argparse, csv
 
@@ -23,7 +42,7 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
                 if not filename.startswith('.'):
                     filename_list.append(os.path.join(root, filename))
 
-        filename_list = [filename for filename in filename_list if parser.from_file(filename)]       #print "Debug, total files in directory", len(filename_list)
+        filename_list = [filename for filename in filename_list if parser.from_file(filename)]
         if acceptTypes:
             filename_list = [filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes]
         else:
@@ -32,9 +51,7 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
         files_tuple = itertools.combinations(filename_list, 2)
         for file1, file2 in files_tuple:
 
-            row_edit_distance = []
-            row_edit_distance.append(file1)
-            row_edit_distance.append(file2)
+            row_edit_distance = [file1, file2]            
 
             file1_parsedData = parser.from_file(file1)
             file2_parsedData = parser.from_file(file2)
@@ -48,10 +65,8 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
                 file1_feature_value = stringify(file1_parsedData["metadata"][feature])
                 file2_feature_value = stringify(file2_parsedData["metadata"][feature])
 
-                #print feature                print file1_feature_value                    print file2_feature_value
-                              
                 feature_distance = float(editdistance.eval(file1_feature_value, file2_feature_value))/(len(file1_feature_value) if len(file1_feature_value) > len(file2_feature_value) else len(file2_feature_value))
-                #print feature_distance, "\n\n"                    
+                    
                 file_edit_distance += feature_distance
 
             
