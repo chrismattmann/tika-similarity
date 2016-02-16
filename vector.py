@@ -30,21 +30,27 @@ class Vector:
     '''
     An instance of this class represents a vector in n-dimensional space
     '''
+    # class variable 
+    #maxFeatureLen = {}
 
-    def __init__(self, features):
+    def __init__(self, features=None):
         '''
         Create a vector
         @param metadata features 
         '''
-        na_metadata = ["resourceName"]
-        for na in na_metadata:
-            features.pop(na, None)
 
         self.features = {}
-        for key in features:
-            self.features[key] = len(stringify(features[key]))
+        
+        if features:
+            na_metadata = ["resourceName"]
+            for na in na_metadata:
+                features.pop(na, None)
 
-    
+            for key in features:
+                self.features[key] = len(stringify(features[key]))
+
+         
+
     '''
     def __str__(self):        
         vector_str = "( {0} ): \n".format(self.)
@@ -81,3 +87,24 @@ class Vector:
         cos 0 = 1 implies identical documents
         '''
         return self.dotProduct(v2) / (self.getMagnitude() * v2.getMagnitude())
+
+
+    def euclidean_dist(self, anotherVector):
+        '''
+        dist = ((x1-x2)^2 + (y1-y2)^2 + (z1-z2)^2)^(0.5)
+        '''
+        intersect_features = set(self.features) & set(anotherVector.features)
+
+        dist_sum = 0.0
+        for feature in intersect_features:
+            dist_sum += (self.features[feature] - anotherVector.features[feature]) ** 2
+
+        setA = set(self.features) - intersect_features
+        for feature in setA:
+            dist_sum += self.features[feature] ** 2
+
+        setB = set(anotherVector.features) - intersect_features
+        for feature in setB:
+            dist_sum += anotherVector.features[feature] ** 2
+
+        return math.sqrt(dist_sum)
