@@ -30,18 +30,17 @@ class Vector:
     '''
     An instance of this class represents a vector in n-dimensional space
     '''
-    # class variable 
-    #maxFeatureLen = {}
-
-    def __init__(self, features=None):
+    
+    def __init__(self, filename=None, features=None):
         '''
         Create a vector
         @param metadata features 
         '''
-
         self.features = {}
         
-        if features:
+        if filename and features:
+            self.filename = filename
+
             na_metadata = ["resourceName"]
             for na in na_metadata:
                 features.pop(na, None)
@@ -49,7 +48,6 @@ class Vector:
             for key in features:
                 self.features[key] = len(stringify(features[key]))
 
-         
 
     '''
     def __str__(self):        
