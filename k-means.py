@@ -42,7 +42,7 @@ def filterFiles(inputDir, acceptTypes):
     return filename_list
 
 
-def compute_Mean(list_of_points):    
+def compute_Mean(list_of_points):
 
     new_centroid = Vector()
     for feature in union_features:
@@ -101,17 +101,12 @@ def K_Means(list_of_points, no_centroids):
 
         centroid.features = copy.deepcopy(random_point.features)
     
-
-    # perform iterations till convergence    # default 300
-
-    #print centroids[0].features    #print list_of_points[0].features    #print list_of_points[0].euclidean_dist(centroids[0])
-
-    
+        
     clusters = cluster_assignment(list_of_points, centroids)
 
     # generates different clusters each time
     # leverage the same "Dongni" compute-clusters.py
-    for i in range(0, 300):
+    for i in range(0, 300):             # perform iterations till convergence global minima    # default 300
 
         new_centroids =  move_centroid(clusters)     #'''centroids vs new_centroids, use centroids again???'''
 
@@ -144,7 +139,7 @@ if __name__ == "__main__":
     argParser.add_argument('--accept', nargs='+', type=str, help='Optional: compute similarity only on specified IANA MIME Type(s)')
     args = argParser.parse_args()
 
-    if args.inputDir:# and args.outCSV:
+    if args.inputDir:# and args.outJSON:
 
         list_of_points = []
         for eachFile in filterFiles(args.inputDir, args.accept):
@@ -153,35 +148,45 @@ if __name__ == "__main__":
         for point in list_of_points:
             union_features |= set(point.features.keys())
 
-        print list_of_points[0].filename
+        
+        global_minimas = []
+        for k in range(2, 10):
 
-        #global_minimas = []
+            global_minima = K_Means(list_of_points, k)
 
-        #for k in range(2, 10):
+            for i in range(0, 100):
+                iteration = K_Means(list_of_points, k)
 
-        global_minima = K_Means(list_of_points, 3)
+                if iteration[0] < global_minima[0]:
+                    global_minima = iteration
 
-        for i in range(0, 100):
-            iteration = K_Means(list_of_points, 3)
+            global_minimas.append(global_minima)
 
-            if iteration[0] < global_minima[0]:
-                global_minima = iteration
+        
+        
+        distortion_diffs = []
+        for i in range(0, (len(global_minimas)-1) ):
+            
+            print global_minimas[i][0]
 
-        print global_minima
+            distortion_diffs.append((global_minimas[i][0] - global_minimas[i+1][0]))
+
+
+        true_global_minima = global_minimas[distortion_diffs.index(max(distortion_diffs)) + 1]
+
 
         with open("clusters.json", "w") as jsonF:
 
             json_data = {}
-
             cluster = []
-            for key in global_minima[1]:    #clusters
+            for key in true_global_minima[1]:    #clusters
 
                 cluster_Dict = {}
                 children = []
-                for point in global_minima[1][key]:
+                for point in true_global_minima[1][key]:
 
                     node = {}
-                    node["metadata"] = parser.from_file(point.filename)
+                    node["metadata"] = json.dumps(parser.from_file(point.filename)["metadata"])
                     node["name"] = point.filename.split('/')[-1]
                     node["path"] = point.filename                    
                     children.append(node)
@@ -191,9 +196,8 @@ if __name__ == "__main__":
 
                 cluster.append(cluster_Dict)
 
-            json_file["children"] = cluster
-            json_file["name"] = "clusters"
-
+            json_data["children"] = cluster
+            json_data["name"] = "clusters"
         
             json.dump(json_data, jsonF)
 
