@@ -167,12 +167,16 @@ if __name__ == "__main__":
         distortion_diffs = []
         for i in range(0, (len(global_minimas)-1) ):
             
-            print "k = ", (i+2),"distortion value", global_minimas[i][0]
-
+            print "k =", (i+2),"distortion value", global_minimas[i][0]
             distortion_diffs.append((global_minimas[i][0] - global_minimas[i+1][0]))
 
+        print "k =", (i+3),"distortion value", global_minimas[i+1][0]
 
-        true_global_minima = global_minimas[distortion_diffs.index(max(distortion_diffs)) + 1]
+
+        chosen_k = distortion_diffs.index(max(distortion_diffs)) + 1 
+        true_global_minima = global_minimas[chosen_k]
+
+        print "Based on change in distortion value, Chosen k =", (chosen_k+2)
 
 
         with open("clusters.json", "w") as jsonF:
