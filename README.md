@@ -27,7 +27,7 @@ Optional: Compute similarity only on specific IANA MIME Type(s) inside a directo
 Key-based comparison
 --------------------
 This compares metadata feature names as a golden feature set
-```python
+```
 #!/usr/bin/env python2.7
 python similarity.py -f [directory of files] [--accept [jpeg pdf etc...]]
 or 
@@ -36,7 +36,7 @@ python similarity.py -c [file1 file2 file3 ...]
 Value-based comparison
 ----------------------
 This compares metadata feature names together with its value as a golden feature set
-```python
+```
 #!/usr/bin/env python2.7
 python value-similarity.py -f [directory of files] [--accept [jpeg pdf etc...]]
 or 
@@ -49,7 +49,7 @@ Edit Distance comparison on Metadata Values
 - **Similarity Score of 1 implies an identical pair of documents.**
 - **Clustering & Visualization is Pending.**
 
-```python
+```
 #!/usr/bin/env python2.7
 python edit-value-similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]] [--allKeys]
 
@@ -62,7 +62,7 @@ python edit-value-similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--acce
 --allKeys            Optional: compute edit distance across all metadata keys of 2 documents, else default to only intersection of metadata keys
 
 ```
-```python
+```
 Eg: python edit-value-similarity.py --inputDir /path/to/files --outCSV /path/to/output.csv --accept png pdf gif
 ```
 
@@ -72,7 +72,7 @@ Cosine Distance comparison on Metadata Values
 - **Similarity Score of 1 implies an identical pair of documents.**
 - **Clustering & Visualization is Pending.**
 
-```python
+```
 #!/usr/bin/env python2.7
 python cosine_similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]]
 
