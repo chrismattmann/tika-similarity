@@ -150,11 +150,11 @@ if __name__ == "__main__":
 
         
         global_minimas = []
-        for k in range(2, 10):
+        for k in range(2, 5):
 
             global_minima = K_Means(list_of_points, k)
 
-            for i in range(0, 100):
+            for i in range(0, 50):
                 iteration = K_Means(list_of_points, k)
 
                 if iteration[0] < global_minima[0]:
@@ -167,7 +167,7 @@ if __name__ == "__main__":
         distortion_diffs = []
         for i in range(0, (len(global_minimas)-1) ):
             
-            print global_minimas[i][0]
+            print "k = ", (i+2),"distortion value", global_minimas[i][0]
 
             distortion_diffs.append((global_minimas[i][0] - global_minimas[i+1][0]))
 
@@ -178,7 +178,7 @@ if __name__ == "__main__":
         with open("clusters.json", "w") as jsonF:
 
             json_data = {}
-            cluster = []
+            clusters = []
             for key in true_global_minima[1]:    #clusters
 
                 cluster_Dict = {}
@@ -188,15 +188,15 @@ if __name__ == "__main__":
                     node = {}
                     node["metadata"] = json.dumps(parser.from_file(point.filename)["metadata"])
                     node["name"] = point.filename.split('/')[-1]
-                    node["path"] = point.filename                    
+                    node["path"] = point.filename
                     children.append(node)
                 
                 cluster_Dict["children"] = children
                 cluster_Dict["name"] = "cluster" + str(key)
 
-                cluster.append(cluster_Dict)
+                clusters.append(cluster_Dict)
 
-            json_data["children"] = cluster
+            json_data["children"] = clusters
             json_data["name"] = "clusters"
         
             json.dump(json_data, jsonF)
