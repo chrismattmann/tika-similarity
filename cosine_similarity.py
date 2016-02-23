@@ -53,8 +53,8 @@ def computeScores(inputDir, outCSV, acceptTypes):
             file1_parsedData = parser.from_file(file1)
             file2_parsedData = parser.from_file(file2)
 
-            v1 = Vector(file1_parsedData["metadata"])
-            v2 = Vector(file2_parsedData["metadata"])
+            v1 = Vector(file1, file1_parsedData["metadata"])
+            v2 = Vector(file2, file2_parsedData["metadata"])
 
             row_cosine_distance.append(v1.cosTheta(v2))            
 
