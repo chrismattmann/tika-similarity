@@ -65,10 +65,15 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
                 file1_feature_value = stringify(file1_parsedData["metadata"][feature])
                 file2_feature_value = stringify(file2_parsedData["metadata"][feature])
 
-                feature_distance = float(editdistance.eval(file1_feature_value, file2_feature_value))/(len(file1_feature_value) if len(file1_feature_value) > len(file2_feature_value) else len(file2_feature_value))
-                    
+                if(len(file1_feature_value) == 0 or len(file2_feature_value) == 0):
+                    feature_distance = 0
+                
+                if(len(file1_feature_value) != 0 and len(file2_feature_value) != 0):
+                
+                    feature_distance = float(editdistance.eval(file1_feature_value, file2_feature_value))/(len(file1_feature_value) if len(file1_feature_value) > len(file2_feature_value) else len(file2_feature_value))
+                
                 file_edit_distance += feature_distance
-
+            
             
             if allKeys:
                 file1_only_features = set(file1_parsedData["metadata"].keys()) - set(intersect_features)
