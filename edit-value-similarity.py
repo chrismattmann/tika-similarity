@@ -65,7 +65,10 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
                 file1_feature_value = stringify(file1_parsedData["metadata"][feature])
                 file2_feature_value = stringify(file2_parsedData["metadata"][feature])
 
-                feature_distance = float(editdistance.eval(file1_feature_value, file2_feature_value))/(len(file1_feature_value) if len(file1_feature_value) > len(file2_feature_value) else len(file2_feature_value))
+                if len(file1_feature_value) == 0 and len(file2_feature_value) == 0:
+                    feature_distance = 0.0
+                else:
+                    feature_distance = float(editdistance.eval(file1_feature_value, file2_feature_value))/(len(file1_feature_value) if len(file1_feature_value) > len(file2_feature_value) else len(file2_feature_value))
                     
                 file_edit_distance += feature_distance
 
@@ -77,7 +80,7 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
                 file2_only_features = set(file2_parsedData["metadata"].keys()) - set(intersect_features)
                 file2_only_features = [feature for feature in file2_only_features if feature not in na_metadata]
 
-                file_edit_distance += len(file1_only_features) + len(file2_only_features)
+                file_edit_distance += len(file1_only_features) + len(file2_only_features)       # increment by 1 for each disjunct feature in (A-B) & (B-A), file1_disjunct_feature_value/file1_disjunct_feature_value = 1
                 file_edit_distance /= float(len(intersect_features) + len(file1_only_features) + len(file2_only_features))
 
             else:
