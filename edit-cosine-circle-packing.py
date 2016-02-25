@@ -48,11 +48,13 @@ for i in range(len(row)):
         data[column[0]].append(second)
 
 clusterList = []
+i=0
 for elem in data.keys():
     first={}
-    first["name"]=elem
+    first["name"]="cluster "+str(i)
     first["children"]=data[elem]
     clusterList.append(first)
+    i+=1
 
 
 print json.dumps(clusterList, sort_keys=True, indent=4, separators=(',', ': '))
