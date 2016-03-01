@@ -55,8 +55,10 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
 
             file1_parsedData = parser.from_file(file1)
             file2_parsedData = parser.from_file(file2)
-    
-            intersect_features = set(file1_parsedData["metadata"].keys()) & set(file2_parsedData["metadata"].keys())                
+            try:
+                intersect_features = set(file1_parsedData["metadata"].keys()) & set(file2_parsedData["metadata"].keys())  
+            except KeyError:
+                continue              
             intersect_features = [feature for feature in intersect_features if feature not in na_metadata ]
 
             file_edit_distance = 0.0
