@@ -30,7 +30,7 @@ def filterFiles(inputDir, acceptTypes):
             if not filename.startswith('.'):
                 filename_list.append(os.path.join(root, filename))
 
-    filename_list = [filename for filename in filename_list if parser.from_file(filename)]
+    filename_list = [filename for filename in filename_list if "metadata" in parser.from_file(filename)]
     if acceptTypes:
         filename_list = [filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes]
     else:
@@ -52,11 +52,10 @@ def computeScores(inputDir, outCSV, acceptTypes):
             
             file1_parsedData = parser.from_file(file1)
             file2_parsedData = parser.from_file(file2)
-            try:
-                v1 = Vector(file1, file1_parsedData["metadata"])
-                v2 = Vector(file2, file2_parsedData["metadata"])
-            except KeyError:
-                continue
+           
+            v1 = Vector(file1, file1_parsedData["metadata"])
+            v2 = Vector(file2, file2_parsedData["metadata"])
+            
 
             row_cosine_distance.append(v1.cosTheta(v2))            
 
