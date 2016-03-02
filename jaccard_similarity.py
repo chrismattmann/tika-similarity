@@ -17,6 +17,8 @@
 #
 #
 
+# Computing pairwise jaccard similarity for a given directory of files
+
 from tika import parser
 import os, itertools, argparse, csv
 
@@ -62,9 +64,9 @@ def computeScores(inputDir, outCSV, acceptTypes):
 
 if __name__ == "__main__":
 
-    argParser = argparse.ArgumentParser('Cosine similarity based on Metadata values')
+    argParser = argparse.ArgumentParser('Jaccard similarity based file metadata')
     argParser.add_argument('--inputDir', required=True, help='path to directory containing files')
-    argParser.add_argument('--outCSV', required=True, help='path to directory for storing the output CSV File, containing pair-wise Cosine similarity Scores')
+    argParser.add_argument('--outCSV', required=True, help='path to directory for storing the output CSV File, containing pair-wise Jaccard similarity Scores')
     argParser.add_argument('--accept', nargs='+', type=str, help='Optional: compute similarity only on specified IANA MIME Type(s)')
     args = argParser.parse_args()
 
