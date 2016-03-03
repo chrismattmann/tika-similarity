@@ -19,6 +19,8 @@
 
 from tika import parser
 import os, editdistance, itertools, argparse, csv
+from requests import ConnectionError
+from time import sleep
 
 def stringify(attribute_value):
     if isinstance(attribute_value, list):
@@ -41,8 +43,10 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
             for filename in files:
                 if not filename.startswith('.'):
                     filename_list.append(os.path.join(root, filename))
+        
+        filename_list = [filename for filename in filename_list if "metadata" in parser.from_file(filename)]
+        
 
-        filename_list = [filename for filename in filename_list if parser.from_file(filename)]
         if acceptTypes:
             filename_list = [filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes]
         else:
@@ -50,45 +54,48 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
 
         files_tuple = itertools.combinations(filename_list, 2)
         for file1, file2 in files_tuple:
+            try:           
+                row_edit_distance = [file1, file2]            
 
-            row_edit_distance = [file1, file2]            
+                file1_parsedData = parser.from_file(file1)
+                file2_parsedData = parser.from_file(file2)
+                
+                intersect_features = set(file1_parsedData["metadata"].keys()) & set(file2_parsedData["metadata"].keys()) 
+                            
+                intersect_features = [feature for feature in intersect_features if feature not in na_metadata ]
 
-            file1_parsedData = parser.from_file(file1)
-            file2_parsedData = parser.from_file(file2)
-    
-            intersect_features = set(file1_parsedData["metadata"].keys()) & set(file2_parsedData["metadata"].keys())                
-            intersect_features = [feature for feature in intersect_features if feature not in na_metadata ]
+                file_edit_distance = 0.0
+                for feature in intersect_features:
 
-            file_edit_distance = 0.0
-            for feature in intersect_features:
+                    file1_feature_value = stringify(file1_parsedData["metadata"][feature])
+                    file2_feature_value = stringify(file2_parsedData["metadata"][feature])
 
-                file1_feature_value = stringify(file1_parsedData["metadata"][feature])
-                file2_feature_value = stringify(file2_parsedData["metadata"][feature])
-
-                if len(file1_feature_value) == 0 and len(file2_feature_value) == 0:
-                    feature_distance = 0.0
-                else:
-                    feature_distance = float(editdistance.eval(file1_feature_value, file2_feature_value))/(len(file1_feature_value) if len(file1_feature_value) > len(file2_feature_value) else len(file2_feature_value))
+                    if len(file1_feature_value) == 0 and len(file2_feature_value) == 0:
+                        feature_distance = 0.0
+                    else:
+                        feature_distance = float(editdistance.eval(file1_feature_value, file2_feature_value))/(len(file1_feature_value) if len(file1_feature_value) > len(file2_feature_value) else len(file2_feature_value))
                     
-                file_edit_distance += feature_distance
+                    file_edit_distance += feature_distance
 
             
-            if allKeys:
-                file1_only_features = set(file1_parsedData["metadata"].keys()) - set(intersect_features)
-                file1_only_features = [feature for feature in file1_only_features if feature not in na_metadata]
+                if allKeys:
+                    file1_only_features = set(file1_parsedData["metadata"].keys()) - set(intersect_features)
+                    file1_only_features = [feature for feature in file1_only_features if feature not in na_metadata]
 
-                file2_only_features = set(file2_parsedData["metadata"].keys()) - set(intersect_features)
-                file2_only_features = [feature for feature in file2_only_features if feature not in na_metadata]
+                    file2_only_features = set(file2_parsedData["metadata"].keys()) - set(intersect_features)
+                    file2_only_features = [feature for feature in file2_only_features if feature not in na_metadata]
 
-                file_edit_distance += len(file1_only_features) + len(file2_only_features)       # increment by 1 for each disjunct feature in (A-B) & (B-A), file1_disjunct_feature_value/file1_disjunct_feature_value = 1
-                file_edit_distance /= float(len(intersect_features) + len(file1_only_features) + len(file2_only_features))
+                    file_edit_distance += len(file1_only_features) + len(file2_only_features)       # increment by 1 for each disjunct feature in (A-B) & (B-A), file1_disjunct_feature_value/file1_disjunct_feature_value = 1
+                    file_edit_distance /= float(len(intersect_features) + len(file1_only_features) + len(file2_only_features))
 
-            else:
-                file_edit_distance /= float(len(intersect_features))    #average edit distance
+                else:
+                    file_edit_distance /= float(len(intersect_features))    #average edit distance
 
-            row_edit_distance.append(1-file_edit_distance)
-            a.writerow(row_edit_distance)
+                row_edit_distance.append(1-file_edit_distance)
+                a.writerow(row_edit_distance)
 
+            except ConnectionError:
+                sleep(1)
 
 
 if __name__ == "__main__":

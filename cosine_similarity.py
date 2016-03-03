@@ -20,6 +20,8 @@
 from tika import parser
 from vector import Vector
 import os, itertools, argparse, csv
+from requests import ConnectionError
+from time import sleep 
 
 def filterFiles(inputDir, acceptTypes):
     filename_list = []
@@ -30,7 +32,7 @@ def filterFiles(inputDir, acceptTypes):
             if not filename.startswith('.'):
                 filename_list.append(os.path.join(root, filename))
 
-    filename_list = [filename for filename in filename_list if parser.from_file(filename)]
+    filename_list = [filename for filename in filename_list if "metadata" in parser.from_file(filename)]
     if acceptTypes:
         filename_list = [filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes]
     else:
@@ -47,19 +49,22 @@ def computeScores(inputDir, outCSV, acceptTypes):
 
         files_tuple = itertools.combinations(filterFiles(inputDir, acceptTypes), 2)
         for file1, file2 in files_tuple:
-
-            row_cosine_distance = [file1, file2]
+            try:
+                row_cosine_distance = [file1, file2]
             
-            file1_parsedData = parser.from_file(file1)
-            file2_parsedData = parser.from_file(file2)
+                file1_parsedData = parser.from_file(file1)
+                file2_parsedData = parser.from_file(file2)
+           
+                v1 = Vector(file1, file1_parsedData["metadata"])
+                v2 = Vector(file2, file2_parsedData["metadata"])
+            
 
-            v1 = Vector(file1, file1_parsedData["metadata"])
-            v2 = Vector(file2, file2_parsedData["metadata"])
+                row_cosine_distance.append(v1.cosTheta(v2))            
 
-            row_cosine_distance.append(v1.cosTheta(v2))            
+                a.writerow(row_cosine_distance)  
+            except ConnectionError:
+                sleep(1)
 
-            a.writerow(row_cosine_distance)  
-    
 
 
 if __name__ == "__main__":
