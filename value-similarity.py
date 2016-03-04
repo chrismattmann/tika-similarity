@@ -25,7 +25,8 @@ import sys
 import getopt
 import json
 import operator
-
+from time import sleep
+from requests import ConnectionError
 
 _verbose = False
 _helpMessage = '''
@@ -153,6 +154,8 @@ def main(argv = None):
 				file_parsed_data[filename_stripped] = set(file_parsed)
 				union_feature_names = union_feature_names | set(file_parsed_data[filename_stripped])
 
+			except ConnectionError:
+				sleep(1)
 			except KeyError:
 				continue
 

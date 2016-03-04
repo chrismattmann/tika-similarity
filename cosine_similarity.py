@@ -31,8 +31,10 @@ def filterFiles(inputDir, acceptTypes):
         for filename in files:
             if not filename.startswith('.'):
                 filename_list.append(os.path.join(root, filename))
-
-    filename_list = [filename for filename in filename_list if "metadata" in parser.from_file(filename)]
+    try:
+        filename_list = [filename for filename in filename_list if "metadata" in parser.from_file(filename)]
+    except ConnectionError:
+        sleep(1)
     if acceptTypes:
         filename_list = [filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes]
     else:
@@ -64,7 +66,8 @@ def computeScores(inputDir, outCSV, acceptTypes):
                 a.writerow(row_cosine_distance)  
             except ConnectionError:
                 sleep(1)
-
+            except KeyError:
+                continue
 
 
 if __name__ == "__main__":
