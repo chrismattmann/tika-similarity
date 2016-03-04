@@ -43,8 +43,11 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
             for filename in files:
                 if not filename.startswith('.'):
                     filename_list.append(os.path.join(root, filename))
-        
-        filename_list = [filename for filename in filename_list if "metadata" in parser.from_file(filename)]
+        try:
+            filename_list = [filename for filename in filename_list if "metadata" in parser.from_file(filename)]
+        except ConnectionError:
+            sleep(1)
+
         
 
         if acceptTypes:
@@ -96,6 +99,8 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
 
             except ConnectionError:
                 sleep(1)
+            except KeyError:
+                continue
 
 
 if __name__ == "__main__":
