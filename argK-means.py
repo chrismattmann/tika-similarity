@@ -33,9 +33,9 @@ def filterFiles(inputDir, acceptTypes):
             if not filename.startswith('.'):
                 filename_list.append(os.path.join(root, filename))
 
-    filename_list = [filename for filename in filename_list if parser.from_file(filename)]
+    filename_list = (filename for filename in filename_list if parser.from_file(filename))
     if acceptTypes:
-        filename_list = [filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes]
+        filename_list = (filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes)
     else:
         print "Accepting all MIME Types....."
 
@@ -92,54 +92,40 @@ def move_centroid(clusters):
 def K_Means(list_of_points, no_centroids):
     
     centroids = []
-
     for i in range(no_centroids):
         centroids.append(Vector())
 
     for centroid in centroids:
         random_point = list_of_points[randint(0, (len(list_of_points)-1) )]
-
         centroid.features = copy.deepcopy(random_point.features)
+
     
-        
     clusters = cluster_assignment(list_of_points, centroids)
+    
+    for i in range(0, 300):             # iterate until convergence, default 300
+        centroids = move_centroid(clusters)
 
-    # generates different clusters each time
-    # leverage the same "Dongni" compute-clusters.py
-    for i in range(0, 300):             # perform iterations till convergence global minima    # default 300
-
-        new_centroids =  move_centroid(clusters)     #'''centroids vs new_centroids, use centroids again???'''
-
-        clusters = cluster_assignment(list_of_points, new_centroids)   #''' #old_clusters = first_clusters '''
-
-    ''' pseudocode 
-    # clusters =>   converged / recent values of clusters???
-    # new_centroids => recent value of c
-    '''
-    #print clusters
-
-    # compute & return distortion (new_centroids, clusters)
-
+        clusters = cluster_assignment(list_of_points, centroids)
+    
     distortion_sum = 0.0
     for key in clusters:
         for point in clusters[key]:
-            distortion_sum += point.euclidean_dist(new_centroids[key])
+            distortion_sum += point.euclidean_dist(centroids[key])
     distortion = distortion_sum / float(len(list_of_points))
 
     return [distortion, clusters]
     
 
-
-
 if __name__ == "__main__":
 
-    argParser = argparse.ArgumentParser('K-means Clustering of metadata values')
+    argParser = argparse.ArgumentParser('k-means Clustering of documents based on metadata values')
     argParser.add_argument('--inputDir', required=True, help='path to directory containing files')
-    #argParser.add_argument('--outJSON', required=True, help='path to directory for storing the output CSV File, containing k-means cluster assignments')
+    argParser.add_argument('--outJSON', required=True, help='/path/to/clusters.json containing k-means cluster assignments')
+    argParser.add_argument('--Kvalue', required=True, help='number of clusters to find')
     argParser.add_argument('--accept', nargs='+', type=str, help='Optional: compute similarity only on specified IANA MIME Type(s)')
     args = argParser.parse_args()
 
-    if args.inputDir:# and args.outJSON:
+    if args.inputDir and args.outJSON and args.Kvalue:
 
         list_of_points = []
         for eachFile in filterFiles(args.inputDir, args.accept):
@@ -149,45 +135,23 @@ if __name__ == "__main__":
             union_features |= set(point.features.keys())
 
         
-        global_minimas = []
-        for k in range(2, 5):
+        #Randomly initialize Centroids for each iteration to find global minima
+        global_minima = K_Means(list_of_points, int(args.Kvalue))
+        for i in range(0, 50):
+            curr_iteration = K_Means(list_of_points, int(args.Kvalue))
 
-            global_minima = K_Means(list_of_points, k)
-
-            for i in range(0, 50):
-                iteration = K_Means(list_of_points, k)
-
-                if iteration[0] < global_minima[0]:
-                    global_minima = iteration
-
-            global_minimas.append(global_minima)
-
+            if curr_iteration[0] < global_minima[0]:
+                global_minima = curr_iteration
         
-        
-        distortion_diffs = []
-        for i in range(0, (len(global_minimas)-1) ):
-            
-            print "k =", (i+2),"distortion value", global_minimas[i][0]
-            distortion_diffs.append((global_minimas[i][0] - global_minimas[i+1][0]))
 
-        print "k =", (i+3),"distortion value", global_minimas[i+1][0]
-
-
-        chosen_k = distortion_diffs.index(max(distortion_diffs)) + 1 
-        true_global_minima = global_minimas[chosen_k]
-
-        print "Based on change in distortion value, Chosen k =", (chosen_k+2)
-
-
-        with open("clusters.json", "w") as jsonF:
-
+        with open(args.outJSON, "w") as jsonF:
             json_data = {}
             clusters = []
-            for key in true_global_minima[1]:    #clusters
+            for key in global_minima[1]:    #clusters
 
                 cluster_Dict = {}
                 children = []
-                for point in true_global_minima[1][key]:
+                for point in global_minima[1][key]:
 
                     node = {}
                     node["metadata"] = json.dumps(parser.from_file(point.filename)["metadata"])
@@ -204,21 +168,3 @@ if __name__ == "__main__":
             json_data["name"] = "clusters"
         
             json.dump(json_data, jsonF)
-
-
-
-
-
-        #compute k-means from k=1 to k=10 and get cost function
-        #k =1 to k=10 cluster centroids
-
-        #get max in each dimentsion of each vector 
-
-        # run it for same value of k multiple times
-        # different values of k 
-
-        '''
-        if k-means found no clusters, remove that cluster id
-        => at iteration 1
-        or at the end of all iterations??
-        '''
