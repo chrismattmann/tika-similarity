@@ -20,7 +20,7 @@ from tika import parser
 import pandas as pd
 from vector import Vector
 from sklearn.cluster import KMeans
-import argparse, os
+import argparse, os, json
 
 
 def filterFiles(inputDir, acceptTypes):
@@ -46,9 +46,14 @@ if __name__ == "__main__":
     argParser = argparse.ArgumentParser('k-means Clustering of documents based on metadata values')
     argParser.add_argument('--inputDir', required=True, help='path to directory containing files')
     argParser.add_argument('--outJSON', required=True, help='/path/to/clusters.json containing k-means cluster assignments')
-    argParser.add_argument('--Kvalue', required=True, help='number of clusters to find')
+    argParser.add_argument('--Kvalue', help='number of clusters to find')
+    #argParser.add_argument('--findK', action='store_true', help='find the optimal value of K')
     argParser.add_argument('--accept', nargs='+', type=str, help='Optional: compute similarity only on specified IANA MIME Type(s)')
     args = argParser.parse_args()
+
+    # cluster for a particular value of K
+    # if args.inputDir and args.outJSON and args.findK:
+
 
     if args.inputDir and args.outJSON and args.Kvalue:
 
@@ -66,17 +71,51 @@ if __name__ == "__main__":
 
         kmeans = KMeans(n_clusters=int(args.Kvalue),
                         init='k-means++',
-                        max_iter=300,   #k-means convergence
-                        n_init=10,      #find global minima
-                        n_jobs=-2,    #parallelize
+                        max_iter=300,   # k-means convergence
+                        n_init=10,      # find global minima
+                        n_jobs=-2,    # parallelize
                         )
-        kmeans.fit(df)
 
-        print kmeans.labels_
+        labels = kmeans.fit_predict(df)  # unsupervised (X, y=None)
+
+        print labels    # kmeans.labels_
+
+        clusters = {}
+        for i in range(0, len(labels)):
+
+            node = { "metadata": json.dumps(list_of_points[i].features),
+                     "name": list_of_points[i].filename.split('/')[-1],
+                     "path": list_of_points[i].filename
+                     }
+            try:
+                clusters[str(labels[i])].append(node)
+            except KeyError:
+                clusters[str(labels[i])] = []
+                clusters[str(labels[i])].append(node)
+
+
+        # generate clusters.JSON
+        with open(args.outJSON, "w") as jsonF:
+
+            json_data = {"name": "clusters"}
+            children = []
+
+            for key in clusters:
+                cluster_children = {"name": "cluster"+key, "children": clusters[key]}
+                children.append(cluster_children)
+
+            json_data["children"] = children
+            json.dump(json_data, jsonF)
+
+
+        # print matplotlib
+        # user chooses k => generates k
 
 
         # find elbow
-        # generate JSON
+
+        #kmeans.transform()
+
 
         # String Length Of Course 
         # df.to_csv("bashhshs.csv", sep=',')
