@@ -20,7 +20,6 @@ from tika import parser
 import pandas as pd
 from vector import Vector
 from sklearn.cluster import KMeans
-import numpy as np
 import argparse, os
 
 
@@ -58,30 +57,26 @@ if __name__ == "__main__":
             list_of_points.append(Vector(eachFile, parser.from_file(eachFile)["metadata"]))
         
         
-        list_of_Dicts = [point.features for point in list_of_points]
+        list_of_Dicts = (point.features for point in list_of_points)
 
         df = pd.DataFrame(list_of_Dicts)
         df = df.fillna(0)
         
         print df.shape
 
-        kmeans = KMeans(n_jobs = -2, n_clusters=int(args.Kvalue))
+        kmeans = KMeans(n_clusters=int(args.Kvalue),
+                        init='k-means++',
+                        max_iter=300,   #k-means convergence
+                        n_init=10,      #find global minima
+                        n_jobs=-2,    #parallelize
+                        )
         kmeans.fit(df)
 
         print kmeans.labels_
 
-        kmeans = KMeans(n_jobs = -2, n_clusters=int(args.Kvalue))
-        kmeans.fit(df)
 
-        print kmeans.labels_
-
+        # find elbow
+        # generate JSON
 
         # String Length Of Course 
         # df.to_csv("bashhshs.csv", sep=',')
-
-        '''
-
-        each file will have n different keys, need to standardize other metadata keys values to 0
-
-        uniform csv headers/metadata keys 
-        '''
