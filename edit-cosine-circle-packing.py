@@ -20,9 +20,15 @@
 import json
 import argparse
 import csv
+import sys
+
 
 def createCluster(inputCSV,argNum):
     row=[]
+    if(argNum not in [0,1,2]):
+        print "Input Error! \nPass argument to --cluster as one of the following\n0 for clustering based on x-coordinate, \n1 for clustering based on y-coordinate, \n2 for clustering based on similarity score"
+        sys.exit()
+
     csvPath = inputCSV          #Input Path to csv file
     with open(csvPath,"r") as f:
         lines = csv.reader(f.read().splitlines(), delimiter=' ')
@@ -35,12 +41,7 @@ def createCluster(inputCSV,argNum):
             continue
         else:
             column = row[i][0].split(",")
-            if argNum == 0:                 #Cluster based on x-coordinate
-                data[column[0]]=[]
-            elif argNum == 1:               #Cluster based on y-coordinate
-                data[column[1]]=[]
-            elif argNum == 2:               #Cluster based on similarity score
-                data[column[2]]=[]
+            data[column[argNum]]=[]         #Cluster based on the argument number passed
 
     for i in range(len(row)):
         if "x-coordinate" in row[i][0].split(","):
@@ -50,13 +51,8 @@ def createCluster(inputCSV,argNum):
             second={}
             second["name"]=column[1]+"  "+column[2]
             second["size"]=column[2]
-            if argNum == 0:                 #Cluster based on x-coordinate
-                data[column[0]].append(second)
-            elif argNum == 1:               #Cluster based on y-coordinate
-                data[column[1]].append(second)
-            elif argNum == 2:               #Cluster based on similarity score
-                data[column[2]].append(second)
-
+            data[column[argNum]].append(second)          #Cluster based on the argument number passed
+            
     clusterList = []
     i=0
     for elem in data.keys():
