@@ -31,15 +31,14 @@ class Vector:
     An instance of this class represents a vector in n-dimensional space
     '''
     
-    def __init__(self, features=None, filename=None):
+    def __init__(self, filename=None, features=None):
         '''
         Create a vector
         @param metadata features 
         '''
         self.features = {}
         
-
-        if features:
+        if filename and features:
             self.filename = filename
 
             na_metadata = ["resourceName"]
@@ -85,15 +84,7 @@ class Vector:
         cosTheta = (V1.V2) / (|V1| |V2|)
         cos 0 = 1 implies identical documents
         '''
-        #print self.features
-        #raw_input()
-
-        try: 
-            result = self.dotProduct(v2) / (self.getMagnitude() * v2.getMagnitude())
-            print result
-            return result
-        except:
-            print self.getMagnitude(), v2.getMagnitude()
+        return self.dotProduct(v2) / (self.getMagnitude() * v2.getMagnitude())
 
 
     def euclidean_dist(self, anotherVector):
