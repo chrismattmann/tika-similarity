@@ -31,8 +31,8 @@ def filterFiles(inputDir, acceptTypes):
         for filename in files:
             if not filename.startswith('.'):
                 filename_list.append(os.path.join(root, filename))
-
-    filename_list = (filename for filename in filename_list if parser.from_file(filename))
+    
+    filename_list = (filename for filename in filename_list if "metadata" in parser.from_file(filename))
     if acceptTypes:
         filename_list = (filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes)
     else:
