@@ -47,37 +47,6 @@ def jaro_winkler_similarity(s, t):
     return jw_sim
 
 
-#Get an aggregate of terms in your text
-def text_to_vector(text):
-    return Counter(text)
-
-
-#get cosine similarity between two document vectors
-def get_cosine(vec1, vec2):
-    import math
-
-    intersection = set(vec1.keys()) & set(vec2.keys())
-    numerator = sum([vec1[x] * vec2[x] for x in intersection])
-
-    sum1 = sum([vec1[x] ** 2 for x in vec1.keys()])
-    sum2 = sum([vec2[x] ** 2 for x in vec2.keys()])
-    denominator = math.sqrt(sum1) * math.sqrt(sum2)
-
-    if not denominator:
-        return 0.0
-    else:
-        return float(numerator) / denominator
-
-
-#get cosine similarity between texts
-def CosineSim(text1,text2):
-    vec1=text_to_vector(text1)
-    vec2=text_to_vector(text2)
-    dist=get_cosine(vec1,vec2)
-    return dist
-
-
-
 
 #finds the area overlap between two guassian/normal distributions. First find the mean and std of a data sample
 def gaussian_overlap(data1,data2):
@@ -98,19 +67,7 @@ def gaussian_overlap(data1,data2):
     return area
 
 
-#Breaks down the epoch time stamp into day and the specific minute of the day
-def breakdown_epoch(epoch):
-    hour=datetime.datetime.fromtimestamp(epoch).strftime('%H')
-    minute=datetime.datetime.fromtimestamp(epoch).strftime('%M')
-    day=datetime.datetime.fromtimestamp(epoch).strftime('%A')
 
-    daymap={'Sunday':1,'Monday':2,'Tuesday':3,'Wednesday':4,'Thursday':5,'Friday':6,'Saturday':7}
-    minute=int(minute)
-    hour=int(hour)
-    day=daymap[day]
-    totalminutes=(hour*60)+minute
-
-    return day,totalminutes
 
 
 if __name__ == '__main__':
