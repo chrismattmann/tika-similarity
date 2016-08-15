@@ -74,7 +74,6 @@ def gaussian_overlap(data1,data2):
 
 #get cosine similarity between two document vectors
 def cosine_similarity(vec1, vec2):
-    import math
 
     intersection = set(vec1.keys()) & set(vec2.keys())
     numerator = sum([vec1[x] * vec2[x] for x in intersection])
