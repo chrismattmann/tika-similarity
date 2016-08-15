@@ -47,9 +47,15 @@ def jaro_winkler_similarity(s, t):
     return jw_sim
 
 
+#Get an aggregate of terms in your text
+def text_to_vector(text):
+    return Counter(text)
 
-#finds the area overlap between two guassian/normal distributions. First find the mean and std of a data sample
+
+
 def gaussian_overlap(data1,data2):
+    """finds the area overlap between two bell curves. Data can be provided as list of numbers. data1,data2: list of numbers.
+    Returns a float that represents the area of intersection"""
 
 
     mean1=np.mean(data1)
@@ -66,11 +72,37 @@ def gaussian_overlap(data1,data2):
         area=0.0
     return area
 
+#get cosine similarity between two document vectors
+def cosine_similarity(vec1, vec2):
+    import math
+
+    intersection = set(vec1.keys()) & set(vec2.keys())
+    numerator = sum([vec1[x] * vec2[x] for x in intersection])
+
+    sum1 = sum([vec1[x] ** 2 for x in vec1.keys()])
+    sum2 = sum([vec2[x] ** 2 for x in vec2.keys()])
+    denominator = math.sqrt(sum1) * math.sqrt(sum2)
+
+    if not denominator:
+        return 0.0
+    else:
+        return float(numerator) / denominator
+
+
+#get cosine similarity between texts
+def get_cosine_similarity(text1,text2):
+    vec1=text_to_vector(text1)
+    vec2=text_to_vector(text2)
+    dist=cosine_similarity(vec1,vec2)
+    return dist
+
+
 
 
 
 
 if __name__ == '__main__':
+    # example of guassian intersection
     data1=[1,2,3,3,2,1]
     data2=[4,5,6,6,5,4]
 
