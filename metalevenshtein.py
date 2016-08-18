@@ -60,10 +60,12 @@ def break_natural_boundaries(string):
 def meta_levenshtein(string1,string2,Sim='levenshtein',theta=0.5,strict=-1,idf=dict()):
 
     ''' Implements ideas from the paper : Robust Similarity Measures for Named Entities Matching by Erwan et al.
-    theta is the secondary similarity threshold
-    Sim is the function that needs to be used for calculating secondary similarity (options: jaro_winkler, levenshtein)
-    strict=-1 for doing all permutations
+    Sim = jaro_winkler, levenshtein : can be chosen as the secondary matching function.
+    theta is the secondary similarity threshold: If set higher it will be more difficult for the strings to match.
+    strict=-1 for doing all permutations of the substrings
     strict=1 for no permutations
+    idf=provide a dictionary for {string(word),float(idf od the word)}: More useful when mathings multi word entities (And word importances are very important)
+    like: 'harry potter', 'the wizard harry potter'
     '''
 
     # set the secondary simlarity function
@@ -136,5 +138,6 @@ def meta_levenshtein(string1,string2,Sim='levenshtein',theta=0.5,strict=-1,idf=d
 
 
 if __name__ == '__main__':
+    #usage example
     print meta_levenshtein('abacus1cat','cat1cus')
 
