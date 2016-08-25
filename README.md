@@ -82,6 +82,65 @@ python cosine_similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [
 
 ```
 
+Similarity based on Stylistic/Authorship features
+-------------------------------------------------
+- This calculates pairwise cosine similarity on bag of signatures/features produced by extracting stylistic/authorship features from text.
+
+```
+#!/usr/bin/env python2.7
+python psykey.py --inputDir INPUTDIR --outCSV OUTCSV --wordlists WRODLIST_FOLDER
+
+--inputDir INPUTDIR  path to directory containing files
+
+--outCSV OUTCSV      path to directory for storing the output CSV File, containing pair-wise Similarity Scores based on Cosine distance of stylistic and authorship features
+
+--wordlists WRODLIST_FOLDER    path to the folder that contains files that are word list belonging to different classes. eg Use the wordlist folder provided with the tika-similarity library. If adding your own, make sure that the file is .txt with one word per line. Also, the name of the file will be considered the name of the class.
+
+```
+
+Metalevenshtein string distance
+-------------------------------
+- This calculates Metalevenshtein (Inspired by the paper : Robust Similarity Measures for Named Entities Matching by Erwan et al.) distance between two strings.
+
+```
+#!/usr/bin/env python2.7
+
+Usage:
+
+import metalevenshtein as metalev
+print metalev.meta_levenshtein('abacus1cat','cat1cus')
+
+
+To use all the argument options in this function:
+
+def meta_levenshtein(string1,string2,Sim='levenshtein',theta=0.5,strict=-1,idf=dict()):
+
+    Implements ideas from the paper : Robust Similarity Measures for Named Entities Matching by Erwan et al.
+    Sim = jaro_winkler, levenshtein : can be chosen as the secondary matching function.
+    theta is the secondary similarity threshold: If set higher it will be more difficult for the strings to match.
+    strict=-1 for doing all permutations of the substrings
+    strict=1 for no permutations
+    idf=provide a dictionary for {string(word),float(idf od the word)}: More useful when mathings multi word entities (And word importances are very important)
+    like: 'harry potter', 'the wizard harry potter'
+
+```
+
+Bell Curve fitting and overlap
+------------------------------
+- Fits two datasets into bel curves and finds the area of overlap between the bell curves.
+
+
+```
+#!/usr/bin/env python2.7
+import features as feat
+data1=[1,2,3,3,2,1]
+data2=[4,5,6,6,5,4]
+area,error=feat.gaussian_overlap(data1,data2)
+print area
+
+```
+
+
 
 D3 visualization
 ----------------
