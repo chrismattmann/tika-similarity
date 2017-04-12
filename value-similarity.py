@@ -174,7 +174,7 @@ def main(argv = None):
 		'''print "Resemblance:\n"
 		for tuple in sorted_resemblance_scores:
 			print os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) +"," + tuple[0] + ","+ convertUnicode(file_metadata[tuple[0]])+'\n'''
-		with open("similarity-scores.txt", "w") as f:
+		with open("value-similarity-scores.txt", "w") as f:
 			f.write("Resemblance : \n")
 			for tuple in sorted_resemblance_scores:
 				f.write(os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) +"," + tuple[0] + ","+ convertUnicode(file_metadata[tuple[0]])+'\n')
