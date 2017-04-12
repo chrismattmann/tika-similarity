@@ -25,6 +25,7 @@ import sys
 import getopt
 import json
 import operator
+import itertools
 from time import sleep
 from requests import ConnectionError
 
@@ -147,7 +148,7 @@ def main(argv = None):
 				for key in parsedData["metadata"]:
 					value = parsedData["metadata"][key]
 					if isinstance(value, list):
-						value = ", ".join(parsedData["metadata"][key])
+						value = ", ".join(list(itertools.chain.from_iterable(parsedData["metadata"][key])))
 
 					file_parsed.append(str(key.strip(' ').encode('utf-8') + ": " + value.strip(' ').encode('utf-8')))
 
