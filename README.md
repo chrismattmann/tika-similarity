@@ -216,6 +216,8 @@ Contributors
 * Aravind Ram, USC
 * Aishwarya Parameshwaran, USC
 * Rashmi Nalwad, USC
+* Asitang Mishra, JPL
+* Suzanne Stathatos, JPL
 
 License
 ===
