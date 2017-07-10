@@ -5,7 +5,7 @@ This project demonstrates using the [Tika-Python](http://github.com/chrismattman
 
 The script can iterate over all files in the current directory or given files by command line and derives their metadata features, then computes the union of all features. The union of all features become the "golden feature set" that all document features are compared to via intersect. The length of that intersect per file divided by the length of the unioned set becomes the similarity score.
 
-Scores are sorted in reverse (descending) order which can be shown in three different Data-Driven document visualizaions.
+Scores are sorted in reverse (descending) order which can be shown in three different Data-Driven document visualizaions. A companion project to this effort is [Auto Extractor](https://github.com/USCDataScience/autoextractor/wiki/Clustering-Tutorial) which uses [Apache Spark](http://spark.apache.org/) and [Apache Nutch](http://nutch.apache.org/) to take web crawl data, and produce D3-visualizations and clusters of similar pages.
 
 Pre-requisite
 ===
