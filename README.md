@@ -145,7 +145,7 @@ print area
 D3 visualization
 ----------------
 
-### cluster viz 
+### Cluster viz 
 - Jaccard Similarity
 ```
 * python cluster-scores.py [-t threshold_value] (for generating cluster viz)
@@ -166,7 +166,7 @@ Default **threshold** value is 0.01.
 <img src="https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/cluster.png" width = "200px" height = "200px" style = "float:left">
 <img src="https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/interactive-cluster.png" width = "200px" height = "200px" style = "float:right">
 
-###circlepacking viz
+### Circlepacking viz
 - Jaccard Similarity
 ```
 * python circle-packing.py (for generating circlepacking viz)
@@ -185,7 +185,7 @@ Default **threshold** value is 0.01.
 <img src="https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/circlepacking.png" width = "200px" height = "200px" style = "float:left">
 <img src="https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/interactive-circlepacking.png" width = "200px" height = "200px" style = "float:right">
 
-###composite viz
+### Composite viz
 This is a combination of cluster viz and circle packing viz.
 The deeper color, the more the same attributes in the cluster.
 ```
@@ -193,7 +193,7 @@ The deeper color, the more the same attributes in the cluster.
 ```
 ![Image of composite viz](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/composite.png)
 
-###Big data way
+### Big data way
 if you are dealing with big data, you can use it this way:
 ```
 * python generateLevelCluster.py (for generating level cluster viz)
