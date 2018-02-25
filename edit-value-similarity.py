@@ -169,6 +169,70 @@ def compute_score2(json_input_list, outCSV, acceptTypes, allKeys):
                 continue
     return
 
+def compute_scores(json_file, outCSV, acceptTypes, json_key, allKeys):
+    na_metadata = ["resourceName"]
+    with open(outCSV, "wb") as outF:
+        a = csv.writer(outF, delimiter=',')
+        a.writerow(["x-coordinate","y-coordinate","Similarity_score"])
+
+        json_list = []
+        with open(json_file) as json_input_file:
+                json_list.extend(json.load(json_input_file)[json_key])
+        #json_list has list of JSON objects read from json file
+
+        print(len(json_list))
+        metadata_dict = {}
+        for entry in json_list:
+            metadata_dict[entry['id']]=entry
+        
+        files_tuple = itertools.combinations(metadata_dict.keys(), 2)
+        for record1, record2 in files_tuple:
+            try:
+                row_edit_distance = [record1, record2]
+
+                record1_metadata = metadata_dict[record1]
+                record2_metadata = metadata_dict[record2]
+
+                intersect_features = set(record1_metadata.keys()) & set(record2_metadata.keys())
+
+                intersect_features = [feature for feature in intersect_features if feature not in na_metadata ]
+
+                record_edit_distance = 0.0
+                for feature in intersect_features:
+
+                    record1_feature_value = stringify(record1_metadata[feature])
+                    record2_feature_value = stringify(record2_metadata[feature])
+
+                    if len(record1_feature_value) == 0 and len(record2_feature_value) == 0:
+                        feature_distance = 0.0
+                    else:
+                        feature_distance = float(editdistance.eval(record1_feature_value, record2_feature_value))/(len(record1_feature_value) if len(record1_feature_value) > len(record2_feature_value) else len(record2_feature_value))
+
+                    record_edit_distance += feature_distance
+
+                if allKeys:
+                    record1_only_features = set(record1_metadata.keys()) - set(intersect_features)
+                    record1_only_features = [feature for feature in record1_only_features if feature not in na_metadata]
+
+                    record2_only_features = set(record2_metadata.keys()) - set(intersect_features)
+                    record2_only_features = [feature for feature in record2_only_features if feature not in na_metadata]
+
+                    record_edit_distance += len(file1_only_features) + len(file2_only_features)       # increment by 1 for each disjunct feature in (A-B) & (B-A), file1_disjunct_feature_value/file1_disjunct_feature_value = 1
+                    record_edit_distance /= float(len(intersect_features) + len(record_only_features) + len(record2_only_features))
+
+                else:
+                    record_edit_distance /= float(len(intersect_features))    #average edit distance
+
+                row_edit_distance.append(1-record_edit_distance)
+                a.writerow(row_edit_distance)
+
+            except ConnectionError:
+                sleep(1)
+            except KeyError:
+                continue
+    return
+
+
 
 if __name__ == "__main__":
     
@@ -178,9 +242,16 @@ if __name__ == "__main__":
     argParser.add_argument('--json', nargs='+', required=False, help='several paths to  JSON file containing certain metadata')
     argParser.add_argument('--accept', nargs='+', type=str, help='Optional: compute similarity only on specified IANA MIME Type(s)')
     argParser.add_argument('--allKeys', action='store_true', help='compute edit distance across all keys')
+    argParser.add_argument('--fileInput',required=False, help='Set to 1 to compute edit distance for JSON objects in the file')
+    argParser.add_argument('--jsonKey',required=False, help='JSON object list key')
+    
     args = argParser.parse_args()
 
-    if args.inputDir and args.outCSV:
+    if args.fileInput=='1' and args.json and args.jsonKey:
+        compute_scores(args.json[0],args.outCSV, args.accept,args.jsonKey, args.allKeys)
+    elif args.inputDir and args.outCSV:
         computeScores(args.inputDir, args.outCSV, args.accept, args.allKeys)
-    if args.json:
-        compute_score2(args.json, args.outCSV, args.accept, args.allKeys)
+    else:
+        if args.json:
+            compute_score2(args.json, args.outCSV, args.accept, args.allKeys)
+
