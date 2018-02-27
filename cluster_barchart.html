@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.chart div {
+  font: 10px sans-serif;
+  background-color: purple ;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+}
+
+.toolTip {
+  position: absolute;
+  display: none;
+  min-width: 80px;
+  height: auto;
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #6F257F;
+  padding: 5px;
+  text-align: center;
+}
+
+
+
+</style>
+<div class="chart"></div>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script>
+
+var data = d3.json("clusters.json", function(error, root){
+  var arr = []
+  var max = 0
+  var jsonList = root["children"]
+  var sum=0
+
+  for(var i in jsonList){
+    var obj = jsonList[i]
+    
+    var count = obj["children"].length
+    sum+=count
+    if(count > max){
+      max= count
+    }
+    var cluster_name = obj["name"]
+    var map = {}
+    map["name"] = cluster_name
+    map["length"] = count
+    arr.push(map)
+}
+ 
+ var mean=sum/jsonList.length
+var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
+  d3.select(".chart")
+  .selectAll("div")
+    .data(arr)
+  .enter().append("div")
+    .style("width", function(d) { return (d.length/max)*500 + "px"; })
+    .text(function(d) { return d.length; })
+    .on("mousemove", function(d){
+            tooltip
+              .style("left", d3.event.pageX + 10 + "px")
+              .style("top", d3.event.pageY - 30 + "px")
+              .style("display", "inline-block")
+              .html(("Name: "+d.name+"<br>"+"Count: "+d.length));
+        })
+    .on("mouseout", function(d){ tooltip.style("display", "none");});
+
+});
+
+
+
+
+</script>
