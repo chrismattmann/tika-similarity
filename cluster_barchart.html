@@ -2,9 +2,14 @@
 <meta charset="utf-8">
 <style>
 
+.chart{
+  position: absolute;
+  top: 25%;
+ }
+  
 .chart div {
   font: 10px sans-serif;
-  background-color: purple ;
+  background-color: #5212ce ;
   text-align: right;
   padding: 3px;
   margin: 1px;
@@ -27,20 +32,16 @@
 </style>
 <div class="chart"></div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script>
 
 var data = d3.json("clusters.json", function(error, root){
   var arr = []
   var max = 0
   var jsonList = root["children"]
-  var sum=0
-
+  
   for(var i in jsonList){
     var obj = jsonList[i]
-    
     var count = obj["children"].length
-    sum+=count
     if(count > max){
       max= count
     }
@@ -51,7 +52,6 @@ var data = d3.json("clusters.json", function(error, root){
     arr.push(map)
 }
  
- var mean=sum/jsonList.length
 var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
   d3.select(".chart")
