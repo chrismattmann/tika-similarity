@@ -70,7 +70,9 @@ def computeScores(inputDir, outCSV, acceptTypes):
             except KeyError:
                 continue
 
-
+'''
+Takes an input file and generates similarity scores for all combinations of row entries.
+'''
 def computeScores2(inputFile, outCSV):
     with open(outCSV, "wb") as outF:
         a = csv.writer(outF, delimiter=',')
@@ -80,13 +82,13 @@ def computeScores2(inputFile, outCSV):
         row_list = ast.literal_eval(file1_parsedData["content"])
 
         rows_tuple = itertools.combinations(row_list, 2)
-        for file1, file2 in rows_tuple:
+        for row1, row2 in rows_tuple:
 
             try:
-                row_cosine_distance = [row_list.index(file1), row_list.index(file2)]
+                row_cosine_distance = [row_list.index(row1), row_list.index(row2)]
 
-                v1 = Vector(inputFile, file1)
-                v2 = Vector(inputFile, file2)
+                v1 = Vector(inputFile, row1)
+                v2 = Vector(inputFile, row2)
 
                 row_cosine_distance.append(v1.cosTheta(v2))
 

@@ -170,7 +170,9 @@ def compute_score2(json_input_list, outCSV, acceptTypes, allKeys):
                 continue
     return
 
-
+'''
+Takes an input file and generates similarity scores for all combinations of row entries.
+'''
 def computeScores3(inputFile, outCSV):
     na_metadata = ["resourceName"]
     with open(outCSV, "wb") as outF:
@@ -183,20 +185,15 @@ def computeScores3(inputFile, outCSV):
         rows_tuple = itertools.combinations(row_list, 2)
         for row1, row2 in rows_tuple:
             try:
-                row_edit_distance = [row_list.index(row1), row_list.index(row2)]
-
-                content_1 = row1 #ast.literal_eval(file1_parsedData["content"])[0]
-                content_2 = row2 #ast.literal_eval(file2_parsedData["content"])[0]
-
-                intersect_features = set(content_1.keys()) & set(content_2.keys())
-
+                row_edit_distance = [row_list.index(row1), row_list.index(row2)] # Using row index to identify the row
+                intersect_features = set(row1.keys()) & set(row2.keys())
                 intersect_features = [feature for feature in intersect_features if feature not in na_metadata]
 
                 file_edit_distance = 0.0
                 for feature in intersect_features:
 
-                    file1_feature_value = stringify(content_1[feature])
-                    file2_feature_value = stringify(content_2[feature])
+                    file1_feature_value = stringify(row1[feature])
+                    file2_feature_value = stringify(row2[feature])
 
                     if len(file1_feature_value) == 0 and len(file2_feature_value) == 0:
                         feature_distance = 0.0
