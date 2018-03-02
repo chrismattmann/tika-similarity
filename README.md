@@ -193,6 +193,14 @@ The deeper color, the more the same attributes in the cluster.
 ```
 ![Image of composite viz](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/composite.png)
 
+### Sunburst viz
+Visualization of clustering from Jaccard Similarity result
+```
+* python sunburst.py (for generating circlepacking viz)
+* open sunburst.html
+```
+![Image of sunburst viz](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/sunburst.png)
+
 ### Big data way
 if you are dealing with big data, you can use it this way:
 ```
