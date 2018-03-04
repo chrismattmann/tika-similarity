@@ -31,7 +31,7 @@ class Vector:
     An instance of this class represents a vector in n-dimensional space
     '''
     
-    def __init__(self, filename=None, features=None):
+    def __init__(self, filename=None, features=None, config_params=None):
         '''
         Create a vector
         @param metadata features 
@@ -39,14 +39,31 @@ class Vector:
         self.features = {}
         
         if filename and features:
-            self.filename = filename
+            self.filename = filename #filename is basically id for the vector
 
-            na_metadata = ["resourceName"]
-            for na in na_metadata:
-                features.pop(na, None)
+            if(config_params):
+                for key in config_params:
+                    if(key in features):
+                        if config_params[key] == "string":
+                            self.features[key] = hash(stringify(features[key]))
+                        elif config_params[key] == "int":
+                            self.features[key] = int(features[key])
+                        elif config_params[key] == "double":
+                            # print(key+" "+features[key])
+                            self.features[key] = float(features[key])
+                        elif config_params[key] == "date":
+                            try:
+                                self.features[key] = int(d.strptime(features[key],"%Y-%m-%d").strftime('%s'))
+                            except:
+                                self.features[key] = int(features[key])
+            else:
+                na_metadata = ["resourceName"]
 
-            for key in features:
-                self.features[key] = len(stringify(features[key]))
+                for na in na_metadata:
+                    features.pop(na, None)
+
+                for key in features:
+                    self.features[key] = len(stringify(features[key]))
 
 
     '''
