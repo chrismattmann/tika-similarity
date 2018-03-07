@@ -210,6 +210,13 @@ if you are dealing with big data, you can use it this way:
 You can set max number for each node **_maxNumNode**(default _maxNumNode = 10) in generateLevelCluster.py
 ![Image of level composite viz](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/level-composite.png)
 
+### Treemap viz
+```
+* python tree_map.py (for generating treemap viz)
+* open tree_map.html in your browser
+```
+![Image of treemap viz](https://github.com/chrismattmann/tika-similarity/blob/master/snapshots/treemap.png)
+
 Questions, comments?
 ===================
 Send them to [Chris A. Mattmann](mailto:chris.a.mattmann@jpl.nasa.gov).
