@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>Sunburst Visualization</title>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <style type="text/css">
+      svg {
+        font: 10px sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script type="text/javascript">
+    	
+var w = window.innerWidth - 1,
+    h = window.innerHeight - 1,
+    r = Math.min(w, h) / 2,
+    color = d3.scale.category20c();
+
+var vis = d3.select("#chart").append("svg:svg")
+    .attr("width", w)
+    .attr("height", h)
+  .append("svg:g")
+    .attr("transform", "translate(" + w / 2 + "," + h / 2 + ")");
+
+var partition = d3.layout.partition()
+    .sort(null)
+    .size([2 * Math.PI, r * r])
+    .children(function(d) { return isNaN(d.value) ? d3.entries(d.value) : null; })
+    .value(function(d) { return d.value; });
+
+var arc = d3.svg.arc()
+    .startAngle(function(d) { return d.x; })
+    .endAngle(function(d) { return d.x + d.dx; })
+    .innerRadius(function(d) { return Math.sqrt(d.y); })
+    .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
+
+d3.json("sunburst.json", function(json) {
+
+  var g = vis.data(d3.entries(json)).selectAll("g")
+      .data(partition)
+    .enter().append("svg:g")
+      .attr("display", function(d) { return d.depth ? null : "none"; }); // hide inner ring
+
+  g.append("svg:path")
+      .attr("d", arc)
+      .attr("stroke", "#fff")
+      .attr("fill", function(d) { console.log(d);   return color(d['key']); })
+      .attr("fill-rule", "evenodd");
+	  
+  g.append("svg:text")
+      .attr("transform", function(d) { return "rotate(" + (d.x + d.dx / 2 - Math.PI / 2) / Math.PI * 180 + ")"; })
+      .attr("x", function(d) { return Math.sqrt(d.y); })
+      .attr("dx", "6") // margin
+      .attr("dy", ".35em") // vertical-align
+      .text(function(d) { return d['key']; });
+});
+
+    </script>
+  </body>
+</html>
