@@ -199,7 +199,7 @@ Visualization of clustering from Jaccard Similarity result
 * python sunburst.py (for generating circlepacking viz)
 * open sunburst.html
 ```
-![Image of sunburst viz](https://github.com/chrismattmann/tika-img-similarity/blob/refactor/snapshots/sunburst.png)
+![Image of sunburst viz](https://github.com/chrismattmann/tika-img-similarity/blob/master/snapshots/sunburst.png)
 
 ### Big data way
 if you are dealing with big data, you can use it this way:
