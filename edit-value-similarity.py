@@ -22,8 +22,6 @@ import os, editdistance, itertools, argparse, csv
 from requests import ConnectionError
 from time import sleep
 import json
-import ast
-
 
 def stringify(attribute_value):
     if isinstance(attribute_value, list):
@@ -237,7 +235,6 @@ if __name__ == "__main__":
     
     argParser = argparse.ArgumentParser('Edit Distance Similarity based on Metadata values')
     argParser.add_argument('--inputDir', required=False, help='path to directory containing files')
-    argParser.add_argument('--inputFile', required=False, help='path to input file')
     argParser.add_argument('--outCSV', required=True, help='path to directory for storing the output CSV File, containing pair-wise Similarity Scores based on edit distance')
     argParser.add_argument('--json', nargs='+', required=False, help='several paths to  JSON file containing certain metadata')
     argParser.add_argument('--accept', nargs='+', type=str, help='Optional: compute similarity only on specified IANA MIME Type(s)')
@@ -246,6 +243,7 @@ if __name__ == "__main__":
     argParser.add_argument('--jsonKey',required=False, help='JSON object list key')
     
     args = argParser.parse_args()
+    
     if args.fileInput=='1' and args.json and args.jsonKey:
         compute_scores(args.json[0],args.outCSV, args.accept,args.jsonKey, args.allKeys)
     elif args.inputDir and args.outCSV:
