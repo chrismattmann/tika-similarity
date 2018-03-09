@@ -193,6 +193,14 @@ The deeper color, the more the same attributes in the cluster.
 ```
 ![Image of composite viz](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/composite.png)
 
+### Sunburst viz
+Visualization of clustering from Jaccard Similarity result
+```
+* python sunburst.py (for generating circlepacking viz)
+* open sunburst.html
+```
+![Image of sunburst viz](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/sunburst.png)
+
 ### Big data way
 if you are dealing with big data, you can use it this way:
 ```
@@ -201,6 +209,13 @@ if you are dealing with big data, you can use it this way:
 ```
 You can set max number for each node **_maxNumNode**(default _maxNumNode = 10) in generateLevelCluster.py
 ![Image of level composite viz](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/level-composite.png)
+
+### Treemap viz
+```
+* python tree_map.py (for generating treemap viz)
+* open tree_map.html in your browser
+```
+![Image of treemap viz](https://github.com/chrismattmann/tika-similarity/blob/master/snapshots/treemap.png)
 
 Questions, comments?
 ===================
