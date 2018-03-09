@@ -21,7 +21,8 @@ from tika import parser
 from vector import Vector
 import os, itertools, argparse, csv
 from requests import ConnectionError
-from time import sleep 
+from time import sleep
+import ast
 
 def filterFiles(inputDir, acceptTypes):
     filename_list = []
@@ -69,14 +70,45 @@ def computeScores(inputDir, outCSV, acceptTypes):
             except KeyError:
                 continue
 
+'''
+Takes an input file and generates similarity scores for all combinations of row entries.
+'''
+def computeScores2(inputFile, outCSV):
+    with open(outCSV, "wb") as outF:
+        a = csv.writer(outF, delimiter=',')
+        a.writerow(["x-coordinate", "y-coordinate", "Similarity_score"])
+
+        file1_parsedData = parser.from_file(inputFile)
+        row_list = ast.literal_eval(file1_parsedData["content"])
+
+        rows_tuple = itertools.combinations(row_list, 2)
+        for row1, row2 in rows_tuple:
+
+            try:
+                row_cosine_distance = [row_list.index(row1), row_list.index(row2)]
+
+                v1 = Vector(inputFile, row1)
+                v2 = Vector(inputFile, row2)
+
+                row_cosine_distance.append(v1.cosTheta(v2))
+
+                a.writerow(row_cosine_distance)
+            except ConnectionError:
+                sleep(1)
+            except KeyError:
+                continue
+
 
 if __name__ == "__main__":
 
     argParser = argparse.ArgumentParser('Cosine similarity based on Metadata values')
-    argParser.add_argument('--inputDir', required=True, help='path to directory containing files')
+    argParser.add_argument('--inputFile', required=False, help='path to file')
+    argParser.add_argument('--inputDir', required=False, help='path to directory containing files')
     argParser.add_argument('--outCSV', required=True, help='path to directory for storing the output CSV File, containing pair-wise Cosine similarity Scores')
     argParser.add_argument('--accept', nargs='+', type=str, help='Optional: compute similarity only on specified IANA MIME Type(s)')
     args = argParser.parse_args()
 
     if args.inputDir and args.outCSV:
         computeScores(args.inputDir, args.outCSV, args.accept)
+    if args.inputFile and args.outCSV:
+        computeScores2(args.inputFile, args.outCSV)

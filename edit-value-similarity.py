@@ -23,7 +23,6 @@ from requests import ConnectionError
 from time import sleep
 import json
 
-
 def stringify(attribute_value):
     if isinstance(attribute_value, list):
         return str((", ".join(attribute_value)).encode('utf-8').strip())
@@ -232,8 +231,6 @@ def compute_scores(json_file, outCSV, acceptTypes, json_key, allKeys):
                 continue
     return
 
-
-
 if __name__ == "__main__":
     
     argParser = argparse.ArgumentParser('Edit Distance Similarity based on Metadata values')
@@ -246,7 +243,7 @@ if __name__ == "__main__":
     argParser.add_argument('--jsonKey',required=False, help='JSON object list key')
     
     args = argParser.parse_args()
-
+    
     if args.fileInput=='1' and args.json and args.jsonKey:
         compute_scores(args.json[0],args.outCSV, args.accept,args.jsonKey, args.allKeys)
     elif args.inputDir and args.outCSV:
