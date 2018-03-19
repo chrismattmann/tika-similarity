@@ -31,23 +31,24 @@ def createCluster(inputCSV,argNum):
 
     csvPath = inputCSV          #Input Path to csv file
     with open(csvPath,"r") as f:
-        lines = csv.reader(f.read().splitlines(), delimiter=' ')
+        # handling case where file names have space in between them
+        lines = [line.strip() for line in f]
         for line in lines:
             row.append(line)
 
     data={}
     for i in range(len(row)):
-        if "x-coordinate" in row[i][0].split(","):
+        if "x-coordinate" in row[i].split(","):
             continue
         else:
-            column = row[i][0].split(",")
+            column = row[i].split(",")
             data[column[argNum]]=[]         #Cluster based on the argument number passed
 
     for i in range(len(row)):
-        if "x-coordinate" in row[i][0].split(","):
+        if "x-coordinate" in row[i].split(","):
             continue
         else:
-            column = row[i][0].split(",")
+            column = row[i].split(",")
             second={}
             second["name"]=column[1]+"  "+column[2]
             second["size"]=column[2]
