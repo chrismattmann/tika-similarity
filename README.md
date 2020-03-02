@@ -1,9 +1,9 @@
 [Apache Tika](http://tika.apache.org/) File Similarity based on Jaccard distance, Edit distance & Cosine distance
 ===
 
-This project demonstrates using the [Tika-Python](http://github.com/chrismattmann/tika-python) package (Python port of Apache Tika) to compute file similarity based on Metadata features.
+This project demonstrates the usage of the [Tika-Python](http://github.com/chrismattmann/tika-python) package (Python port of Apache Tika) to compute file similarity based on metadata features.
 
-The script can iterate over all files in the current directory or given files by command line and derives their metadata features, then computes the union of all features. The union of all features become the "golden feature set" that all document features are compared to via intersect. The length of that intersect per file divided by the length of the unioned set becomes the similarity score.
+The script can iterate over all files in the current directory, or specific files by command line, derive their metadata features, and  compute the union of all features. The union of all features becomes the "golden feature set" that all document features are compared to via intersect. The length of that intersect per file divided by the length of the unioned set becomes the similarity score.
 
 Scores are sorted in reverse (descending) order which can be shown in three different Data-Driven document visualizaions. A companion project to this effort is [Auto Extractor](https://github.com/USCDataScience/autoextractor/wiki/Clustering-Tutorial) which uses [Apache Spark](http://spark.apache.org/) and [Apache Nutch](http://nutch.apache.org/) to take web crawl data, and produce D3-visualizations and clusters of similar pages.
 
