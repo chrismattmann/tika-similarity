@@ -22,7 +22,7 @@ from vector import Vector
 import os, itertools, argparse, csv
 from requests import ConnectionError
 from time import sleep
-import ast
+import json
 
 def filterFiles(inputDir, acceptTypes):
     filename_list = []
@@ -71,7 +71,7 @@ def computeScores(inputDir, outCSV, acceptTypes):
                 continue
 
 '''
-Takes an input file and generates similarity scores for all combinations of row entries.
+Takes an input JSON file and generates similarity scores for all combinations of row entries.
 '''
 def computeScores2(inputFile, outCSV):
     with open(outCSV, "wb") as outF:
@@ -79,7 +79,7 @@ def computeScores2(inputFile, outCSV):
         a.writerow(["x-coordinate", "y-coordinate", "Similarity_score"])
 
         file1_parsedData = parser.from_file(inputFile)
-        row_list = ast.literal_eval(file1_parsedData["content"])
+        row_list = json.loads(file1_parsedData["content"])
 
         rows_tuple = itertools.combinations(row_list, 2)
         for row1, row2 in rows_tuple:
