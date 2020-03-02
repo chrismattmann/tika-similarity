@@ -78,12 +78,12 @@ class Solr(object):
                     # going good, clear them all
                     del buffer[:]
                 else:
-                    print('Solr posting failed. batch number=%d' % count)
+                    print(('Solr posting failed. batch number=%d' % count))
                     return (num_docs, False)
 
             if (current_milli_time() - tt) > progress_delay:
                 tt = current_milli_time()
-                print("%d batches, %d docs " % (count, num_docs))
+                print(("%d batches, %d docs " % (count, num_docs)))
 
         res = True
         if len(buffer) > 0:
@@ -122,11 +122,11 @@ class Solr(object):
                 break
 
             payload['start'] = start
-            print 'start={0}   total={1}'.format(start, total)
+            print('start={0}   total={1}'.format(start, total))
 
             resp = requests.get(self.query_url, params=payload)
             if not resp:
-                print "No response from Solr Server!"
+                print("No response from Solr Server!")
                 break
 
             if resp.status_code == 200:
@@ -137,7 +137,7 @@ class Solr(object):
                     count += 1
                     yield doc
             else:
-                print resp
-                print "Something went wrong when querying solr"
-                print "Solr query params ", payload
+                print(resp)
+                print("Something went wrong when querying solr")
+                print("Solr query params ", payload)
                 break

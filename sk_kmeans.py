@@ -34,9 +34,9 @@ def filterFiles(inputDir, acceptTypes):
     
     filename_list = (filename for filename in filename_list if "metadata" in parser.from_file(filename))
     if acceptTypes:
-        filename_list = (filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes)
+        filename_list = (filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8').decode('utf-8')).split('/')[-1] in acceptTypes)
     else:
-        print "Accepting all MIME Types....."
+        print("Accepting all MIME Types.....")
 
     return filename_list
 
@@ -67,7 +67,7 @@ if __name__ == "__main__":
         df = pd.DataFrame(list_of_Dicts)
         df = df.fillna(0)
         
-        print df.shape
+        print(df.shape)
 
         kmeans = KMeans(n_clusters=int(args.Kvalue),
                         init='k-means++',
@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
         labels = kmeans.fit_predict(df)  # unsupervised (X, y=None)
 
-        print labels    # kmeans.labels_
+        print(labels)    # kmeans.labels_
 
         clusters = {}
         for i in range(0, len(labels)):

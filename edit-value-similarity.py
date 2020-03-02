@@ -25,9 +25,9 @@ import json
 
 def stringify(attribute_value):
     if isinstance(attribute_value, list):
-        return str((", ".join(attribute_value)).encode('utf-8').strip())
+        return str((", ".join(attribute_value)).encode('utf-8').decode('utf-8').strip())
     else:
-        return str(attribute_value.encode('utf-8').strip())
+        return str(attribute_value.encode('utf-8').decode('utf-8').strip())
 
 
 def computeScores(inputDir, outCSV, acceptTypes, allKeys):
@@ -52,9 +52,9 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
         
 
         if acceptTypes:
-            filename_list = [filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes]
+            filename_list = [filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8').decode('utf-8')).split('/')[-1] in acceptTypes]
         else:
-            print "Accepting all MIME Types....."
+            print("Accepting all MIME Types.....")
 
         files_tuple = itertools.combinations(filename_list, 2)
         for file1, file2 in files_tuple:
@@ -118,10 +118,10 @@ def compute_score2(json_input_list, outCSV, acceptTypes, allKeys):
 
         metadata_dict = {}
         for entry in json_list:
-            key = entry.keys()[0]
+            key = list(entry.keys())[0]
             metadata_dict[key] = entry[key]
 
-        files_tuple = itertools.combinations(metadata_dict.keys(), 2)
+        files_tuple = itertools.combinations(list(metadata_dict.keys()), 2)
         for file1, file2 in files_tuple:
             try:
                 row_edit_distance = [file1, file2]
@@ -179,12 +179,12 @@ def compute_scores(json_file, outCSV, acceptTypes, json_key, allKeys):
                 json_list.extend(json.load(json_input_file)[json_key])
         #json_list has list of JSON objects read from json file
 
-        print(len(json_list))
+        print((len(json_list)))
         metadata_dict = {}
         for entry in json_list:
             metadata_dict[entry['id']]=entry
         
-        files_tuple = itertools.combinations(metadata_dict.keys(), 2)
+        files_tuple = itertools.combinations(list(metadata_dict.keys()), 2)
         for record1, record2 in files_tuple:
             try:
                 row_edit_distance = [record1, record2]
@@ -251,4 +251,3 @@ if __name__ == "__main__":
     else:
         if args.json:
             compute_score2(args.json, args.outCSV, args.accept, args.allKeys)
-

@@ -35,9 +35,9 @@ def filterFiles(inputDir, acceptTypes):
 
     filename_list = (filename for filename in filename_list if parser.from_file(filename))
     if acceptTypes:
-        filename_list = (filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes)
+        filename_list = (filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8').decode('utf-8')).split('/')[-1] in acceptTypes)
     else:
-        print "Accepting all MIME Types....."
+        print("Accepting all MIME Types.....")
 
     return filename_list
 

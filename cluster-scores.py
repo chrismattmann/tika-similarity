@@ -85,7 +85,7 @@ if __name__ == "__main__":
         try:
             threshold = float(sys.argv[2])
         except:
-            print usage
-            print "Using default threshold value..."
+            print(usage)
+            print("Using default threshold value...")
 
     main(threshold)

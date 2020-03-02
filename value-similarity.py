@@ -55,7 +55,7 @@ Options:
 
 def verboseLog(message):
 	if _verbose:
-		print >>sys.stderr, message
+		print(message, file=sys.stderr)
 
 class _Usage(Exception):
 	''' an error for arguments '''
@@ -70,7 +70,7 @@ def main(argv = None):
 	try:
 		try:
 			opts, args = getopt.getopt(argv[1:], 'hvf:c:a:', ['help', 'verbose', 'directory=', 'file=', 'accept=' ])
-		except getopt.error, msg:
+		except getopt.error as msg:
 			raise _Usage(msg)
 
 		if len(opts) ==0:
@@ -127,9 +127,9 @@ def main(argv = None):
 
 		#allow only files with specifed mime types
 		if len(allowed_mime_types) != 0:
-			filename_list = [filename for filename in filename_list if parser.from_file(filename) and str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in allowed_mime_types]
+			filename_list = [filename for filename in filename_list if parser.from_file(filename) and str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8').decode('utf-8')).split('/')[-1] in allowed_mime_types]
 		else:
-			print "Accepting all MIME Types....."
+			print("Accepting all MIME Types.....")
 
 		union_feature_names = set()
 		file_parsed_data = {}
@@ -150,7 +150,7 @@ def main(argv = None):
 					if isinstance(value, list):
 						value = ", ".join(list(itertools.chain.from_iterable(parsedData["metadata"][key])))
 
-					file_parsed.append(str(key.strip(' ').encode('utf-8') + ": " + value.strip(' ').encode('utf-8')))
+					file_parsed.append(str(key.strip(' ').encode('utf-8').decode('utf-8') + ": " + value.strip(' ').encode('utf-8').decode('utf-8'))) 
 
 				file_parsed_data[filename_stripped] = set(file_parsed)
 				union_feature_names = union_feature_names | set(file_parsed_data[filename_stripped])
@@ -170,7 +170,7 @@ def main(argv = None):
 			overlap = file_parsed_data[filename] & set(union_feature_names)
 			resemblance_scores[filename] = float(len(overlap))/total_num_features
 
-		sorted_resemblance_scores = sorted(resemblance_scores.items(), key=operator.itemgetter(1), reverse=True)
+		sorted_resemblance_scores = sorted(list(resemblance_scores.items()), key=operator.itemgetter(1), reverse=True)
 
 		'''print "Resemblance:\n"
 		for tuple in sorted_resemblance_scores:
@@ -180,18 +180,18 @@ def main(argv = None):
 			for tuple in sorted_resemblance_scores:
 				f.write(os.path.basename(tuple[0].rstrip(os.sep))+","+str(tuple[1]) +"," + tuple[0] + ","+ convertUnicode(file_metadata[tuple[0]])+'\n')
 
-	except _Usage, err:
-		print >>sys.stderr, sys.argv[0].split('/')[-1] + ': ' + str(err.msg)
+	except _Usage as err:
+		print(sys.argv[0].split('/')[-1] + ': ' + str(err.msg), file=sys.stderr)
 		return 2
 
 def convertUnicode( fileDict ) :
 	fileUTFDict = {}
 	for key in fileDict:
-		if isinstance(key, unicode) :
-			key = key.encode('utf-8').strip()
+		if isinstance(key, str) :
+			key = key.encode('utf-8').decode('utf-8').strip()
 		value = fileDict.get(key)
-		if isinstance(value, unicode) :
-			value = value.encode('utf-8').strip()
+		if isinstance(value, str) :
+			value = value.encode('utf-8').decode('utf-8').strip()
 		fileUTFDict[key] = value
 
 	return str(fileUTFDict)

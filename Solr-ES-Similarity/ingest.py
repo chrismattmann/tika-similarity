@@ -36,7 +36,7 @@ def filterFiles(inputDir, acceptTypes):
     if acceptTypes:
         filename_list = (filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes)
     else:
-        print "Accepting all MIME Types....."
+        print("Accepting all MIME Types.....")
 
     return filename_list
 
@@ -55,7 +55,7 @@ def lazySolr(inputDir, accept):
     for doc in filterFiles(inputDir, accept):
         parsed = parser.from_file(doc)
 
-        document = { "id": "file:" + os.path.abspath(inputDir) + "/" + str(parsed["metadata"].pop(u"resourceName", None).encode("utf-8")),
+        document = { "id": "file:" + os.path.abspath(inputDir) + "/" + str(parsed["metadata"].pop("resourceName", None).encode("utf-8")),
                      "content": parsed["content"]
         }
 
@@ -103,7 +103,7 @@ def solrIngest(URL, dataset=None, inputDir=None, accept=None):
 
     count, res = solr.post_iterator(documents, commit=True, buffer_size=100)
 
-    print("Res : %s; count=%d" % (res, count))
+    print(("Res : %s; count=%d" % (res, count)))
 
 if __name__ == "__main__":
 
@@ -121,7 +121,7 @@ if __name__ == "__main__":
         if "solr" in args.URL:
             solrIngest(args.URL, "", args.inputDir, args.accept)
         else:
-            print "Defaulting to Elasticsearch"
+            print("Defaulting to Elasticsearch")
             #ingestES(args.URL, args.inputDir, args.accept)
 
 
