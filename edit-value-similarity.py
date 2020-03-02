@@ -27,7 +27,7 @@ def stringify(attribute_value):
     if isinstance(attribute_value, list):
         return str((", ".join(attribute_value)).encode('utf-8').strip())
     else:
-        return str(attribute_value.encode('utf-8').strip())
+        return str(str(attribute_value).encode('utf-8').strip())
 
 
 def computeScores(inputDir, outCSV, acceptTypes, allKeys):
@@ -168,18 +168,19 @@ def compute_score2(json_input_list, outCSV, acceptTypes, allKeys):
                 continue
     return
 
-def compute_scores(json_file, outCSV, acceptTypes, json_key, allKeys):
+def compute_scores(json_file, outCSV, acceptTypes, allKeys):
     na_metadata = ["resourceName"]
     with open(outCSV, "wb") as outF:
         a = csv.writer(outF, delimiter=',')
         a.writerow(["x-coordinate","y-coordinate","Similarity_score"])
 
         json_list = []
+        
         with open(json_file) as json_input_file:
-                json_list.extend(json.load(json_input_file)[json_key])
+                json_list.extend(json.load(json_input_file)[:])
         #json_list has list of JSON objects read from json file
 
-        print(len(json_list))
+        #print(len(json_list))
         metadata_dict = {}
         for entry in json_list:
             metadata_dict[entry['id']]=entry
@@ -239,13 +240,12 @@ if __name__ == "__main__":
     argParser.add_argument('--json', nargs='+', required=False, help='several paths to  JSON file containing certain metadata')
     argParser.add_argument('--accept', nargs='+', type=str, help='Optional: compute similarity only on specified IANA MIME Type(s)')
     argParser.add_argument('--allKeys', action='store_true', help='compute edit distance across all keys')
-    argParser.add_argument('--fileInput',required=False, help='Set to 1 to compute edit distance for JSON objects in the file')
-    argParser.add_argument('--jsonKey',required=False, help='JSON object list key')
+    argParser.add_argument('--inputFile', required=False, help='path to file')
     
     args = argParser.parse_args()
     
-    if args.fileInput=='1' and args.json and args.jsonKey:
-        compute_scores(args.json[0],args.outCSV, args.accept,args.jsonKey, args.allKeys)
+    if args.inputFile and args.outCSV:
+        compute_scores(args.inputFile, args.outCSV, args.accept, args.allKeys)
     elif args.inputDir and args.outCSV:
         computeScores(args.inputDir, args.outCSV, args.accept, args.allKeys)
     else:
