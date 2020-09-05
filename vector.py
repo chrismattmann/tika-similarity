@@ -21,9 +21,9 @@ import math
 
 def stringify(attribute_value):
     if isinstance(attribute_value, list):
-        return str((", ".join(attribute_value)).encode('utf-8').strip())
+        return str((", ".join(attribute_value)).encode('utf-8').decode('utf-8').strip())
     else:
-        return str(attribute_value.encode('utf-8').strip())
+        return str(attribute_value.encode('utf-8').decode('utf-8').strip())
 
 
 class Vector:

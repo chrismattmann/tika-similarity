@@ -40,7 +40,7 @@ def createCorrelationMatrix(inputCSV):
                 data[column[0]] = {}
             data[column[0]][column[1]] = column[2]
     matrix = []
-    unique_states = data.keys()
+    unique_states = list(data.keys())
     for row in unique_states:
         row_data = []
         for col in unique_states:

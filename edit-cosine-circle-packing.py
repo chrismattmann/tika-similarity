@@ -26,7 +26,7 @@ import sys
 def createCluster(inputCSV,argNum):
     row=[]
     if(argNum not in [0,1,2]):
-        print "Input Error! \nPass argument to --cluster as one of the following\n0 for clustering based on x-coordinate, \n1 for clustering based on y-coordinate, \n2 for clustering based on similarity score"
+        print("Input Error! \nPass argument to --cluster as one of the following\n0 for clustering based on x-coordinate, \n1 for clustering based on y-coordinate, \n2 for clustering based on similarity score")
         sys.exit()
 
     csvPath = inputCSV          #Input Path to csv file
@@ -56,7 +56,7 @@ def createCluster(inputCSV,argNum):
             
     clusterList = []
     i=0
-    for elem in data.keys():
+    for elem in list(data.keys()):
         first={}
         first["name"]="cluster "+str(i)
         first["children"]=data[elem]
@@ -64,7 +64,7 @@ def createCluster(inputCSV,argNum):
         i+=1
 
 
-    print json.dumps(clusterList, sort_keys=True, indent=4, separators=(',', ': '))
+    print(json.dumps(clusterList, sort_keys=True, indent=4, separators=(',', ': ')))
 
     clusterStruct = {"name":"clusters", "children":clusterList}
     with open("circle.json", "w") as f:             #Pass the json file as input to circle-packing.html

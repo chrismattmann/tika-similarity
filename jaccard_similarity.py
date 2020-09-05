@@ -21,6 +21,7 @@
 
 from tika import parser
 import os, itertools, argparse, csv
+from functools import reduce
 
 def filterFiles(inputDir, acceptTypes):
     filename_list = []
@@ -33,9 +34,9 @@ def filterFiles(inputDir, acceptTypes):
 
     filename_list = [filename for filename in filename_list if parser.from_file(filename)]
     if acceptTypes:
-        filename_list = [filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8')).split('/')[-1] in acceptTypes]
+        filename_list = [filename for filename in filename_list if str(parser.from_file(filename)['metadata']['Content-Type'].encode('utf-8').decode('utf-8')).split('/')[-1] in acceptTypes]
     else:
-        print "Accepting all MIME Types....."
+        print("Accepting all MIME Types.....")
 
     return filename_list
 
@@ -53,10 +54,10 @@ def computeScores(inputDir, outCSV, acceptTypes):
         f2MetaData = parser.from_file(file2)["metadata"]
 
         isCoExistant = lambda k: ( k in f2MetaData) and ( f1MetaData[k] == f2MetaData[k] )
-        intersection = reduce(lambda m,k: (m + 1) if isCoExistant(k) else m, f1MetaData.keys(), 0)
+        intersection = reduce(lambda m,k: (m + 1) if isCoExistant(k) else m, list(f1MetaData.keys()), 0)
 
 
-        union = len(f1MetaData.keys()) + len(f2MetaData.keys()) - intersection
+        union = len(list(f1MetaData.keys())) + len(list(f2MetaData.keys())) - intersection
         jaccard = float(intersection) / union
 
         a.writerow([file1, file2, jaccard])

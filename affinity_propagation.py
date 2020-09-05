@@ -23,6 +23,7 @@ import os, editdistance, itertools, argparse, csv
 import json
 from vector import Vector
 from tika import parser
+from functools import reduce
 
 '''This script uses sklearns Affinity propogation module to cluster based on different precomputed distance metrics
 Affinity Propogation : http://www.sciencemag.org/content/315/5814/972.short
@@ -70,9 +71,9 @@ def jaccardsdistance(feature1,feature2,config_params):
     else:
         config_params=["resourceName"]
         isCoExistant = lambda k: ( k in feature2 and k in (config_params)) and ( feature1[k] == feature2[k] )
-    intersection = reduce(lambda m,k: (m + 1) if isCoExistant(k) else m, feature1.keys(), 0)
+    intersection = reduce(lambda m,k: (m + 1) if isCoExistant(k) else m, list(feature1.keys()), 0)
 
-    union = len(config_params.keys()) + len(config_params.keys()) - intersection
+    union = len(list(config_params.keys())) + len(list(config_params.keys())) - intersection
     jaccard = float(intersection) / union
     return jaccard
 
@@ -86,10 +87,10 @@ def cosinedistance(feature1,feature2,config_params):
 def convertUnicode( fileDict ) :
     fileUTFDict = {}
     for key in fileDict:
-        if isinstance(key, unicode) :
+        if isinstance(key, str) :
             key = key.encode('utf-8').strip()
         value = fileDict.get(key)
-        if isinstance(value, unicode) :
+        if isinstance(value, str) :
             value = value.encode('utf-8').strip()
         fileUTFDict[key] = value
 

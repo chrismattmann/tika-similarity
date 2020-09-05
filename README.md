@@ -1,21 +1,23 @@
 [Apache Tika](http://tika.apache.org/) File Similarity based on Jaccard distance, Edit distance & Cosine distance
 ===
 
-This project demonstrates using the [Tika-Python](http://github.com/chrismattmann/tika-python) package (Python port of Apache Tika) to compute file similarity based on Metadata features.
+This project demonstrates the usage of the [Tika-Python](http://github.com/chrismattmann/tika-python) package (Python port of Apache Tika) to compute file similarity based on metadata features.
 
-The script can iterate over all files in the current directory or given files by command line and derives their metadata features, then computes the union of all features. The union of all features become the "golden feature set" that all document features are compared to via intersect. The length of that intersect per file divided by the length of the unioned set becomes the similarity score.
+The script can iterate over all files in the current directory, or specific files by command line, derive their metadata features, and  compute the union of all features. The union of all features becomes the "golden feature set" that all document features are compared to via intersect. The length of that intersect per file divided by the length of the unioned set becomes the similarity score.
 
 Scores are sorted in reverse (descending) order which can be shown in three different Data-Driven document visualizaions. A companion project to this effort is [Auto Extractor](https://github.com/USCDataScience/autoextractor/wiki/Clustering-Tutorial) which uses [Apache Spark](http://spark.apache.org/) and [Apache Nutch](http://nutch.apache.org/) to take web crawl data, and produce D3-visualizations and clusters of similar pages.
 
 Pre-requisite
 ===
-0. Install [Tika-Python](http://github.com/chrismattmann/tika-python)
+- Install [Tika-Python](http://github.com/chrismattmann/tika-python)
+- Install [Java Development Kit](https://www.oracle.com/java/technologies/javase-downloads.html)
+
 
 Installation
 ===
 ```
-pip install editdistance
 git clone https://github.com/chrismattmann/tika-img-similarity
+pip install -r requirements.txt
 ```
 You can also check out [ETLlib](https://github.com/chrismattmann/etllib/tree/master/etl/imagesimilarity.py)
 
@@ -28,7 +30,7 @@ Key-based comparison
 --------------------
 This compares metadata feature names as a golden feature set
 ```
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.7
 python similarity.py -f [directory of files] [--accept [jpeg pdf etc...]]
 or 
 python similarity.py -c [file1 file2 file3 ...]
@@ -37,7 +39,7 @@ Value-based comparison
 ----------------------
 This compares metadata feature names together with its value as a golden feature set
 ```
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.7
 python value-similarity.py -f [directory of files] [--accept [jpeg pdf etc...]]
 or 
 python value-similarity.py -c [file1 file2 file3 ...]
@@ -49,7 +51,7 @@ Edit Distance comparison on Metadata Values
 - **Similarity Score of 1 implies an identical pair of documents.**
 
 ```
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.7
 python edit-value-similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]] [--allKeys]
 
 --inputDir INPUTDIR  path to directory containing files
@@ -71,7 +73,7 @@ Cosine Distance comparison on Metadata Values
 - **Similarity Score of 1 implies an identical pair of documents.**
 
 ```
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.7
 python cosine_similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]]
 
 --inputDir INPUTDIR  path to directory containing files
@@ -87,7 +89,7 @@ Similarity based on Stylistic/Authorship features
 - This calculates pairwise cosine similarity on bag of signatures/features produced by extracting stylistic/authorship features from text.
 
 ```
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.7
 python psykey.py --inputDir INPUTDIR --outCSV OUTCSV --wordlists WRODLIST_FOLDER
 
 --inputDir INPUTDIR  path to directory containing files
@@ -103,7 +105,7 @@ Metalevenshtein string distance
 - This calculates Metalevenshtein (Inspired by the paper : Robust Similarity Measures for Named Entities Matching by Erwan et al.) distance between two strings.
 
 ```
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.7
 
 Usage:
 
@@ -131,7 +133,7 @@ Bell Curve fitting and overlap
 
 
 ```
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3.7
 import features as feat
 data1=[1,2,3,3,2,1]
 data2=[4,5,6,6,5,4]

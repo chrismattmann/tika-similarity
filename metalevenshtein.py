@@ -70,9 +70,9 @@ def meta_levenshtein(string1,string2,Sim='levenshtein',theta=0.5,strict=-1,idf=d
 
     # set the secondary simlarity function
     if Sim == 'levenshtein':
-        simf = lambda x, y: feat.levenshtein_similarity(unicode(x, 'utf-8'), unicode(y, 'utf-8'))
+        simf = lambda x, y: feat.levenshtein_similarity(str(x, 'utf-8'), str(y, 'utf-8'))
     elif Sim=='jaro_winkler':
-        simf = lambda x, y: feat.jaro_winkler_similarity(unicode(x, 'utf-8'), unicode(y, 'utf-8'))
+        simf = lambda x, y: feat.jaro_winkler_similarity(str(x, 'utf-8'), str(y, 'utf-8'))
 
     # set the idf and normalization functions
     if len(idf)>0:
@@ -139,5 +139,5 @@ def meta_levenshtein(string1,string2,Sim='levenshtein',theta=0.5,strict=-1,idf=d
 
 if __name__ == '__main__':
     #usage example
-    print meta_levenshtein('abacus1cat','cat1cus')
+    print(meta_levenshtein('abacus1cat','cat1cus'))
 

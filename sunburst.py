@@ -84,7 +84,7 @@ def sunburst(metadataLists) :
     circles = set()
     for line in metadataLists:
         metadata = ast.literal_eval(line)
-        for item in metadata.keys():
+        for item in list(metadata.keys()):
             if item not in circles :
                 circles.add(item)
                 circle = {}

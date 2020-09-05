@@ -78,8 +78,8 @@ def cosine_similarity(vec1, vec2):
     intersection = set(vec1.keys()) & set(vec2.keys())
     numerator = sum([vec1[x] * vec2[x] for x in intersection])
 
-    sum1 = sum([vec1[x] ** 2 for x in vec1.keys()])
-    sum2 = sum([vec2[x] ** 2 for x in vec2.keys()])
+    sum1 = sum([vec1[x] ** 2 for x in list(vec1.keys())])
+    sum2 = sum([vec2[x] ** 2 for x in list(vec2.keys())])
     denominator = math.sqrt(sum1) * math.sqrt(sum2)
 
     if not denominator:
@@ -107,5 +107,5 @@ if __name__ == '__main__':
 
     area,error=gaussian_overlap(data1,data2)
 
-    print area
+    print(area)
 

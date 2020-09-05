@@ -1,5 +1,7 @@
 *.csv
 *.txt
+!requirements.txt
 *.json
 *.pyc
 *.history
+*.py.bak

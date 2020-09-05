@@ -17,7 +17,7 @@ def raise_eval(eval_file):
 
     with open(eval_file, 'rb') as inF:
         reader = csv.reader(inF)
-        reader.next()
+        next(reader)
         for row in reader:
             labels = [label.strip() for label in row[-1].strip().split(';')]
 
@@ -38,5 +38,5 @@ if __name__ == '__main__':
         raise_eval(sys.argv[2])
 
     else:
-        print "Argument 1, dataset 'raise' or 'flickr'"
-        print "Argument 2, ground truth file"
+        print("Argument 1, dataset 'raise' or 'flickr'")
+        print("Argument 2, ground truth file")
