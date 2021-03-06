@@ -33,7 +33,7 @@ def stringify(attribute_value):
 def computeScores(inputDir, outCSV, acceptTypes, allKeys):
 
     na_metadata = ["resourceName"]
-    with open(outCSV, "wb") as outF:
+    with open(outCSV, "w") as outF:
         a = csv.writer(outF, delimiter=',')
         a.writerow(["x-coordinate","y-coordinate","Similarity_score"])
 
@@ -106,7 +106,7 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
 
 def compute_score2(json_input_list, outCSV, acceptTypes, allKeys):
     na_metadata = ["resourceName"]
-    with open(outCSV, "wb") as outF:
+    with open(outCSV, "w") as outF:
         a = csv.writer(outF, delimiter=',')
         a.writerow(["x-coordinate","y-coordinate","Similarity_score"])
 
@@ -170,7 +170,7 @@ def compute_score2(json_input_list, outCSV, acceptTypes, allKeys):
 
 def compute_scores(json_file, outCSV, acceptTypes, json_key, allKeys):
     na_metadata = ["resourceName"]
-    with open(outCSV, "wb") as outF:
+    with open(outCSV, "w") as outF:
         a = csv.writer(outF, delimiter=',')
         a.writerow(["x-coordinate","y-coordinate","Similarity_score"])
 
@@ -216,8 +216,8 @@ def compute_scores(json_file, outCSV, acceptTypes, json_key, allKeys):
                     record2_only_features = set(record2_metadata.keys()) - set(intersect_features)
                     record2_only_features = [feature for feature in record2_only_features if feature not in na_metadata]
 
-                    record_edit_distance += len(file1_only_features) + len(file2_only_features)       # increment by 1 for each disjunct feature in (A-B) & (B-A), file1_disjunct_feature_value/file1_disjunct_feature_value = 1
-                    record_edit_distance /= float(len(intersect_features) + len(record_only_features) + len(record2_only_features))
+                    record_edit_distance += len(record1_only_features) + len(record2_only_features)       # increment by 1 for each disjunct feature in (A-B) & (B-A), file1_disjunct_feature_value/file1_disjunct_feature_value = 1
+                    record_edit_distance /= float(len(intersect_features) + len(record1_only_features) + len(record2_only_features))
 
                 else:
                     record_edit_distance /= float(len(intersect_features))    #average edit distance
