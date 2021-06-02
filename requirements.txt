@@ -6,5 +6,5 @@ nltk==3.4.5
 requests==2.23.0
 six==1.14.0
 tika==1.23.1
-urllib3==1.25.8
+urllib3==1.26.5
 wincertstore==0.2
