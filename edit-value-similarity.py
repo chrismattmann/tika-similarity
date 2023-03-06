@@ -22,6 +22,8 @@ import os, editdistance, itertools, argparse, csv
 from requests import ConnectionError
 from time import sleep
 import json
+import sys
+
 
 def stringify(attribute_value):
     if isinstance(attribute_value, list):
@@ -33,7 +35,14 @@ def stringify(attribute_value):
 def computeScores(inputDir, outCSV, acceptTypes, allKeys):
 
     na_metadata = ["resourceName"]
-    with open(outCSV, "wb") as outF:
+
+    if sys.version_info[0] >= 3:
+        openMode = "w"
+    else:
+        openMode = "wb"
+        
+    
+    with open(outCSV, openMode) as outF:
         a = csv.writer(outF, delimiter=',')
         a.writerow(["x-coordinate","y-coordinate","Similarity_score"])
 
