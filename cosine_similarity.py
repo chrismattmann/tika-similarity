@@ -23,6 +23,7 @@ import os, itertools, argparse, csv
 from requests import ConnectionError
 from time import sleep
 import ast
+import sys
 
 def filterFiles(inputDir, acceptTypes):
     filename_list = []
@@ -45,8 +46,13 @@ def filterFiles(inputDir, acceptTypes):
 
 
 def computeScores(inputDir, outCSV, acceptTypes):
+
+    if sys.version_info[0] >= 3:
+        openMode = "w"
+    else:
+        openMode = "wb"
     
-    with open(outCSV, "wb") as outF:
+    with open(outCSV, openMode) as outF:
         a = csv.writer(outF, delimiter=',')
         a.writerow(["x-coordinate","y-coordinate","Similarity_score"])        
 
