@@ -80,7 +80,12 @@ def computeScores(inputDir, outCSV, acceptTypes):
 Takes an input file and generates similarity scores for all combinations of row entries.
 '''
 def computeScores2(inputFile, outCSV):
-    with open(outCSV, "wb") as outF:
+    if sys.version_info[0] >= 3:
+        openMode = "w"
+    else:
+        openMode = "wb"
+        
+    with open(outCSV, openMode) as outF:
         a = csv.writer(outF, delimiter=',')
         a.writerow(["x-coordinate", "y-coordinate", "Similarity_score"])
 

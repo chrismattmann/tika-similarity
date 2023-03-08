@@ -22,6 +22,7 @@
 from tika import parser
 import os, itertools, argparse, csv
 from functools import reduce
+import sys
 
 def filterFiles(inputDir, acceptTypes):
     filename_list = []
@@ -43,7 +44,13 @@ def filterFiles(inputDir, acceptTypes):
 
 def computeScores(inputDir, outCSV, acceptTypes):
 
-    with open(outCSV, "wb") as outF:
+    if sys.version_info[0] >= 3:
+        openMode = "w"
+    else:
+        openMode = "wb"
+        
+    
+    with open(outCSV, openMode) as outF:
       a = csv.writer(outF, delimiter=',')
       a.writerow(["x-coordinate","y-coordinate","Similarity_score"])
 

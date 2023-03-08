@@ -115,7 +115,12 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
 
 def compute_score2(json_input_list, outCSV, acceptTypes, allKeys):
     na_metadata = ["resourceName"]
-    with open(outCSV, "wb") as outF:
+    if sys.version_info[0] >= 3:
+        openMode = "w"
+    else:
+        openMode = "wb"
+        
+    with open(outCSV, openMode) as outF:
         a = csv.writer(outF, delimiter=',')
         a.writerow(["x-coordinate","y-coordinate","Similarity_score"])
 
@@ -179,7 +184,11 @@ def compute_score2(json_input_list, outCSV, acceptTypes, allKeys):
 
 def compute_scores(json_file, outCSV, acceptTypes, json_key, allKeys):
     na_metadata = ["resourceName"]
-    with open(outCSV, "wb") as outF:
+    if sys.version_info[0] >= 3:
+        openMode = "w"
+    else:
+        openMode = "wb"
+    with open(outCSV, openMode) as outF:
         a = csv.writer(outF, delimiter=',')
         a.writerow(["x-coordinate","y-coordinate","Similarity_score"])
 
