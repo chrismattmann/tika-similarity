@@ -51,7 +51,7 @@ def levelNum(data, level = 1):
 def generateLevel(data):
 	clusters = []
 	numOfChildren = len(data)
-	numOfGroup = numOfChildren / _maxNumNode
+	numOfGroup = int(numOfChildren / _maxNumNode)
 	for i in range(0, numOfGroup+1) :
 		clusterData = []
 		clusterGroupData ={}
