@@ -17,6 +17,7 @@
 #
 #
 
+from __future__ import print_function
 import tika
 from tika import parser
 from pprint import pprint
