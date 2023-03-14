@@ -5,3 +5,4 @@
 *.pyc
 *.history
 *.py.bak
+.idea
