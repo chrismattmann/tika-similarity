@@ -17,7 +17,7 @@ Installation
 ===
 ```
 git clone https://github.com/chrismattmann/tika-img-similarity
-pip install tika-python editdistance
+pip install tika==2.6.0 editdistance
 ```
 You can also check out [ETLlib](https://github.com/chrismattmann/etllib/tree/master/etl/imagesimilarity.py)
 
