@@ -30,7 +30,7 @@ Key-based comparison
 --------------------
 This compares metadata feature names as a golden feature set
 ```
-#!/usr/bin/env python3.7
+#!/usr/bin/env python
 python similarity.py -f [directory of files] [--accept [jpeg pdf etc...]]
 or 
 python similarity.py -c [file1 file2 file3 ...]
@@ -39,7 +39,7 @@ Value-based comparison
 ----------------------
 This compares metadata feature names together with its value as a golden feature set
 ```
-#!/usr/bin/env python3.7
+#!/usr/bin/env python
 python value-similarity.py -f [directory of files] [--accept [jpeg pdf etc...]]
 or 
 python value-similarity.py -c [file1 file2 file3 ...]
@@ -51,7 +51,7 @@ Edit Distance comparison on Metadata Values
 - **Similarity Score of 1 implies an identical pair of documents.**
 
 ```
-#!/usr/bin/env python3.7
+#!/usr/bin/env python
 python edit-value-similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]] [--allKeys]
 
 --inputDir INPUTDIR  path to directory containing files
@@ -73,7 +73,7 @@ Cosine Distance comparison on Metadata Values
 - **Similarity Score of 1 implies an identical pair of documents.**
 
 ```
-#!/usr/bin/env python3.7
+#!/usr/bin/env python
 python cosine_similarity.py [-h] --inputDir INPUTDIR --outCSV OUTCSV [--accept [png pdf etc...]]
 
 --inputDir INPUTDIR  path to directory containing files
@@ -89,7 +89,7 @@ Similarity based on Stylistic/Authorship features
 - This calculates pairwise cosine similarity on bag of signatures/features produced by extracting stylistic/authorship features from text.
 
 ```
-#!/usr/bin/env python3.7
+#!/usr/bin/env python
 python psykey.py --inputDir INPUTDIR --outCSV OUTCSV --wordlists WRODLIST_FOLDER
 
 --inputDir INPUTDIR  path to directory containing files
