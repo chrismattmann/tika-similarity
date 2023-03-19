@@ -42,8 +42,8 @@ def main(argv = None) :
 def levelNum(data, level = 1):
 	cluster = {}
 	numOfChildren = len(data)
-	while numOfChildren / _maxNumNode>0:
-		numOfChildren = numOfChildren / _maxNumNode
+	while int(numOfChildren / _maxNumNode)>0:
+		numOfChildren = int(numOfChildren / _maxNumNode)
 		level = level+1
 
 	return level
