@@ -234,8 +234,8 @@ def compute_scores(json_file, outCSV, acceptTypes, json_key, allKeys):
                     record2_only_features = set(record2_metadata.keys()) - set(intersect_features)
                     record2_only_features = [feature for feature in record2_only_features if feature not in na_metadata]
 
-                    record_edit_distance += len(file1_only_features) + len(file2_only_features)       # increment by 1 for each disjunct feature in (A-B) & (B-A), file1_disjunct_feature_value/file1_disjunct_feature_value = 1
-                    record_edit_distance /= float(len(intersect_features) + len(record_only_features) + len(record2_only_features))
+                    record_edit_distance += len(record1_only_features) + len(record2_only_features)       # increment by 1 for each disjunct feature in (A-B) & (B-A), file1_disjunct_feature_value/file1_disjunct_feature_value = 1
+                    record_edit_distance /= float(len(intersect_features) + len(record1_only_features) + len(record2_only_features))
 
                 else:
                     record_edit_distance /= float(len(intersect_features))    #average edit distance
