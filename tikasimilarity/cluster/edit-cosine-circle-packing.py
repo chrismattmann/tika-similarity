@@ -34,6 +34,8 @@ def createCluster(inputCSV,argNum):
         # handling case where file names have space in between them
         lines = [line.strip() for line in f]
         for line in lines:
+            if not len(line):
+                continue
             row.append(line)
 
     data={}
@@ -64,7 +66,7 @@ def createCluster(inputCSV,argNum):
         i+=1
 
 
-    print(json.dumps(clusterList, sort_keys=True, indent=4, separators=(',', ': ')))
+    #print(json.dumps(clusterList, sort_keys=True, indent=4, separators=(',', ': ')))
 
     clusterStruct = {"name":"clusters", "children":clusterList}
     with open("circle.json", "w") as f:             #Pass the json file as input to circle-packing.html
