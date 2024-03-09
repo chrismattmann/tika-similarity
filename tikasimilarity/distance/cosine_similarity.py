@@ -19,11 +19,30 @@
 
 from tika import parser
 from vector import Vector
-import os, itertools, argparse, csv
+import os, itertools, argparse, csv, signal
 from requests import ConnectionError
 from time import sleep
 import ast
 import sys
+
+# Stop the Tika server process
+def killserver():
+    try:
+         
+        # iterating through each instance of the process
+        for line in os.popen("ps ax | grep tika-server | grep -v grep"): 
+            fields = line.split()
+             
+            # extracting Process ID from the output
+            pid = fields[0] 
+             
+            # terminating process 
+            os.kill(int(pid), signal.SIGKILL) 
+        print("Tika process successfully terminated")
+         
+    except:
+        print("Failed to kill Tika process")
+
 
 def filterFiles(inputDir, acceptTypes):
     filename_list = []
@@ -75,6 +94,14 @@ def computeScores(inputDir, outCSV, acceptTypes):
                 sleep(1)
             except KeyError:
                 continue
+            except:
+                print("cosine-similarity::Server failed")
+                sleep(1)
+                killserver()
+                sleep(1)
+                print("cosine-similarity::Attempting restart")
+
+        sleep(0.01)
 
 '''
 Takes an input file and generates similarity scores for all combinations of row entries.
