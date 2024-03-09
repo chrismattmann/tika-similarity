@@ -20,9 +20,30 @@
 # Computing pairwise jaccard similarity for a given directory of files
 
 from tika import parser
-import os, itertools, argparse, csv
+import os, itertools, argparse, csv, signal
 from functools import reduce
 import sys
+
+import time
+
+# Stop the Tika server process
+def killserver():
+    try:
+         
+        # iterating through each instance of the process
+        for line in os.popen("ps ax | grep tika-server | grep -v grep"): 
+            fields = line.split()
+             
+            # extracting Process ID from the output
+            pid = fields[0] 
+             
+            # terminating process 
+            os.kill(int(pid), signal.SIGKILL) 
+        print("Tika process successfully terminated")
+         
+    except:
+        print("Failed to kill Tika process")
+
 
 def filterFiles(inputDir, acceptTypes):
     filename_list = []
@@ -57,18 +78,28 @@ def computeScores(inputDir, outCSV, acceptTypes):
       files_tuple = itertools.combinations(filterFiles(inputDir, acceptTypes), 2)
 
       for file1, file2 in files_tuple:
-        f1MetaData = parser.from_file(file1)["metadata"]
-        f2MetaData = parser.from_file(file2)["metadata"]
 
-        isCoExistant = lambda k: ( k in f2MetaData) and ( f1MetaData[k] == f2MetaData[k] )
-        intersection = reduce(lambda m,k: (m + 1) if isCoExistant(k) else m, list(f1MetaData.keys()), 0)
+        try:
+            f1MetaData = parser.from_file(file1)["metadata"]
+            f2MetaData = parser.from_file(file2)["metadata"]
+
+            isCoExistant = lambda k: ( k in f2MetaData) and ( f1MetaData[k] == f2MetaData[k] )
+            intersection = reduce(lambda m,k: (m + 1) if isCoExistant(k) else m, list(f1MetaData.keys()), 0)
 
 
-        union = len(list(f1MetaData.keys())) + len(list(f2MetaData.keys())) - intersection
-        jaccard = float(intersection) / union
+            union = len(list(f1MetaData.keys())) + len(list(f2MetaData.keys())) - intersection
+            jaccard = float(intersection) / union
 
-        a.writerow([file1, file2, jaccard])
+            a.writerow([file1, file2, jaccard])
 
+        except:
+            print("jaccard_similarity::Server failed")
+            time.sleep(1)
+            killserver()
+            time.sleep(1)
+            print("jaccard_similarity::Attempting restart")
+
+        time.sleep(0.01)
 
 if __name__ == "__main__":
 
