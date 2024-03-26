@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    path.chord {
+        fill-opacity: 0.67;
+        stroke: #000;
+        stroke-width: 0.5px;
+    }
+
+    text {
+        font: 10px sans-serif;
+    }
+</style>
+
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script>
+
+        var width = 960,
+            height = 960,
+            outerRadius = Math.min(width, height) * 0.5 - 40,
+            innerRadius = outerRadius - 30;
+
+        var arc = d3.svg.arc()
+            .innerRadius(innerRadius)
+            .outerRadius(outerRadius);
+
+        var layout = d3.layout.chord()
+            .padding(0.04)
+            .sortSubgroups(d3.descending)
+            .sortChords(d3.ascending);
+
+        var path = d3.svg.chord()
+            .radius(innerRadius);
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("id", "circle")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        d3.csv("edit_result.csv", function (error, data) {
+            if (error) throw error;
+
+            console.log(data); 
+
+            var nodes = {},
+                matrix = [],
+                n = 0;
+
+            // Compute a unique index for each node.
+            data.forEach(function (d) {
+                if (!(d.source in nodes)) nodes[d.source] = { name: d.source, index: n++ };
+                if (!(d.target in nodes)) nodes[d.target] = { name: d.target, index: n++ };
+            });
+
+            console.log(nodes); 
+
+            // Construct a square matrix counting the ties.
+            data.forEach(function (d) {
+                if (!matrix[nodes[d.source].index]) matrix[nodes[d.source].index] = new Array(n).fill(0);
+                if (!matrix[nodes[d.target].index]) matrix[nodes[d.target].index] = new Array(n).fill(0);
+                matrix[nodes[d.source].index][nodes[d.target].index] = +d.value;
+                matrix[nodes[d.target].index][nodes[d.source].index] = +d.value;
+            });
+
+            layout.matrix(matrix);
+
+            var group = svg.selectAll(".group")
+                .data(layout.groups)
+                .enter().append("g")
+                .attr("class", "group")
+                .on("mouseover", fade(.1))
+                .on("mouseout", fade(1));
+
+            group.append("title").text(function (d) {
+                return nodes[data[d.index].source].name;
+            });
+
+            var groupPath = group.append("path")
+                .attr("id", function (d) { return "group" + d.index; })
+                .attr("d", arc)
+                .style("fill", function (d) { return "rgb(31, 119, 180)"; });
+
+            var groupText = group.append("text")
+                .attr("x", 6)
+                .attr("dy", 15);
+
+            groupText.append("textPath")
+                .attr("xlink:href", function (d) { return "#group" + d.index; })
+                .text(function (d) { return nodes[data[d.index].source].name; });
+
+            groupText.filter(function (d) { return groupPath[0][d.index].getTotalLength() / 2 - 16 < this.getComputedTextLength(); })
+                .remove();
+
+            var chord = svg.selectAll(".chord")
+                .data(layout.chords)
+                .enter().append("path")
+                .attr("class", "chord")
+                .style("fill", function (d) { return d3.rgb(31, 119, 180); })
+                .attr("d", path);
+        });
+
+        function fade(opacity) {
+            return function (g, i) {
+                svg.selectAll(".chord")
+                    .filter(function (d) { return d.source.index != i && d.target.index != i; })
+                    .transition()
+                    .style("opacity", opacity);
+            };
+        }
+
+    </script>
