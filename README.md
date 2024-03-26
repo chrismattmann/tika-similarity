@@ -162,6 +162,57 @@ if you are dealing with big data, you can use it this way:
 You can set max number for each node **_maxNumNode**(default _maxNumNode = 10) in generateLevelCluster.py
 ![Image of level composite viz](docs/figs/level-composite.png)
 
+### Chord Diagram viz
+
+#### Getting the specific input for the visualizaion
+
+The input of this part should be an output of Tika Similarity in a specific format - csv file with the columns : `x_coordinate`, `y_coordinate`, `similarity score`
+
+For example, to build a chord diagram based on Tika Similarity related to jaccard similarity, the following must be done to get an input for this task:
+
+- the Json files, based on which it is needed to figure out the jaccard similarity must be put into `splits` folder
+- the `jaccard.similarity.py must be used` - it is possible to get it in the tika similarity repository 
+
+```shell
+git clone http://github.com/chrismattmann/tika-similarity
+```
+
+After that, to get the file with the coordinates and the similarity score, the following code must be implemented:
+
+```shell
+python ../jaccard_similarity.py --inputDir splits/ --outCSV jaccard.csv
+```
+
+As an output, the user would get a `jaccard.csv` file  with the columns : `x_coordinate`, `y_coordinate`, `similarity score`
+
+Note: it is also possible to work with other tika similarity functionality, such as,e.g., Edit distance similarity (for that, it is needed to create an edit.csv file with the columns : `x_coordinate`, `y_coordinate`, `similarity score` or Cosine similarity by implementing the functions from the tutorial: https://github.com/chrismattmann/tika-similarity/wiki/Tutorial)
+
+#### Creating the visualization
+
+For transforming the file (which was in the previous step)- clusterizing that data- was used the following Python code:
+
+```shell
+python html/clusterization.py
+```
+Note: it is important to manually incude the csv filename (e.g. jaccard.csv) in the 6th line of the clusterization.py script.
+
+Html file is transferred from `html` to the working directory for creating the template for the visualization 
+
+```shell
+cp html/chord.html .
+```
+Note: it is important to incude the csv filename (e.g. jaccard.csv) in the 43th line of the chord.html script.
+
+For visualization the python server is launched:
+
+```shell
+python -mhttp.server 8082
+```
+#### Output:
+  &emsp; Chord diagram (this fires up a server on port 8082, so then visit http://localhost:8082/chord.html) 
+  
+
+
 Questions, comments?
 ===================
 Send them to [Chris A. Mattmann](mailto:chris.a.mattmann@jpl.nasa.gov).
