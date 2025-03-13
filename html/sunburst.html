@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Tika Similarity - Document Cluster Sunburst</title>
+<style>
+path {
+  stroke: #fff;
+  fill-rule: evenodd;
+}
+
+text {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 240px;
+  padding: 10px;
+  font: 12px sans-serif;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+#sunburst {
+  display: flex;
+  justify-content: center;
+}
+
+#sunburst svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.error {
+  color: #d62728;
+  padding: 20px;
+  border: 1px solid #d62728;
+  border-radius: 8px;
+  margin: 20px;
+  background-color: #ffeeee;
+}
+
+h1 {
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+</style>
+<body>
+<h1>Document Cluster Sunburst</h1>
+<div id="sunburst"></div>
+<div id="legend"></div>
+
+<script src="https://d3js.org/d3.v5.min.js" integrity="sha384-BlQYVDpUYwrnYBFtr5DhqWUyHOdqcWzOT/tJ36ZfwA9gwPxrx5oGmDKM2TMdoUzp" crossorigin="anonymous"></script>
+<script>
+// Set dimensions
+const width = 750;
+const height = 750;
+const radius = Math.min(width, height) / 2;
+
+// Create color scale
+const color = d3.scaleOrdinal(d3.quantize(d3.interpolateRainbow, 10));
+
+// Create SVG
+const svg = d3.select("#sunburst")
+  .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+// Create tooltip
+const tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+// Data structure transformation
+function prepareData(data) {
+  // For documents with scores, adjust the size property
+  function processChildren(node) {
+    if (node.children) {
+      node.children.forEach(processChildren);
+    } else if (node.size) {
+      // Ensure size is always positive and normalized
+      node.size = Math.max(1, node.size);
+    } else {
+      node.size = 1; // Default size
+    }
+    return node;
+  }
+  
+  return processChildren(data);
+}
+
+// Create partition layout
+const partition = d3.partition()
+    .size([2 * Math.PI, radius]);
+
+// Create arc generator
+const arc = d3.arc()
+    .startAngle(d => d.x0)
+    .endAngle(d => d.x1)
+    .innerRadius(d => d.y0)
+    .outerRadius(d => d.y1);
+
+// Load data and create visualization
+d3.json("clusters.json").then(function(data) {
+  // Prepare data
+  const root = d3.hierarchy(prepareData(data))
+      .sum(d => d.size || 0);
+  
+  // Compute partition layout
+  partition(root);
+  
+  // Create arcs
+  svg.selectAll("path")
+      .data(root.descendants())
+      .enter()
+      .append("path")
+        .attr("d", arc)
+        .style("fill", d => {
+          while (d.depth > 1) d = d.parent;
+          return color(d.data.name);
+        })
+        .style("opacity", d => 1.0 - (d.depth - 1) * 0.1)
+        .style("stroke", "white")
+        .style("stroke-width", "1px")
+        .on("mouseover", function(d) {
+          // Highlight current path
+          d3.select(this).style("opacity", 1);
+          
+          // Show tooltip
+          tooltip.transition()
+            .duration(200)
+            .style("opacity", .9);
+          
+          let content = `<b>${d.data.name}</b>`;
+          if (!d.children) {
+            content += `<br>Size: ${d.data.size || "N/A"}`;
+            if (d.data.path) {
+              content += `<br>Path: ${d.data.path}`;
+            }
+            if (d.data.metadata) {
+              content += `<br><small>${d.data.metadata.substring(0, 100)}...</small>`;
+            }
+          }
+          
+          tooltip.html(content)
+            .style("left", (d3.event.pageX + 10) + "px")
+            .style("top", (d3.event.pageY - 28) + "px");
+        })
+        .on("mouseout", function(d) {
+          // Restore opacity
+          d3.select(this).style("opacity", 1.0 - (d.depth - 1) * 0.1);
+          
+          // Hide tooltip
+          tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
+        })
+        .on("click", clicked);
+  
+  // Add labels
+  const text = svg.selectAll("text")
+      .data(root.descendants().filter(d => d.depth && (d.y0 + d.y1) / 2 * (d.x1 - d.x0) > 10))
+      .enter().append("text")
+        .attr("transform", function(d) {
+          const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+          const y = (d.y0 + d.y1) / 2;
+          return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
+        })
+        .attr("dx", "6") // margin
+        .attr("dy", ".35em") // vertical-align
+        .text(d => d.data.name.length > 15 ? d.data.name.substr(0, 15) + "..." : d.data.name)
+        .style("font-size", d => Math.min(10, (d.x1 - d.x0) * radius / 10) + "px");
+  
+  function clicked(p) {
+    // Zoom in/out on click
+    parent = p.parent || root;
+    
+    root.each(d => d.target = {
+      x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+      x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
+      y0: Math.max(0, d.y0 - p.depth),
+      y1: Math.max(0, d.y1 - p.depth)
+    });
+    
+    const t = svg.transition().duration(750);
+    
+    svg.selectAll("path").transition(t)
+        .tween("data", d => {
+          const i = d3.interpolate(d.current, d.target);
+          return t => d.current = i(t);
+        })
+        .attr("d", arc);
+    
+    svg.selectAll("text").transition(t)
+        .attr("transform", function(d) {
+          const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+          const y = (d.y0 + d.y1) / 2;
+          return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
+        })
+        .style("font-size", d => Math.min(10, (d.x1 - d.x0) * radius / 10) + "px");
+  }
+}).catch(function(error) {
+  console.error("Error loading clusters.json:", error);
+  d3.select("#sunburst")
+    .append("div")
+    .attr("class", "error")
+    .html("<p>Error loading data. Please ensure 'clusters.json' exists and is correctly formatted.</p>" +
+          "<p>First, run the sunburst-cluster.py script to generate the clusters.json file:</p>" +
+          "<pre>python tikasimilarity/cluster/sunburst-cluster.py --input similarity.csv --output clusters.json</pre>");
+});
+</script>
+</body>
+</html>
