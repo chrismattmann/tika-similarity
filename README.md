@@ -194,10 +194,15 @@ The deeper color, the more the same attributes in the cluster.
 ![Image of composite viz](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/composite.png)
 
 ### Sunburst viz
-Visualization of clustering from Jaccard Similarity result
+Visualization of clustering from Jaccard Similarity result (legacy, uses old similarity-scores.txt + metadata)
 ```
-* python sunburst.py (for generating circlepacking viz)
+* python sunburst.py 
 * open sunburst.html
+```
+For modern pairwise similarity (from jaccard_similarity.py, edit-value-similarity.py, cosine_similarity.py etc which output CSV with x-coordinate,y-coordinate,Similarity_score):
+```
+* python sunburst-cluster.py --input <CSV from sim> --output clusters.json --clusters 5
+* open sunburst.html (uses clusters.json)
 ```
 ![Image of sunburst viz](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/sunburst.png)
 
@@ -233,6 +238,27 @@ Contributors
 * Rashmi Nalwad, USC
 * Asitang Mishra, JPL
 * Suzanne Stathatos, JPL
+
+Running tests
+=============
+The project includes unit tests (using only the Python standard library) for:
+
+* The `killserver()` robustness logic (from PR #107) that was added to the three distance scripts.
+* The `sunburst-cluster.py` script and its `create_sunburst_json()` function (from PR #110).
+
+To run all tests:
+
+```
+python -m unittest discover -s tests -v
+```
+
+Or run specific modules:
+
+```
+python -m unittest tests.test_killserver tests.test_sunburst_cluster -v
+```
+
+The killserver tests use mocks so they never actually terminate any processes. The sunburst tests exercise happy paths, error conditions, and clustering logic using temporary CSV/JSON files.
 
 License
 ===

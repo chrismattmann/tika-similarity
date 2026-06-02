@@ -18,10 +18,25 @@
 #
 
 from tika import parser
-import os, editdistance, itertools, argparse, csv
+import os, editdistance, itertools, argparse, csv, signal
 from requests import ConnectionError
 from time import sleep
 import json
+
+# Stop the Tika server process (from robustness fix in PR #107)
+def killserver():
+    try:
+        # iterating through each instance of the process
+        for line in os.popen("ps ax | grep tika-server | grep -v grep"): 
+            fields = line.split()
+            # extracting Process ID from the output
+            pid = fields[0] 
+            # terminating process 
+            os.kill(int(pid), signal.SIGKILL) 
+        print("Tika process successfully terminated")
+    except:
+        print("Failed to kill Tika process")
+
 
 
 def stringify(attribute_value):
@@ -103,6 +118,14 @@ def computeScores(inputDir, outCSV, acceptTypes, allKeys):
                 sleep(1)
             except KeyError:
                 continue
+            except:
+                print("edit-value-similarity::Server failed")
+                sleep(1)
+                killserver()
+                sleep(1)
+                print("edit-value-similarity::Attempting restart")
+
+            sleep(0.01)
 
 
 def compute_score2(json_input_list, outCSV, acceptTypes, allKeys):
@@ -167,6 +190,14 @@ def compute_score2(json_input_list, outCSV, acceptTypes, allKeys):
                 sleep(1)
             except KeyError:
                 continue
+            except:
+                print("edit-value-similarity::Server failed")
+                sleep(1)
+                killserver()
+                sleep(1)
+                print("edit-value-similarity::Attempting restart")
+
+            sleep(0.01)
     return
 
 def compute_scores(json_file, outCSV, acceptTypes, json_key, allKeys):
@@ -230,6 +261,11 @@ def compute_scores(json_file, outCSV, acceptTypes, json_key, allKeys):
                 sleep(1)
             except KeyError:
                 continue
+            except:
+                print("edit-value-similarity::Server failed")
+                sleep(2)
+
+            sleep(0.01)
     return
 
 
