@@ -1,6 +1,9 @@
 *.csv
 *.txt
+!requirements.txt
 *.json
 *.pyc
 *.history
 .DS_Store
+*.py.bak
+.idea

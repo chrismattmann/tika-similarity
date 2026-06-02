@@ -22,7 +22,7 @@ from io import StringIO
 # Load the hyphenated module via importlib (cannot "import sunburst-cluster")
 def _load_sunburst_cluster():
     spec = importlib.util.spec_from_file_location(
-        "sunburst_cluster", "sunburst-cluster.py"
+        "sunburst_cluster", "tikasimilarity/cluster/sunburst-cluster.py"
     )
     mod = importlib.util.module_from_spec(spec)
     sys.modules["sunburst_cluster"] = mod

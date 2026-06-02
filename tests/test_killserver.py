@@ -57,7 +57,7 @@ def _extract_killserver_function(script_path):
 class TestKillserverJaccard(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.killserver = _extract_killserver_function("jaccard_similarity.py")
+        cls.killserver = _extract_killserver_function("tikasimilarity/distance/jaccard_similarity.py")
 
     def test_killserver_no_process_prints_success(self):
         with patch('os.popen') as mock_popen, \
@@ -93,7 +93,7 @@ class TestKillserverJaccard(unittest.TestCase):
 class TestKillserverCosine(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.killserver = _extract_killserver_function("cosine_similarity.py")
+        cls.killserver = _extract_killserver_function("tikasimilarity/distance/cosine_similarity.py")
 
     def test_killserver_no_process_prints_success(self):
         with patch('os.popen') as mock_popen, \
@@ -123,7 +123,7 @@ class TestKillserverCosine(unittest.TestCase):
 class TestKillserverEditValue(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.killserver = _extract_killserver_function("edit-value-similarity.py")
+        cls.killserver = _extract_killserver_function("tikasimilarity/distance/edit-value-similarity.py")
 
     def test_killserver_no_process_prints_success(self):
         with patch('os.popen') as mock_popen, \
