@@ -141,17 +141,12 @@ The deeper color, the more the same attributes in the cluster.
 ![Image of composite viz](docs/figs/composite.png)
 
 ### Sunburst viz
-Visualization of clustering from Jaccard Similarity result (legacy, uses old similarity-scores.txt + metadata)
-```
-* python tikasimilarity/cluster/sunburst-cluster.py --input <CSV> --output clusters.json --clusters 5
-* open html/sunburst.html (or the legacy sunburst.py + root sunburst.html for old metadata format)
-```
-For modern pairwise similarity (from jaccard_similarity.py, edit-value-similarity.py, cosine_similarity.py etc which output CSV with x-coordinate,y-coordinate,Similarity_score):
+Visualization of document clusters from pairwise similarity (e.g. Jaccard, edit, or cosine).
 ```
 * python tikasimilarity/cluster/sunburst-cluster.py --input <CSV from sim> --output clusters.json --clusters 5
 * open html/sunburst.html (uses clusters.json)
 ```
-![Image of sunburst viz](https://github.com/dongnizh/tika-img-similarity/blob/refactor/snapshots/sunburst.png)
+![Image of sunburst viz](docs/figs/sunburst.png)
 
 ### Big data way
 if you are dealing with big data, you can use it this way:
